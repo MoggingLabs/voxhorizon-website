@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Brand CSS variables — single source of truth mirrored in tailwind.config.ts
+ * and lib/design-tokens.ts. Design components may use either the Tailwind token
+ * classes (preferred) or raw var(--…) where needed.
+ */
+:root {
+  --brand-cyan: #38b0e3;
+  --brand-blue: #1e63c8;
+  --brand-indigo: #2e2a8c;
+
+  --bg-base: #0a0e1a;
+  --bg-elevated: #111726;
+  --border-hairline: #1e2536;
+
+  --text-primary: #f5f7fa;
+  --text-secondary: #a8b2c5;
+  --text-muted: #6b7689;
+
+  --gradient-brand: linear-gradient(
+    135deg,
+    #38b0e3 0%,
+    #1e63c8 50%,
+    #2e2a8c 100%
+  );
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: rgba(56, 176, 227, 0.3);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* Gradient headline words: <span className="text-gradient-brand">…</span> */
+  .text-gradient-brand {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient-brand {
+    background: var(--gradient-brand);
+  }
+
+  /* Section eyebrow label */
+  .eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brand-cyan);
+  }
+}
