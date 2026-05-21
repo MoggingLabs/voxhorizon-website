@@ -49,7 +49,7 @@ export async function POST(request: Request) {
   let leadId: string | null = null;
   if (attendeeEmail) {
     const { data } = await supabase
-      .from("leads")
+      .from("website_leads")
       .select("id")
       .eq("email", attendeeEmail)
       .order("created_at", { ascending: false })
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     leadId = data?.id ?? null;
   }
 
-  const { error } = await supabase.from("bookings").upsert(
+  const { error } = await supabase.from("website_bookings").upsert(
     {
       lead_id: leadId,
       provider,
@@ -78,7 +78,7 @@ export async function POST(request: Request) {
   }
 
   if (leadId) {
-    await supabase.from("leads").update({ status: "booked" }).eq("id", leadId);
+    await supabase.from("website_leads").update({ status: "booked" }).eq("id", leadId);
   }
 
   return NextResponse.json({ ok: true });

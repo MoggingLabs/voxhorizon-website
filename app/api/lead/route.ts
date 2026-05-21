@@ -145,12 +145,12 @@ export async function POST(request: Request) {
   };
 
   // Idempotent insert: reuse existing row on dedupe collision, skip side effects.
-  const insert = await supabase.from("leads").insert(row).select("id").single();
+  const insert = await supabase.from("website_leads").insert(row).select("id").single();
 
   if (insert.error) {
     if (insert.error.code === "23505") {
       const existing = await supabase
-        .from("leads")
+        .from("website_leads")
         .select("id")
         .eq("dedupe_key", key)
         .single();
@@ -197,7 +197,7 @@ export async function POST(request: Request) {
     console.error("[lead] GHL side-effect failed:", ghlRes);
   }
   if (Object.keys(patch).length) {
-    await supabase.from("leads").update(patch).eq("id", leadId);
+    await supabase.from("website_leads").update(patch).eq("id", leadId);
   }
 
   return json({ ok: true, leadId, bookingUrl });

@@ -5,16 +5,22 @@ import { z } from "zod";
  * Backend secrets are validated lazily and treated as optional here so the app
  * still builds/runs in `mock` mode without real credentials; the lead route
  * enforces that the required live-mode secrets are present when LEAD_API_MODE=live.
+ *
+ * Empty strings (e.g. `FOO=` in .env.local) are treated as unset.
  */
 
+const emptyToUndef = (v: unknown) => (v === "" ? undefined : v);
+const optUrl = z.preprocess(emptyToUndef, z.string().url().optional());
+const optStr = z.preprocess(emptyToUndef, z.string().optional());
+
 const publicSchema = z.object({
-  NEXT_PUBLIC_SITE_URL: z
-    .string()
-    .url()
-    .default("http://localhost:3000"),
-  NEXT_PUBLIC_BOOKING_URL: z.string().url().optional(),
-  NEXT_PUBLIC_PLAUSIBLE_DOMAIN: z.string().optional(),
-  NEXT_PUBLIC_HCAPTCHA_SITE_KEY: z.string().optional(),
+  NEXT_PUBLIC_SITE_URL: z.preprocess(
+    emptyToUndef,
+    z.string().url().default("http://localhost:3000"),
+  ),
+  NEXT_PUBLIC_BOOKING_URL: optUrl,
+  NEXT_PUBLIC_PLAUSIBLE_DOMAIN: optStr,
+  NEXT_PUBLIC_HCAPTCHA_SITE_KEY: optStr,
 });
 
 // NEXT_PUBLIC_* must be referenced statically for Next.js to inline them.
@@ -26,16 +32,17 @@ export const publicEnv = publicSchema.parse({
 });
 
 const serverSchema = z.object({
-  LEAD_API_MODE: z.enum(["live", "mock"]).default("mock"),
-  SUPABASE_URL: z.string().url().optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
-  RESEND_API_KEY: z.string().optional(),
-  LEAD_NOTIFY_TO: z.string().optional(),
-  LEAD_NOTIFY_FROM: z.string().optional(),
-  GHL_WEBHOOK_URL: z.string().url().optional(),
-  HCAPTCHA_SECRET: z.string().optional(),
-  UPSTASH_REDIS_REST_URL: z.string().url().optional(),
-  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  LEAD_API_MODE: z
+    .preprocess(emptyToUndef, z.enum(["live", "mock"]).default("mock")),
+  SUPABASE_URL: optUrl,
+  SUPABASE_SERVICE_ROLE_KEY: optStr,
+  RESEND_API_KEY: optStr,
+  LEAD_NOTIFY_TO: optStr,
+  LEAD_NOTIFY_FROM: optStr,
+  GHL_WEBHOOK_URL: optUrl,
+  HCAPTCHA_SECRET: optStr,
+  UPSTASH_REDIS_REST_URL: optUrl,
+  UPSTASH_REDIS_REST_TOKEN: optStr,
 });
 
 export type ServerEnv = z.infer<typeof serverSchema>;

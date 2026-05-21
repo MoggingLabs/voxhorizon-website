@@ -24,7 +24,7 @@ export type LeadStatus =
 export type Database = {
   public: {
     Tables: {
-      leads: {
+      website_leads: {
         Row: {
           id: string;
           created_at: string;
@@ -73,10 +73,10 @@ export type Database = {
           notes?: string | null;
           dedupe_key?: string | null;
         };
-        Update: Partial<Database["public"]["Tables"]["leads"]["Insert"]>;
+        Update: Partial<Database["public"]["Tables"]["website_leads"]["Insert"]>;
         Relationships: [];
       };
-      bookings: {
+      website_bookings: {
         Row: {
           id: string;
           created_at: string;
@@ -101,12 +101,12 @@ export type Database = {
           status?: string;
           raw_payload?: Record<string, unknown> | null;
         };
-        Update: Partial<Database["public"]["Tables"]["bookings"]["Insert"]>;
+        Update: Partial<Database["public"]["Tables"]["website_bookings"]["Insert"]>;
         Relationships: [
           {
-            foreignKeyName: "bookings_lead_id_fkey";
+            foreignKeyName: "website_bookings_lead_id_fkey";
             columns: ["lead_id"];
-            referencedRelation: "leads";
+            referencedRelation: "website_leads";
             referencedColumns: ["id"];
           },
         ];
@@ -115,9 +115,9 @@ export type Database = {
     Views: Record<string, never>;
     Functions: Record<string, never>;
     Enums: {
-      revenue_tier: RevenueTier;
-      market_segment: MarketSegment;
-      lead_status: LeadStatus;
+      website_revenue_tier: RevenueTier;
+      website_market_segment: MarketSegment;
+      website_lead_status: LeadStatus;
     };
     CompositeTypes: Record<string, never>;
   };
