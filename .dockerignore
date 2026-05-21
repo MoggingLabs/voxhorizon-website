@@ -1,0 +1,24 @@
+# Build context trim — keep the image small and secret-free.
+node_modules
+.next
+out
+.git
+.github
+.vercel
+
+# secrets / local env
+.env
+.env*.local
+
+# docs & non-runtime
+docs
+supabase
+*.md
+!README.md
+
+# misc
+.DS_Store
+Thumbs.db
+npm-debug.log*
+*.tsbuildinfo
+.eslintrc.json
