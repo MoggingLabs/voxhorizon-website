@@ -11,6 +11,12 @@ export const company = {
   copyrightYear: 2026,
 };
 
+/**
+ * Flip to `true` once real photos are added to /public/images (see its README).
+ * Components fall back to branded gradient placeholders while this is false.
+ */
+export const photosReady = false;
+
 export const nav = [
   { label: "How it works", href: "/#how-it-works" },
   { label: "Results", href: "/results" },
@@ -56,11 +62,20 @@ export const steps = [
   },
 ];
 
-export const stats = [
-  { value: "$170,000", label: "in new jobs in 60 days", attribution: "Mitch" },
-  { value: "100", label: "qualified appointments in 60 days", attribution: "Jonathan" },
-  { value: "53 → 35", label: "leads to remodel appointments in 30 days" },
-  { value: "263 → 134", label: "leads to reroof appointments in 3 months" },
+export type Stat = {
+  count?: number; // animates up when in view
+  prefix?: string;
+  suffix?: string;
+  value?: string; // static display (used when no count)
+  label: string;
+  attribution?: string;
+};
+
+export const stats: Stat[] = [
+  { count: 170000, prefix: "$", label: "in new jobs · first 60 days", attribution: "Mitch" },
+  { count: 100, label: "qualified appointments · 60 days", attribution: "Jonathan" },
+  { value: "53 → 35", label: "leads to remodel appointments · 30 days" },
+  { value: "263 → 134", label: "leads to reroof appointments · 3 months" },
 ];
 
 export const industries = [
@@ -70,6 +85,7 @@ export const industries = [
     blurb:
       "High-ticket remodel projects from homeowners ready to invest — matched to your crew's capacity.",
     href: "/industries/kitchen-bath",
+    image: "/images/industry-kitchen-bath.jpg",
   },
   {
     key: "roofing",
@@ -77,6 +93,7 @@ export const industries = [
     blurb:
       "Re-roof and repair appointments at volume, pre-qualified for budget and timeline.",
     href: "/industries/roofing",
+    image: "/images/industry-roofing.jpg",
   },
   {
     key: "decking",
@@ -84,6 +101,7 @@ export const industries = [
     blurb:
       "Outdoor-living projects from motivated homeowners in your exact service area.",
     href: "/industries/decking",
+    image: "/images/industry-decking.jpg",
   },
 ];
 
@@ -140,6 +158,7 @@ export const faqs = [
 export const founder = {
   name: "Diogo Silva",
   role: "Founder & CEO",
+  image: "/images/founder.jpg",
   bio: "Diogo founded VoxHorizon to fix what's broken in contractor lead generation: shared leads, empty promises, and wasted ad spend. The result is a data-driven system that delivers exclusive, pre-qualified projects to serious contractors — and it's been featured across 400+ news outlets.",
 };
 

@@ -14,6 +14,7 @@ export default function KitchenBathPage() {
     <>
       <IndustryLayout
         industry="Kitchen & Bath"
+        image="/images/industry-kitchen-bath.jpg"
         headline="High-ticket kitchen & bath projects from homeowners ready to invest"
         subhead="We connect established remodelers with local homeowners who are ready to start — pre-qualified for budget, scope, and timeline."
         stats={[

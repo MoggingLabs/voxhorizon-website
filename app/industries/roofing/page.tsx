@@ -14,6 +14,7 @@ export default function RoofingPage() {
     <>
       <IndustryLayout
         industry="Roofing"
+        image="/images/industry-roofing.jpg"
         headline="Re-roof and repair appointments at volume"
         subhead="A steady flow of pre-qualified roofing appointments from homeowners in your exact service area — ready for budget and timeline."
         stats={[

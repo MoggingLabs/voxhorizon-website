@@ -1,33 +1,35 @@
 import { Container } from "@/components/ui/Container";
-import { founder } from "@/lib/content";
+import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
+import { founder, photosReady } from "@/lib/content";
 
 export function FounderBio() {
   return (
-    <section className="py-24">
+    <section className="py-24 sm:py-28">
       <Container>
-        <div className="grid items-center gap-12 rounded-3xl border border-surface-border bg-surface-elevated p-8 md:grid-cols-[200px_1fr] md:p-12">
-          {/* Photo slot — replace with a real portrait of Diogo */}
-          <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-2xl bg-gradient-brand-subtle md:mx-0">
-            <span className="font-display text-4xl font-bold text-gradient-brand">
-              {founder.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </span>
+        <Reveal className="grid items-center gap-10 rounded-3xl border border-surface-border bg-surface-elevated p-8 md:grid-cols-[300px_1fr] md:p-12">
+          <div className="mx-auto w-full max-w-[300px]">
+            <div className="rounded-3xl bg-gradient-brand p-px shadow-glow">
+              <Photo
+                src={photosReady ? founder.image : undefined}
+                alt={founder.name}
+                label="Founder"
+                aspect="aspect-square"
+                className="rounded-[1.45rem]"
+                sizes="300px"
+              />
+            </div>
           </div>
           <div>
-            <p className="eyebrow mb-3">Founder</p>
-            <h2 className="font-display text-2xl font-bold text-content-primary sm:text-3xl">
-              {founder.name}
-              <span className="ml-3 align-middle text-base font-normal text-content-muted">
-                {founder.role}
-              </span>
-            </h2>
-            <p className="mt-4 text-lg leading-relaxed text-content-secondary">
-              {founder.bio}
+            <p className="eyebrow mb-4">Founder</p>
+            <blockquote className="font-display text-2xl font-semibold leading-snug text-content-primary sm:text-[1.75rem]">
+              &ldquo;{founder.bio}&rdquo;
+            </blockquote>
+            <p className="mt-6 text-sm font-medium uppercase tracking-wider text-content-muted">
+              {founder.name} · {founder.role}
             </p>
           </div>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -22,7 +23,7 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors",
+        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
           ? "border-b border-surface-border bg-surface/80 backdrop-blur-md"
           : "border-b border-transparent",
@@ -36,7 +37,7 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-content-secondary transition-colors hover:text-content-primary"
+              className="relative text-sm text-content-secondary transition-colors hover:text-content-primary"
             >
               {item.label}
             </Link>
@@ -44,9 +45,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:block">
-          <Button href={primaryCta.href} size="md">
-            Apply
-          </Button>
+          <Button href={primaryCta.href}>Apply</Button>
         </div>
 
         <button
@@ -66,25 +65,33 @@ export function Navbar() {
         </button>
       </Container>
 
-      {open && (
-        <div className="border-t border-surface-border bg-surface/95 backdrop-blur-md md:hidden">
-          <Container className="flex flex-col gap-1 py-4">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="rounded-lg px-2 py-2.5 text-content-secondary hover:bg-surface-elevated hover:text-content-primary"
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Button href={primaryCta.href} className="mt-2 w-full" onClick={() => setOpen(false)}>
-              {primaryCta.label}
-            </Button>
-          </Container>
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="overflow-hidden border-t border-surface-border bg-surface/95 backdrop-blur-md md:hidden"
+          >
+            <Container className="flex flex-col gap-1 py-4">
+              {nav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-2 py-2.5 text-content-secondary hover:bg-surface-elevated hover:text-content-primary"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Button href={primaryCta.href} className="mt-2 w-full" onClick={() => setOpen(false)}>
+                {primaryCta.label}
+              </Button>
+            </Container>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

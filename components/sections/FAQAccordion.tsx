@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
@@ -17,15 +18,10 @@ export function FAQAccordion({
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="py-24">
+    <section className="py-24 sm:py-28">
       <Container className="max-w-3xl">
         {withHeading && (
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Questions, answered"
-            align="center"
-            className="mb-12"
-          />
+          <SectionHeading eyebrow="FAQ" title="Questions, answered" align="center" className="mb-12" />
         )}
         <div className="divide-y divide-surface-border overflow-hidden rounded-2xl border border-surface-border bg-surface-elevated">
           {items.map((item, i) => {
@@ -43,7 +39,7 @@ export function FAQAccordion({
                   </span>
                   <span
                     className={cn(
-                      "shrink-0 text-brand-cyan transition-transform",
+                      "shrink-0 text-brand-cyan transition-transform duration-300",
                       isOpen && "rotate-45",
                     )}
                   >
@@ -52,11 +48,19 @@ export function FAQAccordion({
                     </svg>
                   </span>
                 </button>
-                {isOpen && (
-                  <p className="px-6 pb-6 leading-relaxed text-content-secondary">
-                    {item.a}
-                  </p>
-                )}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+                      className="overflow-hidden"
+                    >
+                      <p className="px-6 pb-6 leading-relaxed text-content-secondary">{item.a}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

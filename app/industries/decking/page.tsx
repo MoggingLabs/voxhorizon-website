@@ -14,6 +14,7 @@ export default function DeckingPage() {
     <>
       <IndustryLayout
         industry="Decking"
+        image="/images/industry-decking.jpg"
         headline="Outdoor-living projects from motivated homeowners"
         subhead="Pre-qualified decking and outdoor-living appointments from homeowners in your area who are ready to build."
         stats={[
