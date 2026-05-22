@@ -14,7 +14,7 @@ this folder (`/public/images/`), then reference them with `next/image`
 | `founder.jpg` | About / FounderBio | 800×800 (square) | Clean portrait of Diogo. |
 | `og.jpg` | Social share card | 1200×630 | Replaces `og-default.png` for link previews. |
 
-Naming is referenced in `docs/claude-design-prompts.md`. If you change names,
+Naming is referenced in `docs/frontend-design-prompts.md`. If you change names,
 update the section prompts to match.
 
 **Tip:** shoot/scan in landscape and portrait where possible so sections can crop

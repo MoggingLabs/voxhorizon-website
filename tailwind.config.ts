@@ -2,8 +2,8 @@ import type { Config } from "tailwindcss";
 
 /**
  * VoxHorizon design tokens.
- * The token NAMES here are the frozen contract shared with the Claude Design
- * frontend workstream. Do not rename without updating docs/claude-design-prompts.md
+ * The token NAMES here are the frozen contract shared with the frontend
+ * workstream. Do not rename without updating docs/frontend-design-prompts.md
  * and lib/design-tokens.ts.
  */
 const config: Config = {

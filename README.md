@@ -9,6 +9,7 @@ Dark-premium, multi-page **Next.js (App Router) + TypeScript + Tailwind** site w
 ## Quick start
 
 ```bash
+nvm use
 npm install
 cp .env.example .env.local   # start with LEAD_API_MODE=mock
 npm run dev                  # http://localhost:3000
@@ -23,6 +24,7 @@ Scripts:
 | `npm start` | Run the production build |
 | `npm run lint` | ESLint (next/core-web-vitals) |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm run smoke:api` | Local/mock checks for `/api/lead` and `/api/booking-webhook` |
 | `npm run email` | Preview React Email templates at :3030 |
 
 ---
@@ -36,6 +38,9 @@ See `.env.example` for the full list. The key switch is **`LEAD_API_MODE`**:
 
 Secrets (no `NEXT_PUBLIC_` prefix) are server-only and must never be imported into a client component. `lib/supabase/admin.ts` and the email/GHL libs are protected with `import "server-only"`.
 
+Smoke tests are documented in `docs/smoke-tests.md`. They run in mock mode and
+do not require Supabase, Resend, GoHighLevel, or production secrets.
+
 ---
 
 ## Project structure & ownership
@@ -47,15 +52,16 @@ app/                     # routes, layout, SEO  (pages compose sections + wire d
   api/lead/route.ts      # ← backend: validate → spam → insert → email + GHL
   api/booking-webhook/   # ← backend: provider booking events
 components/
-  ui/                    # ★ Claude Design: primitives (Button, Container, …)
-  sections/              # ★ Claude Design: page sections (presentational only)
+  ui/                    # Frontend primitives (Button, Container, …)
+  sections/              # Presentational page sections
   forms/                 # ⚑ shared seam: QualifyingForm (UI) + ApplyFlow (orchestrator)
   booking/               # ⚑ shared seam: BookingEmbed
 lib/                     # ☆ backend only: tokens, types, supabase, email, ghl, env, utils
   types/lead.ts          #   THE data contract (zod + LeadInput/LeadResult/QualifyingFormProps)
   design-tokens.ts       #   token source of truth (mirrors tailwind.config.ts)
 public/                  # logo.png, mark.png, og-default.png
-docs/claude-design-prompts.md  # master prompts for the Claude Design frontend workstream
+docs/frontend-design-prompts.md  # frontend prompt pack and visual direction archive
+docs/launch-assets.md          # launch content/photo inventory
 ```
 
 ### Parallel-work contract
@@ -63,8 +69,8 @@ docs/claude-design-prompts.md  # master prompts for the Claude Design frontend w
 1. **Frozen contracts** (do not change without updating both sides):
    - `lib/types/lead.ts` — `LeadInput`, `LeadResult`, enums, and `QualifyingFormProps`.
    - Tailwind token names — `font-display`, `bg-surface`, `bg-surface-elevated`, `border-surface-border`, `text-content-{primary,secondary,muted}`, `text-brand-{cyan,blue,indigo}`, `.text-gradient-brand`, `bg-gradient-brand`, `shadow-glow`.
-2. **Frontend (Claude Design):** generate/refine `components/ui/**` and `components/sections/**` against those tokens. Build the form/booking flow against `LEAD_API_MODE=mock`. See `docs/claude-design-prompts.md`.
-3. **Backend (Claude Code):** owns `lib/**`, `app/api/**`, and page data-wiring.
+2. **Frontend:** generate/refine `components/ui/**` and `components/sections/**` against those tokens. Build the form/booking flow against `LEAD_API_MODE=mock`. See `docs/frontend-design-prompts.md`.
+3. **Backend:** owns `lib/**`, `app/api/**`, and page data-wiring.
 4. **Integration:** `app/apply/page.tsx` → `ApplyFlow` wires the real `QualifyingForm` to `/api/lead` → `BookingEmbed`. Flip `LEAD_API_MODE=live`.
 
 Presentational rule: components in `ui/` and `sections/` take props in and return JSX — no `fetch`, no `process.env`, no Supabase imports.
@@ -79,13 +85,30 @@ Supabase has RLS enabled with **no public policies** — all writes go through t
 
 ---
 
-## Deploy (Vercel → www.voxhorizon.com)
+## Deploy (GitHub Actions -> GHCR -> VPS Docker Compose -> Caddy)
 
-1. Push to GitHub, import to Vercel.
-2. Set env vars (Production + Preview); `LEAD_API_MODE=live` in Production; `NEXT_PUBLIC_SITE_URL=https://www.voxhorizon.com`.
-3. Add the domain `www.voxhorizon.com` (+ apex → www redirect).
-4. Verify the Resend sender domain (`voxhorizon.com`) with SPF/DKIM.
-5. Promote to production.
+The active production path is `.github/workflows/deploy-stack.yml`.
+
+1. An approved push to `main` runs the deploy workflow for site source changes.
+2. GitHub Actions builds the Docker image from `Dockerfile` with Node 22 and
+   pushes `latest` plus the commit SHA tag to GHCR.
+3. The deploy job SSHes to the VPS, runs `docker compose pull`, then
+   `docker compose up -d --remove-orphans` from `/opt/voxhorizon-website`.
+4. Runtime secrets come from the VPS Compose env file
+   `/opt/voxhorizon-website/.env`; they are not baked into the image.
+5. Caddy terminates TLS and routes `www.voxhorizon.com` to the Compose service.
+6. The workflow verifies the web container health check before pruning old
+   images.
+
+Use `workflow_dispatch` only for an explicitly approved bootstrap or hotfix
+deploy. Vercel is not the active deployment target for this repository.
+
+Pre-launch operations:
+
+- Set `LEAD_API_MODE=live` only in the VPS runtime env.
+- Set `NEXT_PUBLIC_SITE_URL=https://www.voxhorizon.com` at build/deploy time.
+- Verify the Resend sender domain (`voxhorizon.com`) with SPF/DKIM.
+- Confirm the GoHighLevel booking URL and webhook before sending live traffic.
 
 ---
 

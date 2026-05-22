@@ -1,14 +1,14 @@
-# VoxHorizon — Claude Design Prompt Pack ($10k editorial redesign)
+# VoxHorizon — Frontend Design Prompt Pack ($10k editorial redesign)
 
 Direction: **Editorial & Confident** (Stripe / Mintlify / Linear-dark / Vercel).
-Tool: **Claude.ai web (Design / Artifacts)**. Output: **Next.js + TypeScript +
+Tool: **Design/artifact tool**. Output: **Next.js + TypeScript +
 Tailwind** components that drop into this repo.
 
 ---
 
 ## How to use (do this for each section)
 
-1. New chat in Claude Design. **Paste Section 0 (Brand Foundation) first** — every time.
+1. New design session. **Paste Section 0 (Brand Foundation) first** — every time.
 2. Paste **one** section prompt below. One section per chat = far better quality.
 3. Iterate visually ("more whitespace", "tighten the headline tracking", "add a subtle reveal").
 4. When happy, copy the component code into the matching file in `components/sections/`
@@ -17,7 +17,7 @@ Tailwind** components that drop into this repo.
 
 **Quality bar already in the repo:** `components/sections/Hero.tsx` is built to the
 target standard (editorial layout, staggered entrance, scroll parallax, animated
-proof card). Open it / screenshot it and tell Claude Design: *"Match the polish,
+proof card). Open it / screenshot it and use the instruction: *"Match the polish,
 motion, depth, and structure of this Hero."*
 
 **Motion + helpers already in the repo** (import them, don't recreate):

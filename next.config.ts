@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Apex → www is handled at the Vercel/domain layer; add app-level redirects here if needed.
+      // Apex -> www is handled at the Caddy/domain layer; add app-level redirects here if needed.
     ];
   },
 };

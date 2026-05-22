@@ -1,7 +1,7 @@
 # Ownership boundaries for the two parallel workstreams.
 # Replace @pveloso01 with the appropriate GitHub teams/handles.
 
-# Frontend visuals — Claude Design workstream (presentational only)
+# Frontend visuals — frontend workstream (presentational only)
 /components/ui/        @pveloso01
 /components/sections/  @pveloso01
 
@@ -10,7 +10,7 @@
 /components/booking/   @pveloso01
 /lib/types/lead.ts     @pveloso01
 
-# Backend / integration — Claude Code workstream
+# Backend / integration — backend workstream
 /lib/                  @pveloso01
 /app/api/              @pveloso01
 /supabase/             @pveloso01
