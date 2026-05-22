@@ -14,21 +14,13 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "max-w-2xl",
-        align === "center" && "mx-auto text-center",
-        className,
-      )}
-    >
+    <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
       {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
-      <h2 className="font-display text-3xl font-bold tracking-tight text-content-primary sm:text-4xl">
+      <h2 className="font-display text-4xl font-normal leading-[1.1] tracking-tight text-content-primary sm:text-5xl">
         {title}
       </h2>
       {description && (
-        <p className="mt-4 text-lg leading-relaxed text-content-secondary">
-          {description}
-        </p>
+        <p className="mt-4 text-lg leading-relaxed text-content-secondary">{description}</p>
       )}
     </div>
   );

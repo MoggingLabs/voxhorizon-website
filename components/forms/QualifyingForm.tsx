@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const fieldBase =
-  "w-full rounded-xl border border-surface-border bg-surface px-4 py-3 text-content-primary placeholder:text-content-muted focus:border-brand-cyan focus:outline-none focus:ring-1 focus:ring-brand-cyan";
+  "w-full rounded-xl border border-surface-border bg-surface-elevated px-4 py-3 text-content-primary placeholder:text-content-muted focus:border-brand-cobalt focus:outline-none focus:ring-1 focus:ring-brand-cobalt";
 
 function ErrorText({ msg }: { msg?: string }) {
   if (!msg) return null;
@@ -98,8 +98,8 @@ export function QualifyingForm({
                 className={cn(
                   "rounded-full border px-4 py-2 text-sm transition-colors",
                   active
-                    ? "border-brand-cyan bg-gradient-brand-subtle text-content-primary"
-                    : "border-surface-border text-content-secondary hover:border-brand-cyan/50",
+                    ? "border-brand-cobalt bg-brand-cobalt/10 text-content-primary"
+                    : "border-surface-border bg-surface-elevated text-content-secondary hover:border-brand-cobalt/50",
                 )}
               >
                 {MARKET_LABELS[m]}
@@ -128,8 +128,8 @@ export function QualifyingForm({
                 className={cn(
                   "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
                   active
-                    ? "border-brand-cyan bg-gradient-brand-subtle text-content-primary"
-                    : "border-surface-border text-content-secondary hover:border-brand-cyan/50",
+                    ? "border-brand-cobalt bg-brand-cobalt/10 text-content-primary"
+                    : "border-surface-border bg-surface-elevated text-content-secondary hover:border-brand-cobalt/50",
                   isLowFit && !active && "opacity-70",
                 )}
               >
@@ -224,10 +224,10 @@ export function QualifyingForm({
         className="mt-7 w-full"
         disabled={isSubmitting}
       >
-        {isSubmitting ? "Submitting…" : "Apply for a strategy call"}
+        {isSubmitting ? "Submitting…" : "See if your territory is open"}
       </ButtonAction>
       <p className="mt-3 text-center text-xs text-content-muted">
-        We work with one contractor per market. No spam, ever.
+        One operator per zip. No spam, ever.
       </p>
     </form>
   );

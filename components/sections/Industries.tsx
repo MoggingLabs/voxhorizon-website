@@ -14,8 +14,7 @@ export function Industries() {
             eyebrow="Industries we serve"
             title={
               <>
-                Built for <span className="text-gradient-brand">high-ticket</span> home
-                improvement
+                Built for <span className="vh-em">high-ticket</span> home improvement
               </>
             }
             description="Proven across the trades where one good project changes the month."
@@ -27,23 +26,20 @@ export function Industries() {
             <Reveal key={ind.key} delay={i * 0.08}>
               <Link
                 href={ind.href}
-                className="group block h-full overflow-hidden rounded-3xl border border-surface-border bg-surface-elevated transition-all duration-300 hover:-translate-y-1 hover:border-brand-cyan/40"
+                className="group block h-full overflow-hidden rounded-3xl border border-surface-border bg-surface-elevated transition-colors duration-300 hover:border-brand-cobalt hover:shadow-card"
               >
-                <div className="relative">
-                  <Photo
-                    src={photosReady ? ind.image : undefined}
-                    alt={`${ind.name} project`}
-                    label={ind.name}
-                    aspect="aspect-[4/3]"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-elevated via-surface-elevated/10 to-transparent" />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-display text-xl font-semibold text-content-primary">
+                <Photo
+                  src={photosReady ? ind.image : undefined}
+                  alt={`${ind.name} project`}
+                  label={ind.name}
+                  aspect="aspect-[4/3]"
+                />
+                <div className="border-t border-surface-border p-6">
+                  <h3 className="font-display text-2xl font-normal tracking-tight text-content-primary">
                     {ind.name}
                   </h3>
-                  <p className="mt-2 text-content-secondary">{ind.blurb}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-cyan">
+                  <p className="mt-2 leading-relaxed text-content-secondary">{ind.blurb}</p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.12em] text-brand-cobalt">
                     Explore
                     <span className="transition-transform group-hover:translate-x-1">→</span>
                   </span>

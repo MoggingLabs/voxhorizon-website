@@ -31,17 +31,17 @@ export type LeadNotificationProps = {
   leadId: string;
 };
 
-const main = { backgroundColor: "#0A0E1A", fontFamily: "Inter, Arial, sans-serif" };
+const main = { backgroundColor: "#EFEBE2", fontFamily: "Georgia, 'Times New Roman', serif" };
 const container = {
-  backgroundColor: "#111726",
-  border: "1px solid #1E2536",
+  backgroundColor: "#FFFFFF",
+  border: "1px solid #D9D5CB",
   borderRadius: "12px",
   margin: "24px auto",
   padding: "32px",
   maxWidth: "560px",
 };
-const label = { color: "#6B7689", fontSize: "12px", margin: "0 0 2px" };
-const value = { color: "#F5F7FA", fontSize: "15px", margin: "0 0 16px", fontWeight: 600 };
+const label = { color: "#8E8B82", fontSize: "12px", margin: "0 0 2px" };
+const value = { color: "#15171C", fontSize: "15px", margin: "0 0 16px", fontWeight: 600 };
 
 export function LeadNotificationEmail({
   fullName,
@@ -61,10 +61,10 @@ export function LeadNotificationEmail({
       <Preview>{`New lead: ${fullName}${company ? ` (${company})` : ""} — ${REVENUE_TIER_LABELS[revenueTier]}`}</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Text style={{ color: "#38B0E3", fontSize: "13px", letterSpacing: "0.14em", textTransform: "uppercase", margin: "0 0 4px" }}>
+          <Text style={{ color: "#2D4ADE", fontSize: "13px", letterSpacing: "0.14em", textTransform: "uppercase", margin: "0 0 4px" }}>
             VoxHorizon — New Lead
           </Text>
-          <Heading style={{ color: "#F5F7FA", fontSize: "22px", margin: "0 0 24px" }}>
+          <Heading style={{ color: "#15171C", fontSize: "22px", margin: "0 0 24px" }}>
             {fullName}
             {company ? ` · ${company}` : ""}
           </Heading>
@@ -94,7 +94,7 @@ export function LeadNotificationEmail({
             </Row>
           </Section>
 
-          <Hr style={{ borderColor: "#1E2536", margin: "16px 0" }} />
+          <Hr style={{ borderColor: "#D9D5CB", margin: "16px 0" }} />
 
           <Text style={label}>Source page</Text>
           <Text style={{ ...value, fontWeight: 400 }}>{sourcePage || "—"}</Text>
@@ -108,7 +108,7 @@ export function LeadNotificationEmail({
             </>
           )}
 
-          <Text style={{ color: "#6B7689", fontSize: "11px", margin: "20px 0 0" }}>
+          <Text style={{ color: "#8E8B82", fontSize: "11px", margin: "20px 0 0" }}>
             Lead ID: {leadId}
           </Text>
         </Container>

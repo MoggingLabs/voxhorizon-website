@@ -3,29 +3,36 @@
 @tailwind utilities;
 
 /**
- * Brand CSS variables — single source of truth mirrored in tailwind.config.ts
- * and lib/design-tokens.ts. Design components may use either the Tailwind token
- * classes (preferred) or raw var(--…) where needed.
+ * VoxHorizon "Imprint" — Apex palette. Light editorial identity.
+ * Brand CSS variables mirror tailwind.config.ts + lib/design-tokens.ts.
  */
 :root {
-  --brand-cyan: #38b0e3;
-  --brand-blue: #1e63c8;
-  --brand-indigo: #2e2a8c;
+  color-scheme: light;
 
-  --bg-base: #0a0e1a;
-  --bg-elevated: #111726;
-  --border-hairline: #1e2536;
+  /* Brand */
+  --vh-cobalt: #2d4ade;
+  --vh-cobalt-600: #1f35a8;
+  --vh-carbon: #15171c;
+  --vh-ember: #c9633d;
 
-  --text-primary: #f5f7fa;
-  --text-secondary: #a8b2c5;
-  --text-muted: #6b7689;
+  /* Neutrals */
+  --vh-vapor: #efebe2;
+  --vh-mist: #d9d5cb;
+  --vh-steel: #5e6470;
+  --vh-onyx: #0a0b0e;
 
-  --gradient-brand: linear-gradient(
-    135deg,
-    #38b0e3 0%,
-    #1e63c8 50%,
-    #2e2a8c 100%
-  );
+  /* Role tokens (light) */
+  --bg-base: #efebe2; /* Vapor */
+  --bg-elevated: #ffffff; /* Daylight */
+  --border-hairline: #d9d5cb; /* Mist */
+  --text-primary: #15171c; /* Carbon */
+  --text-secondary: #5e6470; /* Steel */
+  --text-muted: #8e8b82;
+  --accent: #2d4ade; /* Cobalt */
+
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, #2d4ade 0%, #1f35a8 100%);
+  --gradient-quiet: linear-gradient(180deg, #ffffff 0%, #efebe2 50%, #d9d5cb 100%);
 }
 
 @layer base {
@@ -36,19 +43,19 @@
   body {
     background-color: var(--bg-base);
     color: var(--text-primary);
-    font-family: var(--font-sans), system-ui, sans-serif;
+    font-family: var(--font-sans), "Iowan Old Style", Georgia, serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background-color: rgba(56, 176, 227, 0.3);
-    color: #fff;
+    background-color: rgba(45, 74, 222, 0.18);
+    color: #15171c;
   }
 }
 
 @layer components {
-  /* Gradient headline words: <span className="text-gradient-brand">…</span> */
+  /* Cobalt gradient for the rare display flourish (use sparingly). */
   .text-gradient-brand {
     background: var(--gradient-brand);
     -webkit-background-clip: text;
@@ -60,12 +67,20 @@
     background: var(--gradient-brand);
   }
 
-  /* Section eyebrow label */
+  /* Eyebrow / section label — JetBrains Mono, uppercase, tracked, cobalt. */
   .eyebrow {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.6875rem; /* 11px */
+    font-weight: 500;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--brand-cyan);
+    color: var(--accent);
+  }
+
+  /* The single emphasis rule: italic + cobalt, never bold. */
+  .vh-em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: inherit;
   }
 }

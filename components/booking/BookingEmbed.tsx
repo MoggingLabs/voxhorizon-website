@@ -11,12 +11,12 @@ export function BookingEmbed({
     <div className="mx-auto w-full max-w-2xl rounded-3xl border border-surface-border bg-surface-elevated p-6 sm:p-8">
       <div className="mb-6 text-center">
         <p className="eyebrow mb-2">You&apos;re qualified</p>
-        <h2 className="font-display text-2xl font-bold text-content-primary">
-          {name ? `Nice to meet you, ${name.split(" ")[0]}. ` : ""}Pick a time
+        <h2 className="font-display text-2xl font-normal text-content-primary">
+          {name ? `Good to meet you, ${name.split(" ")[0]}. ` : ""}Pick a time
         </h2>
         <p className="mt-2 text-content-secondary">
-          Book your strategy call below. We&apos;ll confirm whether your
-          territory is open and map out your numbers.
+          Book your call below. We&apos;ll confirm whether your zip is still open
+          and map out your numbers.
         </p>
       </div>
 
@@ -36,8 +36,9 @@ export function BookingEmbed({
             connected yet in this environment.
           </p>
           <p className="mt-2 text-sm text-content-muted">
-            Set <code className="text-brand-cyan">NEXT_PUBLIC_BOOKING_URL</code>{" "}
-            to embed your GoHighLevel/Calendly calendar here.
+            Set{" "}
+            <code className="text-brand-cobalt">NEXT_PUBLIC_BOOKING_URL</code> to
+            embed your GoHighLevel/Calendly calendar here.
           </p>
         </div>
       )}

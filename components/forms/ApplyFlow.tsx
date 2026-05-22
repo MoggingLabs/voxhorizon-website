@@ -93,8 +93,8 @@ function Dot({ active, label }: { active: boolean; label: string }) {
       className={cn(
         "flex h-7 w-7 items-center justify-center rounded-full border text-xs font-semibold",
         active
-          ? "border-brand-cyan bg-gradient-brand text-white"
-          : "border-surface-border text-content-muted",
+          ? "border-brand-cobalt bg-brand-cobalt text-white"
+          : "border-surface-border bg-surface-elevated text-content-muted",
       )}
     >
       {label}

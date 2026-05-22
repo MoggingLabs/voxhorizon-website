@@ -5,8 +5,8 @@ export default function NotFound() {
   return (
     <section className="flex min-h-[70vh] items-center justify-center py-32">
       <Container className="text-center">
-        <p className="font-display text-7xl font-bold text-gradient-brand">404</p>
-        <h1 className="mt-4 font-display text-2xl font-bold text-content-primary">
+        <p className="font-display text-7xl font-normal text-brand-cobalt">404</p>
+        <h1 className="mt-4 font-display text-2xl font-normal text-content-primary">
           This page is over the horizon
         </h1>
         <p className="mx-auto mt-3 max-w-md text-content-secondary">

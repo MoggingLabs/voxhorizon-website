@@ -23,7 +23,7 @@ export function FAQAccordion({
         {withHeading && (
           <SectionHeading eyebrow="FAQ" title="Questions, answered" align="center" className="mb-12" />
         )}
-        <div className="divide-y divide-surface-border overflow-hidden rounded-2xl border border-surface-border bg-surface-elevated">
+        <div className="divide-y divide-surface-border overflow-hidden rounded-3xl border border-surface-border bg-surface-elevated shadow-card">
           {items.map((item, i) => {
             const isOpen = open === i;
             return (
@@ -31,19 +31,20 @@ export function FAQAccordion({
                 <button
                   type="button"
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-surface"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-display text-base font-semibold text-content-primary">
+                  <span className="font-display text-lg font-normal leading-snug text-content-primary">
                     {item.q}
                   </span>
                   <span
                     className={cn(
-                      "shrink-0 text-brand-cyan transition-transform duration-300",
+                      "shrink-0 text-brand-cobalt transition-transform duration-300",
                       isOpen && "rotate-45",
                     )}
+                    aria-hidden
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M12 5v14M5 12h14" strokeLinecap="round" />
                     </svg>
                   </span>
@@ -57,7 +58,7 @@ export function FAQAccordion({
                       transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
                       className="overflow-hidden"
                     >
-                      <p className="px-6 pb-6 leading-relaxed text-content-secondary">{item.a}</p>
+                      <p className="px-6 pb-6 font-sans leading-relaxed text-content-secondary">{item.a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

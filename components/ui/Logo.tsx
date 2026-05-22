@@ -3,38 +3,38 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /**
- * Brand logo. Expects /logo.png (full lockup for dark bg) and /mark.png (disc)
- * in /public. Replace PNGs with traced SVGs when available for crisper scaling.
+ * VoxHorizon "Imprint" logo. Wordmark lockups use PNG (the SVG wordmark relies on
+ * Instrument Serif and won't render reliably as <img>); geometric marks use SVG.
+ *   primary  — Carbon "VOX · HORIZON" + cobalt pip, for light backgrounds (default)
+ *   reversed — white wordmark + cobalt pip, for dark bands
+ *   mark     — VH monogram (compact)
  */
 export function Logo({
-  variant = "full",
+  variant = "primary",
   className,
   href = "/",
 }: {
-  variant?: "full" | "mark";
+  variant?: "primary" | "reversed" | "mark";
   className?: string;
   href?: string | null;
 }) {
-  const img =
-    variant === "mark" ? (
-      <Image
-        src="/mark.png"
-        alt="VoxHorizon"
-        width={44}
-        height={44}
-        className={cn("h-9 w-auto", className)}
-        priority
-      />
-    ) : (
-      <Image
-        src="/logo.png"
-        alt="VoxHorizon"
-        width={180}
-        height={96}
-        className={cn("h-9 w-auto", className)}
-        priority
-      />
-    );
+  const map = {
+    primary: { src: "/logo.png", w: 200, h: 46 },
+    reversed: { src: "/logo-reversed.png", w: 200, h: 46 },
+    mark: { src: "/mark.png", w: 44, h: 48 },
+  } as const;
+  const { src, w, h } = map[variant];
+
+  const img = (
+    <Image
+      src={src}
+      alt="VoxHorizon"
+      width={w}
+      height={h}
+      className={cn(variant === "mark" ? "h-9 w-auto" : "h-8 w-auto", className)}
+      priority
+    />
+  );
 
   if (href === null) return img;
   return (

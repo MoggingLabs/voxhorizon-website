@@ -25,7 +25,7 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "border-b border-surface-border bg-surface/80 backdrop-blur-md"
+          ? "border-b border-surface-border bg-surface-elevated/90 backdrop-blur-md"
           : "border-b border-transparent",
       )}
     >
@@ -72,7 +72,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="overflow-hidden border-t border-surface-border bg-surface/95 backdrop-blur-md md:hidden"
+            className="overflow-hidden border-t border-surface-border bg-surface-elevated backdrop-blur-md md:hidden"
           >
             <Container className="flex flex-col gap-1 py-4">
               {nav.map((item) => (
@@ -80,7 +80,7 @@ export function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-2 py-2.5 text-content-secondary hover:bg-surface-elevated hover:text-content-primary"
+                  className="rounded-lg px-2 py-2.5 text-content-secondary hover:bg-surface hover:text-content-primary"
                 >
                   {item.label}
                 </Link>

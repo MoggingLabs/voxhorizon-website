@@ -12,7 +12,7 @@ function FooterCol({
 }) {
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-xs font-semibold uppercase tracking-wider text-content-muted">{title}</p>
+      <p className="eyebrow">{title}</p>
       {links.map((l) => (
         <Link
           key={l.href}
@@ -42,7 +42,7 @@ export function Footer() {
           <FooterCol title="Company" links={nav} />
 
           <div className="flex flex-col gap-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-content-muted">Legal</p>
+            <p className="eyebrow">Legal</p>
             <Link href="/privacy" className="text-sm text-content-secondary hover:text-content-primary">
               Privacy Policy
             </Link>
@@ -52,9 +52,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-content-muted">
-              As featured in
-            </p>
+            <p className="eyebrow">As featured in</p>
             {press.slice(0, 4).map((p) => (
               <a
                 key={p.name}
@@ -69,7 +67,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-surface-border pt-6">
+        {/* Pip motif divider — the brand signature hairline */}
+        <div className="mt-12 flex items-center gap-2" aria-hidden>
+          <span className="h-px flex-1 bg-surface-border" />
+          <span className="h-1.5 w-1.5 rounded-full bg-brand-cobalt" />
+          <span className="h-px flex-1 bg-surface-border" />
+        </div>
+
+        <div className="mt-6">
           <p className="text-xs text-content-muted">
             © {company.copyrightYear} {company.name}. All rights reserved.
           </p>

@@ -15,7 +15,7 @@ export default function TermsPage() {
       <PageHero eyebrow="Legal" title="Terms of Service" />
       <section className="pb-24">
         <Container className="max-w-3xl">
-          <article className="prose prose-invert max-w-none prose-headings:font-display prose-a:text-brand-cyan">
+          <article className="prose max-w-none prose-headings:font-display prose-a:text-brand-cobalt">
             <p className="text-sm text-content-muted">
               Last updated: {new Date().getFullYear()}. This template is a
               starting point — have it reviewed by legal counsel before launch.

@@ -5,18 +5,34 @@ import { Photo } from "@/components/ui/Photo";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { stats, photosReady } from "@/lib/content";
 
-const cases = [
+type CaseStudy = {
+  name: string;
+  trade: string;
+  headline: React.ReactNode;
+  body: string;
+  image: string;
+};
+
+const cases: CaseStudy[] = [
   {
     name: "Mitch",
     trade: "Remodeling",
-    headline: "$170,000 in new jobs in 60 days",
+    headline: (
+      <>
+        $170,000 in new jobs, <span className="vh-em">in sixty days</span>
+      </>
+    ),
     body: "Tired of shared leads that went nowhere. With an exclusive territory and pre-qualified appointments, he booked six figures of new work in his first two months.",
     image: "/images/results-1.jpg",
   },
   {
     name: "Jonathan",
     trade: "Remodeling",
-    headline: "100 qualified appointments in 60 days",
+    headline: (
+      <>
+        100 qualified appointments, <span className="vh-em">calendar full</span>
+      </>
+    ),
     body: "A steady flow of vetted, pre-scheduled appointments kept his calendar full — without chasing a single cold lead.",
     image: "/images/results-2.jpg",
   },
@@ -32,7 +48,7 @@ export function ResultsHighlights() {
             title={
               <>
                 The numbers speak quietly,{" "}
-                <span className="text-gradient-brand">but clearly</span>
+                <span className="vh-em">but clearly</span>
               </>
             }
             description="Real outcomes from real partners. First names only — exclusivity cuts both ways."
@@ -44,9 +60,9 @@ export function ResultsHighlights() {
             <Reveal
               key={s.label}
               delay={i * 0.08}
-              className="rounded-2xl border border-surface-border bg-surface-elevated p-7"
+              className="rounded-2xl border border-surface-border bg-surface-elevated p-7 shadow-card"
             >
-              <p className="font-display text-4xl font-bold text-gradient-brand">
+              <p className="font-display text-4xl font-normal tracking-tight text-brand-cobalt">
                 {s.count != null ? (
                   <AnimatedNumber value={s.count} prefix={s.prefix} suffix={s.suffix} />
                 ) : (
@@ -55,7 +71,7 @@ export function ResultsHighlights() {
               </p>
               <p className="mt-3 text-sm leading-relaxed text-content-secondary">{s.label}</p>
               {s.attribution && (
-                <p className="mt-2 text-xs font-medium uppercase tracking-wider text-content-muted">
+                <p className="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-content-muted">
                   — {s.attribution}
                 </p>
               )}
@@ -68,7 +84,7 @@ export function ResultsHighlights() {
             <Reveal
               key={c.name}
               delay={i * 0.1}
-              className="overflow-hidden rounded-3xl border border-surface-border bg-surface-elevated transition-transform duration-300 hover:-translate-y-1"
+              className="overflow-hidden rounded-3xl border border-surface-border bg-surface-elevated shadow-card transition-transform duration-300 hover:-translate-y-1"
             >
               <Photo
                 src={photosReady ? c.image : undefined}
@@ -77,11 +93,11 @@ export function ResultsHighlights() {
                 aspect="aspect-[16/10]"
               />
               <div className="p-7">
-                <h3 className="font-display text-2xl font-bold text-gradient-brand">
+                <h3 className="font-display text-2xl font-normal leading-snug tracking-tight text-content-primary">
                   {c.headline}
                 </h3>
-                <p className="mt-3 text-content-secondary">{c.body}</p>
-                <p className="mt-4 text-sm font-medium uppercase tracking-wider text-content-muted">
+                <p className="mt-3 leading-relaxed text-content-secondary">{c.body}</p>
+                <p className="mt-4 font-mono text-xs uppercase tracking-[0.16em] text-content-muted">
                   — {c.name}
                 </p>
               </div>
