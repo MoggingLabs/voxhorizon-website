@@ -43,6 +43,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # GHCR image paths MUST be lowercase. github.repository_owner can be
+      # mixed-case (e.g. "MoggingLabs"), which Docker rejects in an image
+      # reference on push. Fold it to lowercase once and reuse below.
+      - id: owner
+        name: Lowercase image owner
+        run: echo "image_owner=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -50,8 +57,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/voxhorizon-website:latest
-            ghcr.io/${{ github.repository_owner }}/voxhorizon-website:${{ github.sha }}
+            ghcr.io/${{ steps.owner.outputs.image_owner }}/voxhorizon-website:latest
+            ghcr.io/${{ steps.owner.outputs.image_owner }}/voxhorizon-website:${{ github.sha }}
           build-args: |
             NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}
           cache-from: type=gha,scope=web
