@@ -1,12 +1,22 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Newsreader, JetBrains_Mono } from "next/font/google";
+import {
+  Instrument_Serif,
+  Newsreader,
+  JetBrains_Mono,
+  IBM_Plex_Mono,
+  IBM_Plex_Sans,
+} from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+// Carbon Trader system — ported design stylesheet (loaded after globals so its
+// un-layered body rules win the cascade). See app/voxhorizon.css.
+import "./voxhorizon.css";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { publicEnv } from "@/lib/env";
 
-// Display — Instrument Serif (weight 400, roman + italic; italic carries emphasis)
+// Display — Instrument Serif (weight 400, roman + italic; italic carries emphasis).
+// Drives --f-serif in the Carbon Trader system as well.
 const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: ["normal", "italic"],
@@ -15,7 +25,7 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-display",
 });
 
-// Body — Newsreader (variable serif, optical size)
+// Body — Newsreader (variable serif, optical size). Legacy editorial pages.
 const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
@@ -23,11 +33,27 @@ const newsreader = Newsreader({
   variable: "--font-sans",
 });
 
-// Mono — JetBrains Mono (labels, eyebrows, metadata)
+// Mono — JetBrains Mono (labels, eyebrows, metadata). Legacy editorial pages.
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-mono",
+});
+
+// Carbon Trader workhorse — IBM Plex Mono (body, ticker, labels). Drives --f-mono.
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plex-mono",
+});
+
+// Carbon Trader display weight — IBM Plex Sans (headlines, big numbers). Drives --f-sans.
+const ibmPlexSans = IBM_Plex_Sans({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plex-sans",
 });
 
 export const metadata: Metadata = {
@@ -66,9 +92,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${newsreader.variable} ${jetbrainsMono.variable}`}
+      className={`${instrumentSerif.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable}`}
     >
-      <body className="min-h-screen bg-surface font-sans text-content-primary antialiased">
+      {/* Dark terminal shell. Background, body font and antialiasing are owned by
+          voxhorizon.css `body` — no bg/font utilities here so they aren't overridden. */}
+      <body className="min-h-screen antialiased">
         <Navbar />
         <main>{children}</main>
         <Footer />

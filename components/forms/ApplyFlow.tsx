@@ -6,7 +6,6 @@ import { BookingEmbed } from "@/components/booking/BookingEmbed";
 import { getAttribution } from "@/lib/utm";
 import { track } from "@/lib/analytics";
 import type { LeadInput, LeadResult } from "@/lib/types/lead";
-import { cn } from "@/lib/utils";
 
 type Step = "form" | "booking";
 
@@ -68,10 +67,15 @@ export function ApplyFlow() {
   return (
     <div>
       {/* Progress */}
-      <div className="mx-auto mb-8 flex max-w-xs items-center justify-center gap-3">
-        <Dot active label="1" />
-        <span className="h-px w-10 bg-surface-border" />
-        <Dot active={step === "booking"} label="2" />
+      <div
+        className="vh-pane-head"
+        style={{ borderBottom: "1px solid var(--hr)", marginBottom: 28 }}
+      >
+        <span>
+          Step{" "}
+          <em style={{ color: "var(--c-cyan)" }}>{step === "booking" ? "02" : "01"}</em> / 02
+        </span>
+        <span>{step === "booking" ? "Book your call" : "Qualify"}</span>
       </div>
 
       {step === "form" ? (
@@ -84,20 +88,5 @@ export function ApplyFlow() {
         <BookingEmbed bookingUrl={bookingUrl} name={name} />
       )}
     </div>
-  );
-}
-
-function Dot({ active, label }: { active: boolean; label: string }) {
-  return (
-    <span
-      className={cn(
-        "flex h-7 w-7 items-center justify-center rounded-full border text-xs font-semibold",
-        active
-          ? "border-brand-cobalt bg-brand-cobalt text-white"
-          : "border-surface-border bg-surface-elevated text-content-muted",
-      )}
-    >
-      {label}
-    </span>
   );
 }
