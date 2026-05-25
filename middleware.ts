@@ -1,25 +1,25 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * TEMPORARY PUBLIC GATE — "under construction" hold page.
- * ------------------------------------------------------
- * While the Carbon Trader frontend is being finished, the public sees a styled,
- * on-brand maintenance page (HTTP 200, so the container healthcheck on "/" stays
- * green). A "Team access" login posts to /api/gate, which sets an httpOnly cookie;
- * requests carrying that cookie are let straight through to the real (WIP) site
- * so you can review your work.
+ * TEMPORARY PUBLIC GATE — two-step hold.
+ * --------------------------------------
+ * Unauthenticated visitors first see a styled, on-brand "under construction"
+ * page (HTTP 200, so the container healthcheck on "/" stays green). A
+ * "Team access" button leads to a SEPARATE login screen at /__access; a correct
+ * password (posted to /api/gate) sets an httpOnly cookie and drops you into the
+ * real (WIP) site to review your work.
  *
- * Only the SHA-256 of the password is committed (safe — not reversible). The
+ * Only the SHA-256 of the password is committed (safe — not reversible); the
  * matching plaintext is shared privately.
  *
  * TO LIFT THE GATE: delete this file and app/api/gate/route.ts, then redeploy.
  */
 
 const COOKIE = "vh_gate";
-// Cookie token == SHA-256 of the gate password (set by /api/gate after a correct
-// login). httpOnly, so it isn't readable by client JS; public visitors can't forge it.
+// Cookie token == SHA-256 of the gate password (set by /api/gate after login).
 const GATE_TOKEN =
   "60321312434f637b94aef936e76cde9faaae9bbcbf8e347b9310ee891861ae5e";
+const LOGIN_PATH = "/__access";
 
 export function middleware(req: NextRequest) {
   // Authenticated preview → straight through to the real site.
@@ -27,7 +27,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
   const denied = req.nextUrl.searchParams.get("gate") === "denied";
-  return new NextResponse(gateHtml(denied), {
+  const body =
+    req.nextUrl.pathname === LOGIN_PATH ? loginBody(denied) : constructionBody();
+  return new NextResponse(page(body), {
     status: 200, // keep the Docker HEALTHCHECK on "/" green while gated
     headers: {
       "content-type": "text/html; charset=utf-8",
@@ -42,12 +44,43 @@ export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|icon.svg|api).*)"],
 };
 
-function gateHtml(denied: boolean): string {
-  const openClass = denied ? " open" : "";
-  const btnStyle = denied ? ' style="display:none"' : "";
+const MARK =
+  '<svg viewBox="0 0 32 32" fill="none" stroke="#51B8DC" stroke-width="1.5" width="26" height="26"><rect x="2" y="2" width="28" height="28"/><line x1="7" y1="19" x2="25" y2="19"/><rect x="19" y="8" width="5" height="5" fill="#51B8DC" stroke="none"/></svg>';
+
+function constructionBody(): string {
+  return `<div class="top"><span class="mark">${MARK}</span><span class="wm"><b>Vox</b><i>&middot;</i><s>Horizon</s></span></div>
+  <div class="status"><span class="dot"></span> System offline &middot; maintenance</div>
+  <h1>Under <em>construction</em>.</h1>
+  <p class="lede">We&#39;re rebuilding the operator desk. The network is live and running &mdash; the public site will be back online shortly.</p>
+  <div class="bar"><span></span></div>
+  <pre class="term"><span class="c">&gt; vh deploy --site voxhorizon</span>
+  compiling components ........ <span class="c">ok</span>
+  optimizing assets ........... <span class="c">ok</span>
+  wiring territory map ........ <span class="c">ok</span>
+  finalizing layout ........... <span class="a">in progress</span><span class="caret"></span></pre>
+  <div class="actions"><a class="btn" href="${LOGIN_PATH}">Team access &#8594;</a></div>`;
+}
+
+function loginBody(denied: boolean): string {
   const errBlock = denied
     ? '<p class="err">Incorrect password — try again.</p>'
     : "";
+  return `<div class="top"><span class="mark">${MARK}</span><span class="wm"><b>Vox</b><i>&middot;</i><s>Horizon</s></span></div>
+  <div class="status"><span class="dot dim"></span> Restricted &middot; operator access</div>
+  <h1>Team <em>access</em>.</h1>
+  <p class="lede">Enter the operator password to preview the work in progress.</p>
+  <form class="login open" method="post" action="/api/gate">
+    <label for="pw">Operator password</label>
+    <div class="row">
+      <input id="pw" type="password" name="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password" autofocus />
+      <button class="btn primary" type="submit">Enter &#8594;</button>
+    </div>
+    ${errBlock}
+  </form>
+  <div class="actions"><a class="btn ghost" href="/">&#8592; Back to site</a></div>`;
+}
+
+function page(inner: string): string {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -76,6 +109,8 @@ function gateHtml(denied: boolean): string {
   .wm s{color:var(--cyan);text-decoration:none}
   .status{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber)}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:blink 1.4s infinite}
+  .dot.dim{background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:none}
+  .status:has(.dim){color:var(--cyan)}
   h1{font-family:var(--sans);font-weight:600;font-size:54px;line-height:.98;letter-spacing:-.03em;margin:22px 0 0}
   h1 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--cyan)}
   .lede{font-family:var(--sans);font-size:16px;line-height:1.55;color:var(--body);max-width:470px;margin:18px 0 0}
@@ -85,13 +120,13 @@ function gateHtml(denied: boolean): string {
   .term .c{color:var(--cyan)}
   .term .a{color:var(--amber)}
   .caret::after{content:"▍";color:var(--amber);animation:blink2 1s steps(1) infinite}
-  .actions{margin-top:30px}
-  .btn{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--bone);background:transparent;border:1px solid rgba(81,184,220,.22);padding:12px 20px;cursor:pointer;transition:background .12s;display:inline-block}
+  .actions{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--bone);background:transparent;border:1px solid rgba(81,184,220,.22);padding:12px 20px;cursor:pointer;transition:background .12s;display:inline-block;text-decoration:none}
   .btn:hover{background:rgba(81,184,220,.08)}
   .btn.primary{background:var(--cyan);color:var(--deep);font-weight:600;border-color:var(--cyan)}
   .btn.primary:hover{background:var(--bone)}
-  .login{margin-top:20px;display:none}
-  .login.open{display:block}
+  .btn.ghost{color:var(--mute)}
+  .login{margin-top:26px}
   .login label{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
   .login .row{display:flex;max-width:430px;border:1px solid rgba(81,184,220,.22)}
   .login input{flex:1;background:var(--deep);border:0;color:var(--bone);font-family:var(--mono);font-size:13px;padding:12px 14px;outline:none}
@@ -107,39 +142,9 @@ function gateHtml(denied: boolean): string {
 </head>
 <body>
 <main class="wrap">
-  <div class="top">
-    <span class="mark"><svg viewBox="0 0 32 32" fill="none" stroke="#51B8DC" stroke-width="1.5" width="26" height="26"><rect x="2" y="2" width="28" height="28"/><line x1="7" y1="19" x2="25" y2="19"/><rect x="19" y="8" width="5" height="5" fill="#51B8DC" stroke="none"/></svg></span>
-    <span class="wm"><b>Vox</b><i>&middot;</i><s>Horizon</s></span>
-  </div>
-  <div class="status"><span class="dot"></span> System offline &middot; maintenance</div>
-  <h1>Under <em>construction</em>.</h1>
-  <p class="lede">We&#39;re rebuilding the operator desk. The network is live and running &mdash; the public site will be back online shortly.</p>
-  <div class="bar"><span></span></div>
-  <pre class="term"><span class="c">&gt; vh deploy --site voxhorizon</span>
-  compiling components ........ <span class="c">ok</span>
-  optimizing assets ........... <span class="c">ok</span>
-  wiring territory map ........ <span class="c">ok</span>
-  finalizing layout ........... <span class="a">in progress</span><span class="caret"></span></pre>
-  <div class="actions">
-    <button class="btn" id="accessBtn" type="button"${btnStyle}>&#8592; Team access</button>
-  </div>
-  <form class="login${openClass}" id="login" method="post" action="/api/gate">
-    <label for="pw">Operator password</label>
-    <div class="row">
-      <input id="pw" type="password" name="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password" />
-      <button class="btn primary" type="submit">Enter &#8594;</button>
-    </div>
-    ${errBlock}
-  </form>
+  ${inner}
   <div class="foot">&copy; MMXXVI VoxHorizon LLC &middot; operators@voxhorizon.io</div>
 </main>
-<script>
-  (function(){
-    var b=document.getElementById('accessBtn'),f=document.getElementById('login'),p=document.getElementById('pw');
-    if(b){b.addEventListener('click',function(){f.classList.add('open');b.style.display='none';if(p)p.focus();});}
-    if(f&&f.classList.contains('open')&&p){p.focus();}
-  })();
-</script>
 </body>
 </html>`;
 }
