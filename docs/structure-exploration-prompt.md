@@ -8,7 +8,7 @@ out of Claude Design, on the "Imprint" brand. Work top to bottom.
 ## STEP 0 — Set up & attach context
 - Open claude.ai/design → new project: "VoxHorizon Site Structure".
 - Attach: a **screenshot of the current live voxhorizon.com** (so it knows what to
-  beat), and (optional) link the GitHub repo `pveloso01/voxhorizon-website`.
+  beat), and (optional) link the GitHub repo `MoggingLabs/voxhorizon-website`.
 - Keep these inspiration references handy to name in prompts (editorial/award, NOT
   SaaS): **Bloomberg Businessweek, Pentagram, Cosmos.so, Famous.so, Locomotive,
   Igloo Inc, Read.cv**.
