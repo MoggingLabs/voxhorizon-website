@@ -50,7 +50,9 @@ COPY --from=builder --chown=app:app /app/public ./public
 USER app
 EXPOSE 3000
 
+# Hits /healthz (a public route exempt from the temporary auth gate in
+# middleware.ts) so health stays green while the public site is password-gated.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -fsS http://localhost:3000/ || exit 1
+    CMD curl -fsS http://localhost:3000/healthz || exit 1
 
 CMD ["node", "server.js"]
