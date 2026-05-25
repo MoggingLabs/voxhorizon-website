@@ -3,36 +3,14 @@
 @tailwind utilities;
 
 /**
- * VoxHorizon "Imprint" — Apex palette. Light editorial identity.
- * Brand CSS variables mirror tailwind.config.ts + lib/design-tokens.ts.
+ * VoxHorizon — Carbon Trader.
+ * The dark terminal design system lives in `app/voxhorizon.css` (the ported
+ * `.vh-*` classes + tokens), imported AFTER this file in `app/layout.tsx` so its
+ * un-layered `body` rules win the cascade. This file keeps only the Tailwind
+ * layers and a minimal dark base; the `.vh-*` system owns the look.
  */
 :root {
-  color-scheme: light;
-
-  /* Brand */
-  --vh-cobalt: #2d4ade;
-  --vh-cobalt-600: #1f35a8;
-  --vh-carbon: #15171c;
-  --vh-ember: #c9633d;
-
-  /* Neutrals */
-  --vh-vapor: #efebe2;
-  --vh-mist: #d9d5cb;
-  --vh-steel: #5e6470;
-  --vh-onyx: #0a0b0e;
-
-  /* Role tokens (light) */
-  --bg-base: #efebe2; /* Vapor */
-  --bg-elevated: #ffffff; /* Daylight */
-  --border-hairline: #d9d5cb; /* Mist */
-  --text-primary: #15171c; /* Carbon */
-  --text-secondary: #5e6470; /* Steel */
-  --text-muted: #8e8b82;
-  --accent: #2d4ade; /* Cobalt */
-
-  /* Gradients */
-  --gradient-brand: linear-gradient(135deg, #2d4ade 0%, #1f35a8 100%);
-  --gradient-quiet: linear-gradient(180deg, #ffffff 0%, #efebe2 50%, #d9d5cb 100%);
+  color-scheme: dark;
 }
 
 @layer base {
@@ -40,47 +18,8 @@
     scroll-behavior: smooth;
   }
 
-  body {
-    background-color: var(--bg-base);
-    color: var(--text-primary);
-    font-family: var(--font-sans), "Iowan Old Style", Georgia, serif;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
   ::selection {
-    background-color: rgba(45, 74, 222, 0.18);
-    color: #15171c;
-  }
-}
-
-@layer components {
-  /* Cobalt gradient for the rare display flourish (use sparingly). */
-  .text-gradient-brand {
-    background: var(--gradient-brand);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .bg-gradient-brand {
-    background: var(--gradient-brand);
-  }
-
-  /* Eyebrow / section label — JetBrains Mono, uppercase, tracked, cobalt. */
-  .eyebrow {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.6875rem; /* 11px */
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  /* The single emphasis rule: italic + cobalt, never bold. */
-  .vh-em {
-    font-style: italic;
-    color: var(--accent);
-    font-weight: inherit;
+    background-color: rgba(81, 184, 220, 0.22);
+    color: #d9e5dc;
   }
 }
