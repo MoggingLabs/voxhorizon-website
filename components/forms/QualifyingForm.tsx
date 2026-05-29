@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { ButtonAction } from "@/components/ui/Button";
 import {
   MARKET_SEGMENTS,
   REVENUE_TIERS,
@@ -12,15 +11,41 @@ import {
   type RevenueTier,
   type QualifyingFormProps,
 } from "@/lib/types/lead";
-import { cn } from "@/lib/utils";
-
-const fieldBase =
-  "w-full rounded-xl border border-surface-border bg-surface px-4 py-3 text-content-primary placeholder:text-content-muted focus:border-brand-cyan focus:outline-none focus:ring-1 focus:ring-brand-cyan";
 
 function ErrorText({ msg }: { msg?: string }) {
   if (!msg) return null;
-  return <p className="mt-1.5 text-sm text-danger">{msg}</p>;
+  return (
+    <p
+      style={{
+        marginTop: 8,
+        fontSize: 11,
+        letterSpacing: "0.04em",
+        color: "var(--c-amber)",
+      }}
+    >
+      {msg}
+    </p>
+  );
 }
+
+// Inline styles for the choice-button groups (markets + revenue) — markets and
+// revenue tier are multi/single toggle groups, not native inputs, so they get
+// vh-token styling here rather than the .vh-form input rules.
+const choiceBase: React.CSSProperties = {
+  padding: "11px 16px",
+  fontSize: 12,
+  letterSpacing: "0.02em",
+  border: "1px solid var(--hr-deep)",
+  background: "var(--c-bg-shadow)",
+  color: "var(--c-body)",
+  transition: "color 0.12s, border-color 0.12s, background 0.12s",
+  textAlign: "left",
+};
+const choiceActive: React.CSSProperties = {
+  borderColor: "var(--c-cyan)",
+  background: "rgba(81, 184, 220, 0.08)",
+  color: "var(--c-bone)",
+};
 
 export function QualifyingForm({
   defaultValues,
@@ -76,135 +101,154 @@ export function QualifyingForm({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mx-auto w-full max-w-xl rounded-3xl border border-surface-border bg-surface-elevated p-6 sm:p-8"
-      noValidate
-    >
-      {/* Markets */}
-      <fieldset className="mb-6">
-        <legend className="mb-3 text-sm font-medium text-content-primary">
-          Which market(s) do you serve?
+    <form className="vh-form" onSubmit={handleSubmit} noValidate>
+      {/* A · Markets */}
+      <fieldset>
+        <legend>
+          A · Your trade <em>— which markets?</em>
         </legend>
-        <div className="flex flex-wrap gap-2.5">
-          {MARKET_SEGMENTS.map((m) => {
-            const active = markets.includes(m);
-            return (
-              <button
-                key={m}
-                type="button"
-                onClick={() => toggleMarket(m)}
-                aria-pressed={active}
-                className={cn(
-                  "rounded-full border px-4 py-2 text-sm transition-colors",
-                  active
-                    ? "border-brand-cyan bg-gradient-brand-subtle text-content-primary"
-                    : "border-surface-border text-content-secondary hover:border-brand-cyan/50",
-                )}
-              >
-                {MARKET_LABELS[m]}
-              </button>
-            );
-          })}
+        <div className="vh-form__row" style={{ alignItems: "start" }}>
+          <label>
+            Markets served <span className="req">*</span>
+          </label>
+          <div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+              {MARKET_SEGMENTS.map((m) => {
+                const active = markets.includes(m);
+                return (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => toggleMarket(m)}
+                    aria-pressed={active}
+                    style={{ ...choiceBase, ...(active ? choiceActive : null) }}
+                  >
+                    {MARKET_LABELS[m]}
+                  </button>
+                );
+              })}
+            </div>
+            <ErrorText msg={errors.markets} />
+          </div>
         </div>
-        <ErrorText msg={errors.markets} />
+        <div className="vh-form__row" style={{ alignItems: "start" }}>
+          <label>
+            Monthly revenue <span className="req">*</span>
+          </label>
+          <div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gap: 10,
+              }}
+            >
+              {REVENUE_TIERS.map((t) => {
+                const active = revenueTier === t;
+                const isLowFit = t === "under_50k";
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setRevenueTier(t)}
+                    aria-pressed={active}
+                    style={{
+                      ...choiceBase,
+                      ...(active ? choiceActive : null),
+                      ...(isLowFit && !active ? { opacity: 0.7 } : null),
+                    }}
+                  >
+                    {REVENUE_TIER_LABELS[t]}
+                    {isLowFit && (
+                      <span
+                        style={{
+                          display: "block",
+                          marginTop: 4,
+                          fontSize: 10,
+                          letterSpacing: "0.06em",
+                          color: "var(--c-mute)",
+                        }}
+                      >
+                        Below our typical fit
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <ErrorText msg={errors.revenueTier} />
+          </div>
+        </div>
       </fieldset>
 
-      {/* Revenue tier */}
-      <fieldset className="mb-6">
-        <legend className="mb-3 text-sm font-medium text-content-primary">
-          Average monthly revenue (last 3 months)
+      {/* B · Contact */}
+      <fieldset>
+        <legend>
+          B · You <em>— how do we reach you?</em>
         </legend>
-        <div className="grid gap-2.5 sm:grid-cols-2">
-          {REVENUE_TIERS.map((t) => {
-            const active = revenueTier === t;
-            const isLowFit = t === "under_50k";
-            return (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setRevenueTier(t)}
-                aria-pressed={active}
-                className={cn(
-                  "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
-                  active
-                    ? "border-brand-cyan bg-gradient-brand-subtle text-content-primary"
-                    : "border-surface-border text-content-secondary hover:border-brand-cyan/50",
-                  isLowFit && !active && "opacity-70",
-                )}
-              >
-                {REVENUE_TIER_LABELS[t]}
-                {isLowFit && (
-                  <span className="mt-0.5 block text-xs text-content-muted">
-                    Below our typical fit
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-        <ErrorText msg={errors.revenueTier} />
-      </fieldset>
-
-      {/* Contact */}
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-content-primary">
-            Full name
+        <div className="vh-form__row">
+          <label htmlFor="fullName">
+            Full name <span className="req">*</span>
           </label>
-          <input
-            className={fieldBase}
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            placeholder="Jane Contractor"
-            autoComplete="name"
-          />
-          <ErrorText msg={errors.fullName} />
+          <div>
+            <input
+              type="text"
+              id="fullName"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Jane Contractor"
+              autoComplete="name"
+            />
+            <ErrorText msg={errors.fullName} />
+          </div>
         </div>
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-content-primary">
-            Company <span className="text-content-muted">(optional)</span>
-          </label>
+        <div className="vh-form__row">
+          <label htmlFor="company">Company</label>
           <input
-            className={fieldBase}
+            type="text"
+            id="company"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
             placeholder="Acme Remodeling"
             autoComplete="organization"
           />
         </div>
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-content-primary">
-            Email
+        <div className="vh-form__row">
+          <label htmlFor="email">
+            Email <span className="req">*</span>
           </label>
-          <input
-            type="email"
-            className={fieldBase}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@company.com"
-            autoComplete="email"
-          />
-          <ErrorText msg={errors.email} />
+          <div>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@company.com"
+              autoComplete="email"
+            />
+            <ErrorText msg={errors.email} />
+          </div>
         </div>
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-content-primary">
-            Phone
+        <div className="vh-form__row">
+          <label htmlFor="phone">
+            Phone <span className="req">*</span>
           </label>
-          <input
-            type="tel"
-            className={fieldBase}
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="(555) 123-4567"
-            autoComplete="tel"
-          />
-          <ErrorText msg={errors.phone} />
+          <div>
+            <input
+              type="tel"
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="(555) 123-4567"
+              autoComplete="tel"
+            />
+            <ErrorText msg={errors.phone} />
+          </div>
         </div>
-      </div>
+      </fieldset>
 
       {/* Honeypot — visually hidden, must stay empty */}
-      <div className="absolute left-[-9999px]" aria-hidden>
+      <div style={{ position: "absolute", left: -9999 }} aria-hidden>
         <label>
           Leave this field empty
           <input
@@ -216,19 +260,37 @@ export function QualifyingForm({
         </label>
       </div>
 
-      {errors.form && <p className="mt-4 text-sm text-danger">{errors.form}</p>}
-
-      <ButtonAction
-        type="submit"
-        size="lg"
-        className="mt-7 w-full"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Submitting…" : "Apply for a strategy call"}
-      </ButtonAction>
-      <p className="mt-3 text-center text-xs text-content-muted">
-        We work with one contractor per market. No spam, ever.
-      </p>
+      <div className="vh-form__actions">
+        <div className="meta">
+          {errors.form ? (
+            <span style={{ color: "var(--c-amber)" }}>{errors.form}</span>
+          ) : (
+            <>
+              One operator per zip · <em>No spam, ever.</em>
+            </>
+          )}
+        </div>
+        <div className="vh-cta" style={{ marginTop: 0 }}>
+          <button
+            type="submit"
+            className="p"
+            disabled={isSubmitting}
+            style={{
+              padding: "16px 28px",
+              fontSize: 11,
+              letterSpacing: "0.20em",
+              textTransform: "uppercase",
+              background: "var(--c-cyan)",
+              color: "var(--c-bg-deep)",
+              fontWeight: 600,
+              opacity: isSubmitting ? 0.6 : 1,
+              cursor: isSubmitting ? "not-allowed" : "pointer",
+            }}
+          >
+            {isSubmitting ? "Submitting…" : "[ See if your territory is open ]"}
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

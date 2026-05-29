@@ -50,6 +50,8 @@ COPY --from=builder --chown=app:app /app/public ./public
 USER app
 EXPOSE 3000
 
+# The under-construction gate (middleware.ts) returns HTTP 200 for "/", so this
+# stays green while the public site is gated; authenticated previews pass through.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
     CMD curl -fsS http://localhost:3000/ || exit 1
 

@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/Container";
-import { PageHero } from "@/components/ui/PageHero";
 import { ApplyFlow } from "@/components/forms/ApplyFlow";
 
 export const metadata: Metadata = {
@@ -13,15 +11,31 @@ export const metadata: Metadata = {
 export default function ApplyPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Apply"
-        title="See if your territory is open"
-        description="Answer a few quick questions. If we're a fit, you'll book a strategy call on the next step."
-      />
-      <section className="pb-24">
-        <Container>
-          <ApplyFlow />
-        </Container>
+      {/* ── INTRO ─────────────────────────────────────────── */}
+      <section className="vh-pintro">
+        <div className="crumb">
+          Apply · operator desk<em>— 48-hour response, every applicant</em>
+        </div>
+        <h1>
+          See if your territory
+          <br />
+          is <em>open.</em>
+        </h1>
+        <p className="lede">
+          Answer a few quick questions. If we’re a fit, you’ll book a strategy call on the next
+          step. One operator per zip — <strong>if your zip is claimed, we tell you straight.</strong>
+        </p>
+      </section>
+
+      {/* ── 01 — THE FORM ─────────────────────────────────── */}
+      <section className="vh-sect">
+        <div className="vh-seclabel">
+          <span className="id">
+            01 / 01 <span>— Application form</span>
+          </span>
+          <em>Plain fields, no warm-up dance.</em>
+        </div>
+        <ApplyFlow />
       </section>
     </>
   );

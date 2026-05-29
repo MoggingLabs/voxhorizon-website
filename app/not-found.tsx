@@ -1,24 +1,26 @@
-import { Container } from "@/components/ui/Container";
-import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <section className="flex min-h-[70vh] items-center justify-center py-32">
-      <Container className="text-center">
-        <p className="font-display text-7xl font-bold text-gradient-brand">404</p>
-        <h1 className="mt-4 font-display text-2xl font-bold text-content-primary">
-          This page is over the horizon
-        </h1>
-        <p className="mx-auto mt-3 max-w-md text-content-secondary">
-          The page you&apos;re looking for doesn&apos;t exist or has moved.
-        </p>
-        <div className="mt-8 flex justify-center gap-4">
-          <Button href="/">Back home</Button>
-          <Button href="/apply" variant="secondary">
-            Apply
-          </Button>
-        </div>
-      </Container>
+    <section className="vh-pintro">
+      <div className="crumb">
+        Error · 404<em>— off the grid</em>
+      </div>
+      <h1>
+        Over the <em>horizon</em>.
+      </h1>
+      <p className="lede">
+        The page you’re looking for doesn’t exist or has moved. Head back to the desk, or check
+        which territories are still open this quarter.
+      </p>
+      <div className="vh-cta">
+        <Link href="/" className="p">
+          [ Back to desk ]
+        </Link>
+        <Link href="/territory" className="g">
+          View the map
+        </Link>
+      </div>
     </section>
   );
 }

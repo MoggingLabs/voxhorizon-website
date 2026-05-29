@@ -6,7 +6,7 @@
 
 export const company = {
   name: "VoxHorizon",
-  tagline: "The Remodeler Growth Partner",
+  tagline: "The end of the shared lead",
   founder: "Diogo Silva",
   copyrightYear: 2026,
 };
@@ -29,14 +29,13 @@ export const primaryCta = { label: "See if your territory is open", href: "/appl
 export const secondaryCta = { label: "View results", href: "/results" };
 
 export const hero = {
-  eyebrow: "The Remodeler Growth Partner",
-  headline: "Predictable, exclusive remodeling projects",
-  headlineAccent: "booked on your calendar",
-  headlineRest: "— not bought from a shared pool.",
+  eyebrow: "Growth program · 2026 cohort",
+  headline: "The end of the",
+  headlineAccent: "shared lead.",
+  headlineRest: "",
   subhead:
-    "VoxHorizon delivers 8–12 pre-qualified projects a month to established home-improvement contractors. Exclusive territory. Performance-backed.",
-  trustLine:
-    "Featured in Benzinga, Barchart, The Globe and Mail, and 400+ news sites.",
+    "A growth program for operators done being one of five contractors racing for the same phone call. Exclusive territory. Pre-qualified, pre-scheduled projects — the kind of partnership that gets written into a quarterly plan, not a credit-card receipt.",
+  trustLine: "Featured across 400+ news outlets.",
 };
 
 export const press = [
@@ -49,16 +48,16 @@ export const press = [
 
 export const steps = [
   {
-    title: "We map your exclusive territory",
-    body: "We lock in your service area and define the ideal project profile — so every opportunity fits the work you actually want.",
+    title: "We lock your territory",
+    body: "One operator per zip, secured for the year. We map your service area and the project profile you actually want, so every appointment fits the work your crew does best.",
   },
   {
-    title: "Our data + AI engine finds high-intent homeowners",
-    body: "We put your offer in front of local homeowners who are ready to remodel now, then qualify them against your criteria.",
+    title: "Our data and AI engine finds the demand",
+    body: "We rank local homeowners against your historical close rate, ticket size, and crew availability — then qualify scope, budget, and timeline before anything reaches you.",
   },
   {
-    title: "Pre-qualified appointments land on your calendar",
-    body: "Vetted, pre-scheduled appointments arrive booking-ready. You show up and close. No chasing, no junk leads.",
+    title: "Pre-scheduled appointments hit your calendar",
+    body: "Not raw leads — real appointments, on the calendar, ready for the estimate. You show up, sit, and sign. No chasing, no shared pool.",
   },
 ];
 
@@ -83,7 +82,7 @@ export const industries = [
     key: "kitchen-bath",
     name: "Kitchen & Bath",
     blurb:
-      "High-ticket remodel projects from homeowners ready to invest — matched to your crew's capacity.",
+      "High-ticket remodel projects, pre-qualified on scope and budget, matched to your crew's capacity.",
     href: "/industries/kitchen-bath",
     image: "/images/industry-kitchen-bath.jpg",
   },
@@ -91,7 +90,7 @@ export const industries = [
     key: "roofing",
     name: "Roofing",
     blurb:
-      "Re-roof and repair appointments at volume, pre-qualified for budget and timeline.",
+      "Re-roof and repair appointments at volume, cleared on budget and timeline before they reach you.",
     href: "/industries/roofing",
     image: "/images/industry-roofing.jpg",
   },
@@ -99,7 +98,7 @@ export const industries = [
     key: "decking",
     name: "Decking",
     blurb:
-      "Outdoor-living projects from motivated homeowners in your exact service area.",
+      "Outdoor-living projects from homeowners ready to build, inside your exact service area.",
     href: "/industries/decking",
     image: "/images/industry-decking.jpg",
   },
@@ -108,50 +107,50 @@ export const industries = [
 export const differentiators = [
   {
     title: "Exclusive, never shared",
-    body: "Your leads are yours alone. We don't resell the same homeowner to five competitors like Angi or HomeAdvisor.",
+    body: "One operator per zip. The same homeowner never goes to five contractors racing for the same phone call. Your territory is yours alone.",
   },
   {
-    title: "Pre-qualified & pre-scheduled",
-    body: "Every appointment is vetted against your criteria and booked before it reaches you.",
+    title: "Pre-qualified and pre-scheduled",
+    body: "Scope, budget, and timeline cleared before the appointment hits your calendar. Real appointments, ready for the estimate — not raw leads.",
   },
   {
-    title: "Data + AI driven",
-    body: "We target high-intent homeowners with a system built to find demand, not spray ads and hope.",
+    title: "Data and AI matching",
+    body: "Prospects ranked against your close rate, ticket size, and crew availability. A system built to find demand, not spray ads and hope.",
   },
   {
-    title: "Performance-backed",
-    body: "A model built around measurable ROI — projects booked, not impressions promised.",
+    title: "Measured in signed work",
+    body: "We report on appointments booked, sat, and signed — not impressions or clicks. The only number that matters is work on the books.",
   },
   {
     title: "Territory scarcity",
-    body: "We work with one contractor per market. When your area is taken, it's taken.",
+    body: "We work with one operator per market. When your zip is taken, your competition can't buy in next month.",
   },
 ];
 
 export const faqs = [
   {
-    q: "How are your leads different from Angi or HomeAdvisor?",
-    a: "Those platforms sell the same homeowner to several contractors and leave you to fight on price. Our leads are exclusive to you and pre-qualified against your project criteria before an appointment is booked.",
+    q: "How is this different from shared-lead platforms?",
+    a: "Those platforms sell the same homeowner to several contractors and leave you to fight on price. Our appointments are exclusive to you and pre-qualified on scope, budget, and timeline before they hit your calendar.",
   },
   {
-    q: "What does 'exclusive territory' mean?",
-    a: "We partner with a single contractor per market. While we work with you, we won't take on a competitor in your service area.",
+    q: "What does exclusive territory mean?",
+    a: "One operator per zip, secured for the year. While we work with you, we won't take on a competitor in your service area.",
   },
   {
     q: "Who is this for?",
-    a: "Established home-improvement contractors doing $50K/mo or more — kitchen & bath remodelers, roofers, and deck builders. It is not built for subcontractors or independent sales reps.",
+    a: "Established home-improvement operators doing $50K/mo or more — kitchen and bath remodelers, roofers, and deck builders. It is not built for subcontractors or independent sales reps.",
   },
   {
     q: "Do you guarantee results?",
-    a: "Our model is performance-oriented and built around measurable ROI. We'll walk you through exactly how that works for your market on your strategy call.",
+    a: "We measure in signed work, not impressions. Show rate across our last cohort was 92%, on an average ticket near $11.4K. We'll walk you through the numbers for your market on the call.",
   },
   {
     q: "How fast can I expect appointments?",
-    a: "Most partners see qualified appointments within the first few weeks of launch. Several have booked dozens within their first 30–60 days.",
+    a: "Most operators see qualified appointments within the first few weeks. One booked 100 in 60 days; another closed $170K in his first 60.",
   },
   {
     q: "What does it cost?",
-    a: "Pricing depends on your market and capacity. We'll cover it transparently on your strategy call once we confirm your territory is open.",
+    a: "It depends on your market and capacity. We'll cover it plainly on the call, once we confirm your territory is open.",
   },
 ];
 
@@ -159,10 +158,10 @@ export const founder = {
   name: "Diogo Silva",
   role: "Founder & CEO",
   image: "/images/founder.jpg",
-  bio: "Diogo founded VoxHorizon to fix what's broken in contractor lead generation: shared leads, empty promises, and wasted ad spend. The result is a data-driven system that delivers exclusive, pre-qualified projects to serious contractors — and it's been featured across 400+ news outlets.",
+  bio: "Diogo built VoxHorizon for operators done being one of five contractors racing for the same phone call. No shared leads, no empty promises, no spray-and-pray ad spend. Just exclusive territory and pre-qualified, pre-scheduled projects, measured in signed work — a program now featured across 400+ news outlets.",
 };
 
 export const finalCta = {
-  heading: "See if your territory is still open",
-  body: "We work with one contractor per market. Apply for a strategy call to check availability in your area.",
+  heading: "See if your territory is open",
+  body: "One operator per zip, secured for the year. Apply for a call and we'll check whether your zip is still open and map out your numbers.",
 };
