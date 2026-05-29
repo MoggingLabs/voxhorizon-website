@@ -1,6 +1,6 @@
 /**
  * Central marketing copy — confident & premium voice, real (anonymized) proof.
- * Both the Claude Code pages and Claude Design components read from here so copy
+ * Both the application pages and frontend components read from here so copy
  * stays consistent. Edit copy in one place.
  */
 

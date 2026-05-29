@@ -3,8 +3,8 @@ import { z } from "zod";
 /**
  * THE DATA CONTRACT.
  *
- * Shared by the Claude Design form UI (components/forms/QualifyingForm.tsx) and
- * the Claude Code backend (app/api/lead/route.ts). Freeze these shapes early; any
+ * Shared by the frontend form UI (components/forms/QualifyingForm.tsx) and
+ * the backend (app/api/lead/route.ts). Freeze these shapes early; any
  * change must be made on both sides at once.
  *
  * Note: client/API payloads use camelCase. The Supabase columns are snake_case;
@@ -68,8 +68,8 @@ export type LeadResult =
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
 /**
- * Presentational form contract. Claude Design builds QualifyingForm.tsx against
- * this exact signature; Claude Code injects the real `onSubmit`. Do not change.
+ * Presentational form contract. The frontend builds QualifyingForm.tsx against
+ * this exact signature; The backend injects the real `onSubmit`. Do not change.
  */
 export type QualifyingFormProps = {
   defaultValues?: Partial<LeadInput>;

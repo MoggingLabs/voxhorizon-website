@@ -9,6 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "smoke": "npm run smoke:api",
+    "smoke:api": "node scripts/smoke-api.mjs",
     "email": "email dev --dir lib/email/templates --port 3030"
   },
   "dependencies": {
@@ -38,6 +40,6 @@
     "typescript": "^5.7.2"
   },
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=22 <23"
   }
 }
