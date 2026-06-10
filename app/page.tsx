@@ -6,10 +6,10 @@ import {
   metrics,
   openZips,
   stats,
-  territoryCells,
   territoryCounts,
 } from "@/lib/content";
 import { CountUp } from "@/components/motion/CountUp";
+import { TerritoryGrid } from "@/components/motion/TerritoryGrid";
 import { LiveFeed } from "@/components/motion/LiveFeed";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -255,11 +255,7 @@ export default function HomePage() {
               {territoryCounts.total} territories.<br />
               <em>{cohort.slotsOpen} open</em> through {cohort.closesOn}.
             </h2>
-            <div className="vh-grid">
-              {territoryCells.map((state, i) => (
-                <div key={i} className={`cell ${state}`} />
-              ))}
-            </div>
+            <TerritoryGrid />
             <div className="vh-legend">
               <span>
                 <span className="sw" style={{ background: "rgba(81,184,220,0.14)" }} />

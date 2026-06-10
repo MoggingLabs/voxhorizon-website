@@ -69,6 +69,30 @@
   font-size: 12px;
 }
 
+/* live territory grid — hover scale + terminal readout */
+.vh-grid--live .cell { cursor: crosshair; }
+.vh-grid--live .cell:hover { position: relative; z-index: 2; }
+.vh-grid__readout {
+  margin-top: 12px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--c-mute);
+  min-height: 18px;
+}
+.vh-grid__readout .p { color: var(--c-cyan); }
+.vh-grid__readout .s.claimed { color: var(--c-cyan); }
+.vh-grid__readout .s.open { color: var(--c-bone); }
+.vh-grid__readout .s.open-hot { color: var(--c-amber); }
+.vh-grid__readout .cursor::after {
+  content: "▍";
+  color: var(--c-amber);
+  animation: vhBlink 1s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vh-grid__readout .cursor::after { animation: none; }
+}
+
 /* industry cards — hover lift + cyan edge */
 .vh-indcard {
   display: flex;

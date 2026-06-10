@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { territoryCells, openZips, type OpenZip } from "@/lib/content";
+import { cohort, openZips, territoryCounts, type OpenZip } from "@/lib/content";
+import { CountUp } from "@/components/motion/CountUp";
+import { Reveal } from "@/components/motion/Reveal";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { TerritoryGrid } from "@/components/motion/TerritoryGrid";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export const metadata: Metadata = {
   title: "Territory",
@@ -20,16 +25,16 @@ function zipStatus(z: OpenZip): React.ReactNode {
 
 export default function TerritoryPage() {
   return (
-    <>
+    <div className="v2">
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
           Territory · live map<em>— refreshed nightly</em>
         </div>
         <h1>
-          96 territories.
+          {territoryCounts.total} territories.
           <br />
-          <em>19 open</em>, <span className="mut">4 closing.</span>
+          <em>{territoryCounts.open} open</em>, <span className="mut">{territoryCounts.hot} closing.</span>
         </h1>
         <p className="lede">
           One operator per zip code, no exceptions, no shared rosters. The map below is the
@@ -43,19 +48,25 @@ export default function TerritoryPage() {
         <div className="vh-strip__cell">
           <div className="k">Claimed</div>
           <div className="v">
-            <em>73</em>
+            <em>
+              <CountUp value={territoryCounts.claimed} />
+            </em>
           </div>
           <div className="delta">+9 YTD</div>
         </div>
         <div className="vh-strip__cell">
-          <div className="k">Open · Q3</div>
-          <div className="v">19</div>
-          <div className="delta">closing Sept 30</div>
+          <div className="k">Open · {cohort.quarter}</div>
+          <div className="v">
+            <CountUp value={territoryCounts.open} />
+          </div>
+          <div className="delta">closing {cohort.closesOn}</div>
         </div>
         <div className="vh-strip__cell">
           <div className="k">Hot · 48-hour</div>
           <div className="v">
-            <em>4</em>
+            <em>
+              <CountUp value={territoryCounts.hot} />
+            </em>
           </div>
           <div className="delta">multiple applicants</div>
         </div>
@@ -67,27 +78,23 @@ export default function TerritoryPage() {
           <span className="id">
             01 / 03 <span>— The grid</span>
           </span>
-          <em>Each cell is one zip. 16 wide, 6 tall.</em>
+          <em>Each cell is one zip. Hover to read it.</em>
         </div>
         <div className="vh-terr">
           <div>
-            <div className="vh-grid">
-              {territoryCells.map((state, i) => (
-                <div key={i} className={`cell ${state}`} />
-              ))}
-            </div>
+            <TerritoryGrid />
             <div className="vh-legend">
               <span>
                 <span className="sw" style={{ background: "rgba(81,184,220,0.14)" }} />
-                Claimed · 73
+                Claimed · {territoryCounts.claimed}
               </span>
               <span>
                 <span className="sw" style={{ background: "rgba(217,229,220,0.20)" }} />
-                Open · 19
+                Open · {territoryCounts.open}
               </span>
               <span>
                 <span className="sw" style={{ background: "#FFB23F" }} />
-                Closing 48h · 4
+                Closing 48h · {territoryCounts.hot}
               </span>
             </div>
           </div>
@@ -95,11 +102,14 @@ export default function TerritoryPage() {
             <div className="vh-side__stat">
               <div className="k">Network footprint</div>
               <div className="v">
-                <em>96</em> zips
+                <em>
+                  <CountUp value={territoryCounts.total} />
+                </em>{" "}
+                zips
               </div>
               <div className="row">
                 <span>states</span>
-                <span>27</span>
+                <span>{territoryCounts.states}</span>
               </div>
             </div>
             <div className="vh-side__stat">
@@ -128,23 +138,27 @@ export default function TerritoryPage() {
       <section className="vh-sect">
         <div className="vh-seclabel">
           <span className="id">
-            02 / 03 <span>— Open zips · Q3</span>
+            02 / 03 <span>— Open zips · {cohort.quarter}</span>
           </span>
-          <em>Take one, or we’ll take you off the list.</em>
+          <em>Pick one — the row takes you to the application.</em>
         </div>
-        <div className="vh-zip">
+        <Stagger className="vh-zip">
           <div className="vh-zip__h">
-            <span>Open territory · 19 zips · closing Sept 30</span>
+            <span>
+              Open territory · {territoryCounts.open} zips · closing {cohort.closesOn}
+            </span>
             <em>— applicants in queue</em>
           </div>
           {openZips.map((row) => (
-            <Link key={row.zip} href="/apply" className="vh-zip__row">
-              <span className="z">{row.zip}</span>
-              <span className="city">{`${row.city}, ${row.state}`}</span>
-              <span className="ct">{zipStatus(row)}</span>
-            </Link>
+            <StaggerItem key={row.zip}>
+              <Link href={`/apply?zip=${row.zip}`} className="vh-zip__row">
+                <span className="z">{row.zip}</span>
+                <span className="city">{`${row.city}, ${row.state}`}</span>
+                <span className="ct">{zipStatus(row)}</span>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       {/* ── 03 — POLICY ────────────────────────────────────── */}
@@ -155,8 +169,8 @@ export default function TerritoryPage() {
           </span>
           <em>The rules, plain.</em>
         </div>
-        <div className="vh-how">
-          <div className="vh-how__row">
+        <Stagger className="vh-how">
+          <StaggerItem className="vh-how__row">
             <div className="n">A.</div>
             <div className="ts">
               One zip
@@ -170,8 +184,8 @@ export default function TerritoryPage() {
                 yours until you cancel or fail the operator agreement.
               </p>
             </div>
-          </div>
-          <div className="vh-how__row">
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
             <div className="n">B.</div>
             <div className="ts">
               No
@@ -179,14 +193,14 @@ export default function TerritoryPage() {
               <em>overlap</em>
             </div>
             <div>
-              <h4>We don’t book the same homeowner with two operators.</h4>
+              <h4>We don&#8217;t book the same homeowner with two operators.</h4>
               <p>
-                Cross-zip lead routing is by the homeowner’s address, not their phone. Multi-zip
+                Cross-zip lead routing is by the homeowner&#8217;s address, not their phone. Multi-zip
                 operators get full coverage of each zip they hold.
               </p>
             </div>
-          </div>
-          <div className="vh-how__row">
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
             <div className="n">C.</div>
             <div className="ts">
               If
@@ -200,8 +214,8 @@ export default function TerritoryPage() {
                 never string you along; the answer comes on the application call.
               </p>
             </div>
-          </div>
-          <div className="vh-how__row">
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
             <div className="n">D.</div>
             <div className="ts">
               New
@@ -211,37 +225,23 @@ export default function TerritoryPage() {
             <div>
               <h4>We add 12 new territories per quarter, on average.</h4>
               <p>
-                Adds are decided by demand signal in the zip, not by who applies. We won’t open a
-                zip we can’t keep at ≥30 K per 90 days.
+                Adds are decided by demand signal in the zip, not by who applies. We won&#8217;t open a
+                zip we can&#8217;t keep at ≥30 K per 90 days.
               </p>
             </div>
-          </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </section>
 
       {/* ── CLOSING ───────────────────────────────────────── */}
-      <div className="vh-closing">
-        <div className="eye">Q3 closes Sept 30 · 12 of 24 slots remain</div>
-        <h2>
-          Pick your zip.
-          <br />
-          Before <em>someone else</em> does.
-        </h2>
-        <div className="vh-cta">
-          <Link href="/apply" className="p">
-            [ Apply my zip ]
-          </Link>
-          <Link href="/system" className="g">
-            Read the system
-          </Link>
-        </div>
-        <div className="meta">
-          <span>Response · 48h</span>
-          <span>
-            <em>4 zips</em> closing this week
-          </span>
-        </div>
-      </div>
-    </>
+      <CtaBlock
+        primary={{ label: "Apply for an open zip", href: "/apply" }}
+        secondary={{ label: "See operator results", href: "/results" }}
+      >
+        Pick your zip.
+        <br />
+        Before <em>someone else</em> does.
+      </CtaBlock>
+    </div>
   );
 }
