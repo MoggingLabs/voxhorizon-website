@@ -83,18 +83,19 @@
 
 .vh-navcta {
   display: inline-block;
-  background: var(--c-cyan);
-  color: var(--c-bg-deep);
+  background: var(--c-cyan-bright);
+  color: var(--c-ink);
   font-family: var(--f-sans);
   font-weight: 600;
   font-size: 14px;
   padding: 11px 22px;
   border-radius: var(--r-pill);
-  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
   white-space: nowrap;
 }
 .vh-navcta:hover {
-  background: var(--c-bone);
+  background: var(--c-cyan);
+  color: #fff;
   transform: translateY(-1px);
   box-shadow: var(--glow-cyan);
 }

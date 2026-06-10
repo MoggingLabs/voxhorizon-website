@@ -13,12 +13,12 @@ body {
   min-height: 100vh;
   position: relative;
 }
-/* the horizon — one soft cyan glow rising from the top of the page */
+/* the horizon — one soft sky-blue wash rising from the top of the page */
 body::before {
   content: "";
   position: fixed; inset: 0;
   background:
-    radial-gradient(ellipse 90% 50% at 50% -12%, rgba(var(--c-cyan-rgb), 0.10), transparent 65%);
+    radial-gradient(ellipse 90% 50% at 50% -12%, rgba(var(--c-cyan-rgb), 0.16), transparent 65%);
   pointer-events: none;
   z-index: 0;
 }
@@ -52,8 +52,8 @@ em { font-style: normal; }
   left: -9999px;
   top: 0;
   z-index: 100;
-  background: var(--c-cyan);
-  color: var(--c-bg-deep);
+  background: var(--c-cyan-bright);
+  color: var(--c-ink);
   font-family: var(--f-sans);
   font-size: 13px;
   font-weight: 600;

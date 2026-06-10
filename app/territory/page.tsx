@@ -53,15 +53,15 @@ export default function TerritoryPage() {
           <TerritoryGrid />
           <div className="vh-legend">
             <span>
-              <span className="sw" style={{ background: "rgba(81,184,220,0.14)" }} />
+              <span className="sw" style={{ background: "rgba(81,184,220,0.5)" }} />
               Claimed · {territoryCounts.claimed}
             </span>
             <span>
-              <span className="sw" style={{ background: "rgba(217,229,220,0.20)" }} />
+              <span className="sw" style={{ background: "rgba(18,39,52,0.22)" }} />
               Open · {territoryCounts.open}
             </span>
             <span>
-              <span className="sw" style={{ background: "#FFB23F" }} />
+              <span className="sw" style={{ background: "#156A8F" }} />
               Closing 48h · {territoryCounts.hot}
             </span>
           </div>

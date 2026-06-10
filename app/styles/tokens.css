@@ -1,49 +1,55 @@
 /* ════════════════════════════════════════════════════════════════════
-   VoxHorizon · design tokens — "Horizon" system
+   VoxHorizon · design tokens — "Daylight" variant
    ────────────────────────────────────────────────────────────────────
-   Deep navy ground with a soft cyan horizon glow. Instrument Serif
-   carries display headlines (italic = cyan emphasis), IBM Plex Sans
-   carries everything else. Surfaces are rounded, soft, and separated
-   by space — never by rules or boxes.
+   The light alternative: paper-white ground, ink text, and ONE color —
+   the brand blue. #51B8DC stays the brand hue for fills, buttons, and
+   washes; a deepened blue carries text accents so contrast holds on
+   white. No amber, no navy: blue is the only color on the page.
 
-   Load order: tokens → base → chrome → components → pages
-   (imported in app/layout.tsx).
+   Same variable names as the dark Horizon system so the whole site
+   flips with this one palette (plus a few ink-text fixes downstream).
    ════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ground */
-  --c-bg:           #08182A;
-  --c-bg-deep:      #060F1E;
-  --c-bg-shadow:    #040A18;
+  /* ground — paper, not navy */
+  --c-bg:           #F7FAFB;
+  --c-bg-deep:      #EDF3F6;
+  --c-bg-shadow:    #E3ECF0;
 
-  /* soft raised surfaces (cards) */
-  --s-card:         #0C2138;
-  --s-card-2:       #0E2740;
+  /* raised surfaces (cards) — white on paper */
+  --s-card:         #FFFFFF;
+  --s-card-2:       #F2F8FA;
 
-  /* foreground — --c-quiet is decorative only, never text */
-  --c-bone:         #D9E5DC;
-  --c-body:         #A6B5AB;
-  --c-mute:         #6C8278;
-  --c-quiet:        #3F5950;
+  /* foreground — ink scale (replaces bone/body/mute) */
+  --c-ink:          #0C1E2A;
+  --c-bone:         #122734;  /* strong text */
+  --c-body:         #415663;  /* body text */
+  --c-mute:         #6E8290;  /* captions */
+  --c-quiet:        #C9D8DF;  /* decorative only, never text */
 
-  /* accents */
-  --c-cyan:         #51B8DC;
-  --c-amber:        #FFB23F;
+  /* the one color — brand blue.
+     --c-cyan (deep) carries TEXT accents for contrast on white;
+     --c-cyan-bright is the true brand hue for fills and buttons;
+     --c-amber is aliased into the blue family so every former amber
+     accent (badges, hot cells, errors) stays blue. */
+  --c-cyan:         #1B7FA8;
+  --c-cyan-bright:  #51B8DC;
+  --c-amber:        #156A8F;
 
-  /* rgb tuples for rgba() composition */
+  /* rgb tuples for rgba() composition — washes stay brand-bright */
   --c-cyan-rgb:     81, 184, 220;
-  --c-amber-rgb:    255, 178, 63;
-  --c-bone-rgb:     217, 229, 220;
+  --c-amber-rgb:    21, 106, 143;
+  --c-bone-rgb:     18, 39, 52;
 
-  /* soft edges & glows (replaces the old hairline system) */
-  --edge:           rgba(var(--c-cyan-rgb), 0.10);
-  --glow:           0 24px 80px rgba(4, 10, 24, 0.5);
-  --glow-cyan:      0 12px 48px rgba(var(--c-cyan-rgb), 0.16);
+  /* soft edges & shadows for a light ground */
+  --edge:           rgba(18, 39, 52, 0.08);
+  --glow:           0 18px 50px rgba(18, 50, 70, 0.10);
+  --glow-cyan:      0 12px 36px rgba(var(--c-cyan-rgb), 0.35);
 
-  /* legacy aliases — a few low-traffic pages still reference these */
-  --hr:             rgba(var(--c-cyan-rgb), 0.10);
-  --hr-soft:        rgba(var(--c-cyan-rgb), 0.06);
-  --hr-deep:        rgba(var(--c-cyan-rgb), 0.14);
+  /* legacy aliases */
+  --hr:             rgba(18, 39, 52, 0.08);
+  --hr-soft:        rgba(18, 39, 52, 0.05);
+  --hr-deep:        rgba(18, 39, 52, 0.12);
 
   /* radii */
   --r-lg:           20px;

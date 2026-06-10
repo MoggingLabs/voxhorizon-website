@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 /**
- * VoxHorizon — Carbon Trader.
- * The dark terminal design system lives in `app/voxhorizon.css` (the ported
- * `.vh-*` classes + tokens), imported AFTER this file in `app/layout.tsx` so its
- * un-layered `body` rules win the cascade. This file keeps only the Tailwind
- * layers and a minimal dark base; the `.vh-*` system owns the look.
+ * VoxHorizon — Daylight variant.
+ * The design system lives in `app/styles/*` (the `.vh-*` classes + tokens),
+ * imported AFTER this file in `app/layout.tsx` so its un-layered `body`
+ * rules win the cascade. This file keeps only the Tailwind layers and a
+ * minimal light base; the `.vh-*` system owns the look.
  */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @layer base {
@@ -19,7 +19,7 @@
   }
 
   ::selection {
-    background-color: rgba(81, 184, 220, 0.22);
-    color: #d9e5dc;
+    background-color: rgba(81, 184, 220, 0.3);
+    color: #0c1e2a;
   }
 }

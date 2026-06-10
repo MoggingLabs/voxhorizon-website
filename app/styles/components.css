@@ -105,11 +105,12 @@
   transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .vh-cta a.p {
-  background: var(--c-cyan);
-  color: var(--c-bg-deep);
+  background: var(--c-cyan-bright);
+  color: var(--c-ink);
 }
 .vh-cta a.p:hover {
-  background: var(--c-bone);
+  background: var(--c-cyan);
+  color: #fff;
   transform: translateY(-2px);
   box-shadow: var(--glow-cyan);
 }
@@ -275,9 +276,9 @@
   padding: 18px;
   background: var(--s-card);
 }
-.vh-grid .cell { aspect-ratio: 1; border-radius: 4px; background: rgba(var(--c-cyan-rgb), 0.05); }
-.vh-grid .cell.claimed { background: rgba(var(--c-cyan-rgb), 0.18); }
-.vh-grid .cell.open    { background: rgba(var(--c-bone-rgb), 0.25); }
+.vh-grid .cell { aspect-ratio: 1; border-radius: 4px; background: rgba(var(--c-bone-rgb), 0.06); }
+.vh-grid .cell.claimed { background: rgba(var(--c-cyan-rgb), 0.5); }
+.vh-grid .cell.open    { background: rgba(var(--c-bone-rgb), 0.22); }
 .vh-grid .cell.open-hot {
   background: var(--c-amber);
   box-shadow: 0 0 10px rgba(var(--c-amber-rgb), 0.5);

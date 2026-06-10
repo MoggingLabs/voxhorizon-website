@@ -216,11 +216,11 @@
   font-size: 15px;
   font-weight: 600;
   border-radius: var(--r-pill);
-  background: var(--c-cyan);
-  color: var(--c-bg-deep);
-  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  background: var(--c-cyan-bright);
+  color: var(--c-ink);
+  transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.vh-submit:hover:not(:disabled) { background: var(--c-bone); transform: translateY(-1px); box-shadow: var(--glow-cyan); }
+.vh-submit:hover:not(:disabled) { background: var(--c-cyan); color: #fff; transform: translateY(-1px); box-shadow: var(--glow-cyan); }
 .vh-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 .vh-zipctx {
   font-size: 14px;
