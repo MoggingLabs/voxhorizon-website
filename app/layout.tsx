@@ -12,6 +12,7 @@ import "./styles/components.css";
 import "./styles/pages.css";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import { publicEnv } from "@/lib/env";
 
 // Display — Instrument Serif (weight 400, roman + italic; italic carries emphasis).
@@ -81,12 +82,14 @@ export default function RootLayout({
       {/* Dark terminal shell. Background, body font and antialiasing are owned by
           styles/base.css `body` — no bg/font utilities here so they aren't overridden. */}
       <body className="min-h-screen antialiased">
-        <a href="#main" className="vh-skip">
-          Skip to content
-        </a>
-        <Navbar />
-        <main id="main">{children}</main>
-        <Footer />
+        <MotionProvider>
+          <a href="#main" className="vh-skip">
+            Skip to content
+          </a>
+          <Navbar />
+          <main id="main">{children}</main>
+          <Footer />
+        </MotionProvider>
         {plausibleDomain && (
           <Script
             defer

@@ -1,46 +1,56 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, m } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { cohort, navLinks, tickerPills } from "@/lib/content";
+import { MobileMenu } from "./MobileMenu";
 
-// Carbon Trader chrome — network ticker + segmented topbar.
-// Nav mirrors the design handoff: Home · System · Territory · Operators · Apply.
-const chromeNav = [
-  { label: "Home", href: "/" },
-  { label: "System", href: "/system" },
-  { label: "Territory", href: "/territory" },
-  { label: "Operators", href: "/operators" },
-  { label: "Apply", href: "/apply" },
-];
-
-function isActive(pathname: string, href: string) {
+function isActive(pathname: string, href?: string) {
+  if (!href) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function TickerGroup({ hidden }: { hidden?: boolean }) {
+  return (
+    <div className="vh-tick__group" aria-hidden={hidden || undefined}>
+      {tickerPills.map((pill) => (
+        <span key={pill.k} className="vh-tick__pill">
+          <span className="k">{pill.k}</span>
+          <span className="v">{pill.v}</span>
+          {pill.delta && (
+            <span className={pill.dir === "up" ? "up" : pill.dir === "dn" ? "dn" : "d"}>
+              {pill.delta}
+            </span>
+          )}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export function Navbar() {
   const pathname = usePathname() ?? "/";
+  const [flyoutOpen, setFlyoutOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close the flyout and mobile menu on navigation.
+  useEffect(() => {
+    setFlyoutOpen(false);
+    setMenuOpen(false);
+  }, [pathname]);
 
   return (
     <>
-      {/* ── TICKER ────────────────────────────────────────── */}
+      {/* ── TICKER (marquee; pauses on hover, static under reduced motion) ── */}
       <div className="vh-tick" aria-label="Network ticker">
-        <span className="vh-tick__pill">
-          <span className="k">ACTIVE</span>
-          <span className="v">63</span>
-          <span className="up">▲ +4</span>
-        </span>
-        <span className="vh-tick__pill">
-          <span className="k">APPTS·24H</span>
-          <span className="v">187</span>
-          <span className="up">▲ +12%</span>
-        </span>
-        <span className="vh-tick__pill">
-          <span className="k">AVG TKT</span>
-          <span className="v">$32.4K</span>
-          <span className="up">▲ +$1.8K</span>
-        </span>
+        <div className="vh-tick__track">
+          <TickerGroup />
+          <TickerGroup hidden />
+        </div>
         <span className="vh-tick__live">● LIVE · STREAMING</span>
       </div>
 
@@ -69,23 +79,88 @@ export function Navbar() {
           </span>
         </Link>
 
-        <nav className="vh-nav">
-          {chromeNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(isActive(pathname, item.href) && "is-active")}
-              aria-current={isActive(pathname, item.href) ? "page" : undefined}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="vh-nav" aria-label="Primary">
+          {navLinks.map((item) =>
+            item.children ? (
+              <div
+                key={item.label}
+                className="vh-nav__item"
+                onMouseEnter={() => setFlyoutOpen(true)}
+                onMouseLeave={() => setFlyoutOpen(false)}
+              >
+                <button
+                  type="button"
+                  aria-expanded={flyoutOpen}
+                  aria-haspopup="true"
+                  className={cn(
+                    "vh-nav__trigger",
+                    pathname.startsWith("/industries") && "is-active",
+                  )}
+                  onClick={() => setFlyoutOpen((open) => !open)}
+                >
+                  {item.label} <span className="caret">▾</span>
+                </button>
+                <AnimatePresence>
+                  {flyoutOpen && (
+                    <m.div
+                      className="vh-flyout"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 6 }}
+                      transition={{ duration: 0.16, ease: "easeOut" }}
+                    >
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={cn(isActive(pathname, child.href) && "is-active")}
+                          aria-current={isActive(pathname, child.href) ? "page" : undefined}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </m.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href!}
+                className={cn(isActive(pathname, item.href) && "is-active")}
+                aria-current={isActive(pathname, item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
-        <div className="vh-crumbs">
-          Q3 MMXXVI · <em>12 zips open</em>
+        <div className="vh-topbar__right">
+          <span className="vh-crumbs">
+            {cohort.quarter} {cohort.year} ·{" "}
+            <em>
+              {cohort.slotsOpen} of {cohort.slotsTotal} slots open
+            </em>
+          </span>
+          <Link href="/apply" className="vh-navcta">
+            [ Check my zip ]
+          </Link>
+          <button
+            type="button"
+            className="vh-burger"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </header>
+
+      <MobileMenu open={menuOpen} pathname={pathname} onClose={() => setMenuOpen(false)} />
     </>
   );
 }
