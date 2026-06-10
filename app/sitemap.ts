@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/territory", priority: 0.8 },
     { path: "/results", priority: 0.8 },
     { path: "/system", priority: 0.7 },
-    { path: "/operators", priority: 0.7 },
     { path: "/brand", priority: 0.5 },
     { path: "/about", priority: 0.7 },
     { path: "/industries/kitchen-bath", priority: 0.7 },

@@ -93,6 +93,21 @@
   .vh-grid__readout .cursor::after { animation: none; }
 }
 
+/* wide ledger variant — four-across on desktop (/results) */
+.vh-ledger--wide { grid-template-columns: repeat(4, 1fr); }
+.vh-ledger--wide .vh-ledger__cell { border-bottom: 0; border-right: 1px solid var(--hr-soft); }
+.vh-ledger--wide .vh-ledger__cell:last-child { border-right: 0; }
+@media (max-width: 960px) {
+  .vh-ledger--wide { grid-template-columns: 1fr 1fr; }
+  .vh-ledger--wide .vh-ledger__cell:nth-child(2n) { border-right: 0; }
+  .vh-ledger--wide .vh-ledger__cell:nth-child(-n+2) { border-bottom: 1px solid var(--hr-soft); }
+}
+@media (max-width: 640px) {
+  .vh-ledger--wide { grid-template-columns: 1fr; }
+  .vh-ledger--wide .vh-ledger__cell { border-right: 0; border-bottom: 1px solid var(--hr-soft); }
+  .vh-ledger--wide .vh-ledger__cell:last-child { border-bottom: 0; }
+}
+
 /* industry cards — hover lift + cyan edge */
 .vh-indcard {
   display: flex;
