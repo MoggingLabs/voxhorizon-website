@@ -31,6 +31,26 @@ SMOKE_BASE_URL=http://127.0.0.1:3000 npm run smoke:api
 The script refuses non-local URLs unless `SMOKE_ALLOW_NON_LOCAL=1` is set. Keep
 the default local flow for PR checks and launch-readiness validation.
 
+## Running Against A Deployed Preview
+
+The preview gate in `middleware.ts` does not apply to `/api/**`, so the runner
+can reach a deployed instance directly:
+
+```bash
+SMOKE_ALLOW_NON_LOCAL=1 SMOKE_START_SERVER=0 \
+  SMOKE_BASE_URL=https://<preview-host> npm run smoke:api
+```
+
+Two guards keep this safe:
+
+- Non-local URLs are refused unless `SMOKE_ALLOW_NON_LOCAL=1` is set
+  explicitly, so a remote run is always a deliberate choice.
+- Before sending any payload, the runner confirms the target responds with the
+  `LEAD_API_MODE=mock` skip response and aborts otherwise. A deployment running
+  `LEAD_API_MODE=live` (production) can never be smoked this way — there is no
+  override. Live-flow verification is a manual, credentialed exercise tracked
+  separately (issue #4), not something this runner performs.
+
 ## Useful Options
 
 | Variable | Default | Notes |
