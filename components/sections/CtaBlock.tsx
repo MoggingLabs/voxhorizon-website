@@ -3,11 +3,10 @@ import { cohort } from "@/lib/content";
 
 type Cta = { label: string; href: string };
 
-/** Cohort urgency line — rendered on every funnel page via CtaBlock. */
+/** Cohort urgency line — one fact, rendered on every funnel page via CtaBlock. */
 export function UrgencyMeta() {
   return (
     <div className="meta">
-      <span>{cohort.activeOperators} active operators</span>
       <span>
         <em>
           {cohort.slotsOpen} of {cohort.slotsTotal}
@@ -53,7 +52,7 @@ export function CtaBlock({ eyebrow, children, primary, secondary }: CtaBlockProp
   return (
     <div className="vh-closing">
       <div className="eye">
-        {eyebrow ?? `${cohort.quarter} closes ${cohort.closesOn} · ${cohort.slotsOpen} of ${cohort.slotsTotal} slots open`}
+        {eyebrow ?? `One operator per zip · ${cohort.quarter} closes ${cohort.closesOn}`}
       </div>
       <h2>{children}</h2>
       <div className="vh-cta">

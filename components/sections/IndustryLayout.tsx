@@ -12,17 +12,17 @@ export function IndustryLayout({
   industry,
   headline,
   subhead,
-  stats,
   bullets,
 }: {
   slug: string;
   industry: string;
   headline: string;
   subhead: string;
-  stats: IndustryStat[];
+  // `stats` and `image` are still accepted for prop compatibility but no longer
+  // rendered — the calm pass dropped the metrics strip; the terminal panel
+  // replaced the old photo placeholder.
+  stats?: IndustryStat[];
   bullets: string[];
-  // `image` is still accepted for prop compatibility but is no longer rendered —
-  // the framed terminal panel below replaces the old photo placeholder.
   image?: string;
 }) {
   const others = industries.filter((i) => i.key !== slug);
@@ -60,18 +60,6 @@ export function IndustryLayout({
         <h1>{headline}</h1>
         <p className="lede">{subhead}</p>
       </section>
-
-      {/* ── METRICS STRIP ─────────────────────────────────── */}
-      <div className="vh-strip">
-        {stats.map((s) => (
-          <div className="vh-strip__cell" key={s.label}>
-            <div className="k">{s.label}</div>
-            <div className="v">
-              <em>{s.value}</em>
-            </div>
-          </div>
-        ))}
-      </div>
 
       {/* ── 01 — WHY OPERATORS CHOOSE US ──────────────────── */}
       <section className="vh-sect">
