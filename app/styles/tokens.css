@@ -58,14 +58,14 @@
   --f-mono:         var(--font-plex-mono), "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --f-serif:        var(--font-display), "Instrument Serif", Georgia, serif;
 
-  /* display scale — claims run huge */
-  --t-display:      clamp(56px, 12vw, 176px);
-  --t-h1:           clamp(48px, 9vw, 132px);
-  --t-h2:           clamp(36px, 6vw, 88px);
-  --t-h3:           clamp(28px, 3.8vw, 52px);
-  --t-h4:           clamp(20px, 2vw, 24px);
+  /* display scale — confident, not shouting */
+  --t-display:      clamp(40px, 6.5vw, 92px);
+  --t-h1:           clamp(36px, 5.5vw, 76px);
+  --t-h2:           clamp(30px, 4vw, 56px);
+  --t-h3:           clamp(24px, 3vw, 40px);
+  --t-h4:           clamp(19px, 2vw, 22px);
 
-  /* rhythm — claims need dead space around them */
-  --sect-pad:       clamp(96px, 13vw, 200px);
+  /* rhythm */
+  --sect-pad:       clamp(72px, 9vw, 128px);
   --gutter:         clamp(20px, 4.5vw, 64px);
 }
