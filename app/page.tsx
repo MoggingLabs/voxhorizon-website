@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { territoryCells, openZips, feedEvents, type FeedEvent } from "@/lib/content";
+import {
+  cohort,
+  industries,
+  metrics,
+  openZips,
+  stats,
+  territoryCells,
+  territoryCounts,
+} from "@/lib/content";
+import { CountUp } from "@/components/motion/CountUp";
+import { LiveFeed } from "@/components/motion/LiveFeed";
+import { Reveal } from "@/components/motion/Reveal";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export const metadata: Metadata = {
   title: "Operator Desk",
@@ -9,25 +22,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-function FeedRow({ event }: { event: FeedEvent }) {
-  const icClass =
-    event.kind === "K" ? "vh-row__ic kept" : event.kind === "$" ? "vh-row__ic sign" : "vh-row__ic";
-  return (
-    <div className="vh-row">
-      <span className={icClass}>{event.kind}</span>
-      <div>
-        <div className="vh-row__title">{event.title}</div>
-        <div className="vh-row__sub">{event.sub}</div>
-      </div>
-      <span className="vh-row__time">{event.time}</span>
-    </div>
-  );
-}
-
 export default function HomePage() {
   return (
-    <>
-      {/* ── HERO ──────────────────────────────────────────── */}
+    <div className="v2">
+      {/* ── HERO (never motion-wrapped — SSR-visible) ─────── */}
       <section className="vh-hero">
         <div className="eye">Desk · Last 24 hours</div>
         <h1 className="vh-h1">
@@ -41,7 +39,7 @@ export default function HomePage() {
         </p>
         <div className="vh-cta">
           <Link href="/apply" className="p">[ Check my zip ]</Link>
-          <Link href="/system" className="g">View demo desk</Link>
+          <Link href="/system" className="g">How the system works</Link>
         </div>
       </section>
 
@@ -49,32 +47,39 @@ export default function HomePage() {
       <div className="vh-strip">
         <div className="vh-strip__cell">
           <div className="k">Active operators</div>
-          <div className="v"><em>63</em></div>
-          <div className="delta">+4 QoQ</div>
+          <div className="v">
+            <em>
+              <CountUp value={cohort.activeOperators} />
+            </em>
+          </div>
+          <div className="delta">{metrics.operatorsDelta}</div>
         </div>
         <div className="vh-strip__cell">
           <div className="k">Appts · 24h</div>
-          <div className="v">187</div>
-          <div className="delta">+12% vs 7D</div>
+          <div className="v">
+            <CountUp value={metrics.apptsPerDay} />
+          </div>
+          <div className="delta">{metrics.apptsDelta}</div>
         </div>
         <div className="vh-strip__cell">
           <div className="k">Avg ticket · signed</div>
-          <div className="v"><span className="pre">$</span>32.4<span className="pre">K</span></div>
-          <div className="delta">+$1.8K MoM</div>
+          <div className="v">
+            <span className="pre">$</span>
+            <CountUp value={32.4} decimals={1} />
+            <span className="pre">K</span>
+          </div>
+          <div className="delta">{metrics.avgTicketDelta}</div>
         </div>
       </div>
 
-      {/* ── HERO PANELS (feed + chart) ────────────────────── */}
+      {/* ── HERO PANELS (live feed + chart) ───────────────── */}
       <div className="vh-panels">
         <div className="vh-panels__pane">
           <div className="vh-pane-head">
             <span>Live feed · last 24h</span>
             <em>● streaming</em>
           </div>
-
-          {feedEvents.slice(0, 4).map((event) => (
-            <FeedRow key={event.time} event={event} />
-          ))}
+          <LiveFeed limit={4} />
         </div>
 
         <div className="vh-panels__pane">
@@ -100,56 +105,14 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ── 02 — THE FEED ─────────────────────────────────── */}
+      {/* ── 01 — WHAT YOU RECEIVE ─────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">02 / 06 <span>— The feed</span></span>
-          <em>What&#8217;s coming in, right now.</em>
-        </div>
-        <div className="vh-feed">
-          <div className="vh-feed__intro">
-            <h2 className="vh-h3">
-              The <em>only</em> desk a contractor needs:<br />signed work, in order.
-            </h2>
-            <p className="vh-feed__sub">
-              Every operator sees the same desk. Three event types —{" "}
-              <strong>L</strong> qualified lead, <strong>K</strong> kept appointment,{" "}
-              <strong>$</strong> signed contract.
-            </p>
-            <div className="vh-feedlist">
-              {feedEvents.map((event) => (
-                <FeedRow key={event.time} event={event} />
-              ))}
-            </div>
-          </div>
-          <div className="vh-side">
-            <div className="vh-side__stat">
-              <div className="k">Qualified → Kept</div>
-              <div className="v"><em>83</em>%</div>
-              <div className="row"><span>industry avg</span><span>34%</span></div>
-            </div>
-            <div className="vh-side__stat">
-              <div className="k">Kept → Signed · 90D</div>
-              <div className="v"><em>61</em>%</div>
-              <div className="row"><span>industry avg</span><span>22%</span></div>
-            </div>
-            <div className="vh-side__stat">
-              <div className="k">Reject · Applicants</div>
-              <div className="v"><em>71</em>%</div>
-              <div className="row"><span>we say no a lot</span><span>—</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 03 — WHAT YOU RECEIVE ─────────────────────────── */}
-      <section className="vh-sect">
-        <div className="vh-seclabel">
-          <span className="id">03 / 06 <span>— What you receive</span></span>
+          <span className="id">01 / 05 <span>— What you receive</span></span>
           <em>Every record is a real homeowner, in your zip.</em>
         </div>
-        <div className="vh-recv">
-          <div className="vh-recv__row">
+        <Stagger className="vh-recv">
+          <StaggerItem className="vh-recv__row">
             <div className="vh-recv__badge">
               Stage 01 · Lead<span className="n">L</span>
             </div>
@@ -157,7 +120,7 @@ export default function HomePage() {
               <h3>A qualified record, not a form-fill.</h3>
               <p>
                 Budget verified, ownership confirmed, project specified. We reject{" "}
-                <strong>71%</strong> of inquiries before you see them.
+                <strong>{metrics.rejectRate}%</strong> of inquiries before you see them.
               </p>
             </div>
             <div className="vh-recv__sample">
@@ -166,16 +129,16 @@ export default function HomePage() {
               <div className="vh-field"><span>Budget</span><span>$28–34K · verified</span></div>
               <div className="vh-field"><span>Zip</span><span>74105 · Tulsa OK</span></div>
             </div>
-          </div>
-          <div className="vh-recv__row">
+          </StaggerItem>
+          <StaggerItem className="vh-recv__row">
             <div className="vh-recv__badge">
               Stage 02 · Appt<span className="n">K</span>
             </div>
             <div className="vh-recv__mid">
               <h3>Confirmed, calendared, reminded.</h3>
               <p>
-                Two-touch confirmation by SMS + voice. <strong>83%</strong> of booked
-                appointments are kept — homeowner present, scope in writing.
+                Two-touch confirmation by SMS + voice. <strong>{metrics.keptRate}%</strong> of
+                booked appointments are kept — homeowner present, scope in writing.
               </p>
             </div>
             <div className="vh-recv__sample">
@@ -184,16 +147,17 @@ export default function HomePage() {
               <div className="vh-field"><span>Present</span><span>Both owners</span></div>
               <div className="vh-field"><span>Confirmed</span><span>SMS · 18h ago</span></div>
             </div>
-          </div>
-          <div className="vh-recv__row">
+          </StaggerItem>
+          <StaggerItem className="vh-recv__row">
             <div className="vh-recv__badge">
               Stage 03 · Sign<span className="n">$</span>
             </div>
             <div className="vh-recv__mid">
               <h3>You sign, or you walk clean.</h3>
               <p>
-                We don&#8217;t close for you. You bring the contract. <strong>61%</strong> sign
-                within 90 days at an avg ticket of <strong>$32,400</strong>.
+                We don&#8217;t close for you. You bring the contract.{" "}
+                <strong>{metrics.signedRate90d}%</strong> sign within 90 days at an avg ticket of{" "}
+                <strong>$32,400</strong>.
               </p>
             </div>
             <div className="vh-recv__sample">
@@ -202,20 +166,94 @@ export default function HomePage() {
               <div className="vh-field"><span>Start</span><span>Nov 12 · 3 wks out</span></div>
               <div className="vh-field"><span>Op fee</span><span>$540 · on signature</span></div>
             </div>
+          </StaggerItem>
+        </Stagger>
+      </section>
+
+      {/* ── 02 — PROOF ────────────────────────────────────── */}
+      <section className="vh-sect">
+        <div className="vh-seclabel">
+          <span className="id">02 / 05 <span>— Proof</span></span>
+          <em>Receipts, not impressions.</em>
+        </div>
+        <div className="vh-feed">
+          <div className="vh-feed__intro">
+            <Reveal>
+              <h2 className="vh-h3">
+                Booked projects,<br />not <em>promises.</em>
+              </h2>
+              <p className="vh-feed__sub">
+                Audited outcomes from the network. First names protect operator exclusivity —{" "}
+                <strong>the numbers are real and current.</strong>
+              </p>
+            </Reveal>
+            <Stagger className="vh-ledger">
+              {stats.map((stat) => (
+                <StaggerItem key={stat.label} className="vh-ledger__cell">
+                  <div className="n">
+                    {stat.count ? (
+                      <CountUp value={stat.count} prefix={stat.prefix} suffix={stat.suffix} />
+                    ) : (
+                      stat.value
+                    )}
+                  </div>
+                  <div className="l">
+                    {stat.label}
+                    {stat.attribution ? <em> — {stat.attribution}</em> : null}
+                  </div>
+                </StaggerItem>
+              ))}
+            </Stagger>
+            <Link href="/results" className="vh-more">
+              View the full ledger →
+            </Link>
+          </div>
+          <div className="vh-side">
+            <div className="vh-side__stat">
+              <div className="k">Qualified → Kept</div>
+              <div className="v">
+                <em>
+                  <CountUp value={metrics.keptRate} />
+                </em>
+                %
+              </div>
+              <div className="row"><span>industry avg</span><span>{metrics.keptRateIndustry}%</span></div>
+            </div>
+            <div className="vh-side__stat">
+              <div className="k">Kept → Signed · 90D</div>
+              <div className="v">
+                <em>
+                  <CountUp value={metrics.signedRate90d} />
+                </em>
+                %
+              </div>
+              <div className="row"><span>industry avg</span><span>{metrics.signedRateIndustry}%</span></div>
+            </div>
+            <div className="vh-side__stat">
+              <div className="k">Reject · Applicants</div>
+              <div className="v">
+                <em>
+                  <CountUp value={metrics.rejectRate} />
+                </em>
+                %
+              </div>
+              <div className="row"><span>we say no a lot</span><span>—</span></div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── 04 — TERRITORY ────────────────────────────────── */}
+      {/* ── 03 — TERRITORY ────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">04 / 06 <span>— Territory</span></span>
+          <span className="id">03 / 05 <span>— Territory</span></span>
           <em>One operator per zip code. No exceptions.</em>
         </div>
         <div className="vh-terr">
-          <div>
+          <Reveal>
             <h2 className="vh-h3">
-              96 territories.<br /><em>12 open</em> through Sept 30.
+              {territoryCounts.total} territories.<br />
+              <em>{cohort.slotsOpen} open</em> through {cohort.closesOn}.
             </h2>
             <div className="vh-grid">
               {territoryCells.map((state, i) => (
@@ -225,123 +263,113 @@ export default function HomePage() {
             <div className="vh-legend">
               <span>
                 <span className="sw" style={{ background: "rgba(81,184,220,0.14)" }} />
-                Claimed · 73
+                Claimed · {territoryCounts.claimed}
               </span>
               <span>
                 <span className="sw" style={{ background: "rgba(217,229,220,0.20)" }} />
-                Open · 19
+                Open · {territoryCounts.open}
               </span>
               <span>
                 <span className="sw" style={{ background: "#FFB23F" }} />
-                Closing · 4
+                Closing · {territoryCounts.hot}
               </span>
             </div>
-          </div>
-          <div className="vh-zip">
-            <div className="vh-zip__h">
-              <span>Open · closing Q3</span>
-              <em>— applicants</em>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="vh-zip">
+              <div className="vh-zip__h">
+                <span>Open · closing {cohort.quarter}</span>
+                <em>— applicants</em>
+              </div>
+              {openZips
+                .filter((z) => z.featured)
+                .map((z) => (
+                  <Link key={z.zip} href="/territory" className="vh-zip__row">
+                    <span className="z">{z.zip}</span>
+                    <span className="city">{`${z.city} ${z.abbr}`}</span>
+                    <span className="ct">
+                      <em>{z.applicants}</em> appl
+                    </span>
+                  </Link>
+                ))}
             </div>
-            {openZips
-              .filter((z) => z.featured)
-              .map((z) => (
-                <Link key={z.zip} href="/territory" className="vh-zip__row">
-                  <span className="z">{z.zip}</span>
-                  <span className="city">{`${z.city} ${z.abbr}`}</span>
-                  <span className="ct">
-                    <em>{z.applicants}</em> appl
-                  </span>
-                </Link>
-              ))}
-          </div>
+            <Link href="/territory" className="vh-more">
+              Open the live map →
+            </Link>
+          </Reveal>
         </div>
       </section>
 
-      {/* ── 05 — GUARANTEE ────────────────────────────────── */}
+      {/* ── 04 — INDUSTRIES ───────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">05 / 06 <span>— Guarantee</span></span>
-          <em>If we don&#8217;t deliver, we don&#8217;t get paid.</em>
+          <span className="id">04 / 05 <span>— Industries</span></span>
+          <em>Three trades. One desk each.</em>
         </div>
-        <div className="vh-grnt">
-          <div>
-            <div className="vh-grnt__title">
-              30 kept appointments in 90 days. Or <em>we work for free</em> until you get them.
-            </div>
-            <p className="vh-grnt__body">
-              In writing. <strong>You pay per signed contract, not per lead.</strong> If we fail,
-              every fee from #30 onward is waived until your 30th sit-down. No proration, no
-              asterisks.
-            </p>
-          </div>
-          <div className="vh-term">
-            <div><span className="p">vh@operator</span>:~${" "}<span className="e">guarantee --check</span></div>
-            <div>{"  "}cohort.......... Q2 2026</div>
-            <div>{"  "}contracts....... <span className="e">24 / 30 ✗</span></div>
-            <div>{"  "}status.......... <span className="o">working_free</span></div>
-            <div>{"  "}resumes_at...... <span className="e">contract #31</span><span className="cursor"></span></div>
-          </div>
-        </div>
+        <Stagger className="vh-3">
+          {industries.map((industry) => (
+            <StaggerItem key={industry.key}>
+              <Link href={industry.href} className="vh-indcard">
+                <span className="t">{industry.name}</span>
+                <p>{industry.blurb}</p>
+                <span className="go">View the {industry.name.toLowerCase()} desk →</span>
+              </Link>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </section>
 
-      {/* ── 06 — HOW IT WORKS ─────────────────────────────── */}
+      {/* ── 05 — HOW IT WORKS ─────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">06 / 06 <span>— How it works</span></span>
+          <span className="id">05 / 05 <span>— How it works</span></span>
           <em>Four steps, two weeks, then the phone rings.</em>
         </div>
-        <div className="vh-how">
-          <div className="vh-how__row">
+        <Stagger className="vh-how">
+          <StaggerItem className="vh-how__row">
             <div className="n">01</div>
             <div className="ts">T+<em>0H</em><br />APPLY</div>
             <div>
               <h4>Apply your zip</h4>
               <p>Two-minute form. We verify license, bond, and recent signed work.</p>
             </div>
-          </div>
-          <div className="vh-how__row">
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
             <div className="n">02</div>
             <div className="ts">T+<em>48H</em><br />INTERVIEW</div>
             <div>
               <h4>Operator interview</h4>
               <p>45-minute call with Erin or a senior liaison about capacity and ticket range.</p>
             </div>
-          </div>
-          <div className="vh-how__row">
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
             <div className="n">03</div>
             <div className="ts">T+<em>10D</em><br />CALIBRATION</div>
             <div>
               <h4>Demand calibration</h4>
               <p>10 business days tuning intake to your zip&#8217;s signal.</p>
             </div>
-          </div>
-          <div className="vh-how__row">
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
             <div className="n">04</div>
             <div className="ts">T+<em>14D</em><br />LIVE</div>
             <div>
               <h4>First appointment</h4>
               <p>Median operator hits 30 kept appointments by week 11.</p>
             </div>
-          </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </section>
 
       {/* ── CLOSING ───────────────────────────────────────── */}
-      <div className="vh-closing">
-        <div className="eye">Q3 · closes when 12 territories fill</div>
-        <h2>
-          Check your zip.<br />
-          If it&#8217;s <em>open</em>, you have 48 hours.
-        </h2>
-        <div className="vh-cta">
-          <Link href="/apply" className="p">[ Apply my zip ]</Link>
-          <Link href="/operators" className="g">Speak with Erin</Link>
-        </div>
-        <div className="meta">
-          <span>63 active operators</span>
-          <span><em>12 of 24</em> Q3 slots open</span>
-        </div>
-      </div>
-    </>
+      <CtaBlock
+        eyebrow="30 kept appointments in 90 days — or we work for free"
+        primary={{ label: "Apply my zip", href: "/apply" }}
+        secondary={{ label: "View open territories", href: "/territory" }}
+      >
+        Check your zip.<br />
+        If it&#8217;s <em>open</em>, you have 48 hours.
+      </CtaBlock>
+    </div>
   );
 }

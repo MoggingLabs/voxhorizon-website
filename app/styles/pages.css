@@ -1,4 +1,118 @@
 /* ── PAGES: page-specific styles for the v2 redesign ──────────────────
-   New page-level styles land here as each page migrates to the v2 design
-   language (fluid type, signature heroes). Loaded last so v2 rules win
-   the cascade over the legacy component styles. */
+   Pages opt into the v2 design language by wrapping their content in a
+   `.v2` scope div. Inside it the fixed legacy type sizes give way to the
+   fluid scale from tokens.css, and section rhythm opens up. Loaded last
+   so v2 rules win the cascade over the legacy component styles. */
+
+/* fluid type + rhythm inside the v2 scope */
+.v2 .vh-h1 { font-size: var(--t-display); }
+.v2 .vh-h2 { font-size: var(--t-h2); }
+.v2 .vh-h3 { font-size: var(--t-h3); }
+.v2 .vh-pintro h1 { font-size: var(--t-h1); }
+.v2 .vh-closing h2 { font-size: clamp(40px, 6.8vw, 96px); }
+.v2 .vh-sect { padding: var(--sect-pad) var(--gutter); }
+.v2 .vh-hero { padding: clamp(56px, 8vw, 104px) var(--gutter) clamp(40px, 6vw, 64px); }
+.v2 .vh-closing { padding: var(--sect-pad) var(--gutter) clamp(56px, 7vw, 88px); }
+.v2 .vh-pintro { padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(36px, 5vw, 56px); }
+.v2 .vh-hero .lede,
+.v2 .vh-pintro .lede { font-size: clamp(15px, 1.6vw, 17px); }
+
+/* "more" link — quiet inline arrow link under teasers */
+.vh-more {
+  display: inline-block;
+  margin-top: 22px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-cyan);
+  transition: color 0.12s;
+}
+.vh-more:hover { color: var(--c-bone); }
+
+/* ledger — large count-up statements (home proof teaser, /results hero) */
+.vh-ledger {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--hr);
+  margin-top: 8px;
+}
+.vh-ledger__cell {
+  padding: 22px 24px;
+  border-right: 1px solid var(--hr-soft);
+  border-bottom: 1px solid var(--hr-soft);
+}
+.vh-ledger__cell:nth-child(2n) { border-right: 0; }
+.vh-ledger__cell:nth-last-child(-n+2) { border-bottom: 0; }
+.vh-ledger__cell .n {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: clamp(26px, 3vw, 36px);
+  letter-spacing: -0.02em;
+  color: var(--c-cyan);
+  line-height: 1;
+}
+.vh-ledger__cell .l {
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-mute);
+  line-height: 1.6;
+}
+.vh-ledger__cell .l em {
+  color: var(--c-amber);
+  font-family: var(--f-serif);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+}
+
+/* industry cards — hover lift + cyan edge */
+.vh-indcard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  border: 1px solid var(--hr);
+  background: rgba(var(--c-cyan-rgb), 0.02);
+  padding: 26px;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.vh-indcard:hover {
+  transform: translateY(-3px);
+  border-color: var(--c-cyan);
+  background: rgba(var(--c-cyan-rgb), 0.06);
+}
+.vh-indcard .t {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.014em;
+  color: var(--c-bone);
+}
+.vh-indcard p {
+  font-family: var(--f-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-body);
+  margin: 0;
+  flex: 1;
+}
+.vh-indcard .go {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-cyan);
+}
+@media (prefers-reduced-motion: reduce) {
+  .vh-indcard { transition: none; }
+  .vh-indcard:hover { transform: none; }
+}
+@media (max-width: 640px) {
+  .vh-ledger { grid-template-columns: 1fr; }
+  .vh-ledger__cell { border-right: 0; }
+  .vh-ledger__cell:nth-last-child(-n+2) { border-bottom: 1px solid var(--hr-soft); }
+  .vh-ledger__cell:last-child { border-bottom: 0; }
+}
