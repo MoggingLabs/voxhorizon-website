@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { cohort, industries, metrics, territoryCounts } from "@/lib/content";
-import { CountUp } from "@/components/motion/CountUp";
-import { LiveFeed } from "@/components/motion/LiveFeed";
+import { cohort, industries, metrics } from "@/lib/content";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
-import { TerritoryGrid } from "@/components/motion/TerritoryGrid";
+import { ZipChecker } from "@/components/motion/ZipChecker";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export const metadata: Metadata = {
@@ -15,159 +13,183 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+const STAGES = [
+  {
+    n: "01",
+    label: "The lead",
+    title: "A verified homeowner, not a form-fill.",
+    body: "Budget verified, ownership confirmed, project specified — before anything reaches you. Most inquiries don't make it past us.",
+  },
+  {
+    n: "02",
+    label: "The appointment",
+    title: "Confirmed, calendared, reminded.",
+    body: "Homeowner present, decision-makers in the room, scope in writing. Confirmed twice before you drive anywhere.",
+  },
+  {
+    n: "03",
+    label: "The signature",
+    title: "You sign, or you walk clean.",
+    body: "You bring the contract; we don't close for you. A flat fee per signed contract — nothing for leads, nothing for appointments.",
+  },
+];
+
 export default function HomePage() {
   return (
     <div className="v2">
-      {/* ── HERO (never motion-wrapped — SSR-visible) ─────── */}
+      {/* ── HERO — the claim, then the device ─────────────── */}
       <section className="vh-hero">
-        <div className="eye">Operator desk · live</div>
+        <span className="eye">For home-improvement contractors doing $50K+/month</span>
         <h1 className="vh-h1">
-          Your phone rings.<br />
-          <span className="mut">You sit.</span> <em>You sign.</em>
+          We book the jobs.
+          <br />
+          <em>You build them.</em>
         </h1>
         <p className="lede">
-          VoxHorizon delivers <strong>pre-qualified, pre-scheduled appointments</strong> to
-          established home-improvement contractors. <strong>One operator per zip code.</strong>
+          One operator per zip code. Pre-qualified homeowners, confirmed on your calendar.
+          Paid per signed contract — <strong>never per lead.</strong>
         </p>
-        <div className="vh-cta">
-          <Link href="/apply" className="p">Check my zip</Link>
-          <Link href="/system" className="g">How the system works</Link>
-        </div>
-        <div className="vh-herofeed">
-          <LiveFeed limit={3} />
-        </div>
+        <ZipChecker />
       </section>
 
-      {/* ── 01 — WHAT YOU RECEIVE ─────────────────────────── */}
+      {/* ── WHAT YOU RECEIVE ──────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">01 / 05 <span>— What you receive</span></span>
-          <em>Every record is a real homeowner, in your zip.</em>
+          <span className="id" />
+          <em>What you receive</em>
         </div>
         <Stagger className="vh-recv vh-recv--calm">
-          <StaggerItem className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Stage 01 · Lead<span className="n">L</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>A qualified record, not a form-fill.</h3>
-              <p>
-                Budget verified, ownership confirmed, project specified — before anything
-                reaches your desk. Most inquiries don&#8217;t make it.
-              </p>
-            </div>
-          </StaggerItem>
-          <StaggerItem className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Stage 02 · Appt<span className="n">K</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>Confirmed, calendared, reminded.</h3>
-              <p>
-                Real appointments on your calendar — homeowner present, decision-makers in the
-                room, scope in writing. Confirmed twice before you drive.
-              </p>
-            </div>
-          </StaggerItem>
-          <StaggerItem className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Stage 03 · Sign<span className="n">$</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>You sign, or you walk clean.</h3>
-              <p>
-                You bring the contract; we don&#8217;t close for you. You pay a flat fee per
-                signed contract — nothing for leads, nothing for appointments.
-              </p>
-            </div>
-          </StaggerItem>
+          {STAGES.map((stage) => (
+            <StaggerItem key={stage.n} className="vh-recv__row">
+              <div className="vh-recv__badge">
+                {stage.label}
+                <span className="n">{stage.n}</span>
+              </div>
+              <div className="vh-recv__mid">
+                <h3>{stage.title}</h3>
+                <p>{stage.body}</p>
+              </div>
+            </StaggerItem>
+          ))}
         </Stagger>
       </section>
 
-      {/* ── 02 — PROOF ────────────────────────────────────── */}
+      {/* ── THE BIG CLAIM — guarantee at full size ────────── */}
+      <section className="vh-bigclaim">
+        <Reveal>
+          <span className="k">The guarantee · in writing</span>
+          <h2>
+            30 kept appointments in 90 days, or{" "}
+            <em>we work for free.</em>
+          </h2>
+          <p>
+            A kept appointment means the homeowner is present, the decision-makers are in the
+            room, and the scope is in writing. No proration, no asterisks.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* ── VILLAIN TABLE ─────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">02 / 05 <span>— Proof</span></span>
-          <em>Receipts, not impressions.</em>
+          <span className="id" />
+          <em>Why we exist</em>
         </div>
         <Reveal>
-          <h2 className="vh-h3">
-            Booked projects,<br />not <em>promises.</em>
+          <h2 className="vh-h3" style={{ maxWidth: 880, marginBottom: 48 }}>
+            The marketplaces sell your lead to four contractors.
+            <br />
+            <em>We sell your zip to you.</em>
           </h2>
-          <div className="vh-proof__row">
-            <div className="vh-proof__cell">
-              <div className="n">
-                <CountUp value={170} prefix="$" suffix="K" />
-              </div>
-              <div className="l">signed in his first 60 days — Mitch, remodeler</div>
+          <div className="vh-versus">
+            <div className="vh-versus__col them">
+              <div className="h">Shared-lead marketplaces</div>
+              <ul>
+                <li>The same homeowner sold to four contractors, racing on price</li>
+                <li>Pay per lead — form-fills, wrong numbers, renters included</li>
+                <li>Lead costs rising every year as private equity bids up the market</li>
+                <li>No commitment to outcomes; volume is the product</li>
+              </ul>
             </div>
-            <div className="vh-proof__cell">
-              <div className="n">
-                <CountUp value={metrics.keptRate} suffix="%" />
-              </div>
-              <div className="l">of booked appointments are kept, network-wide</div>
+            <div className="vh-versus__col us">
+              <div className="h">VoxHorizon</div>
+              <ul>
+                <li>
+                  <strong>One operator per zip code</strong> — your territory, secured for the
+                  year
+                </li>
+                <li>
+                  <strong>Pay per signed contract</strong> — $0 for leads, $0 for appointments
+                </li>
+                <li>
+                  <strong>Appointments, not leads</strong> — confirmed twice, scope in writing
+                </li>
+                <li>
+                  <strong>30 kept appointments in 90 days</strong> — guaranteed, in writing
+                </li>
+              </ul>
             </div>
           </div>
+        </Reveal>
+      </section>
+
+      {/* ── PROOF ─────────────────────────────────────────── */}
+      <section className="vh-sect">
+        <div className="vh-seclabel">
+          <span className="id" />
+          <em>Proof</em>
+        </div>
+        <Reveal>
           <blockquote className="vh-proof__quote">
             &#8220;The phone rings, I drive, I sign. I haven&#8217;t run a Google ad in fourteen
             months.&#8221;
-            <footer>Deckworks · Minneapolis MN</footer>
+            <footer>Deckworks · Minneapolis · 14 months on the desk</footer>
           </blockquote>
-          <Link href="/results" className="vh-more">
-            View the full ledger →
-          </Link>
-        </Reveal>
-      </section>
-
-      {/* ── 03 — TERRITORY ────────────────────────────────── */}
-      <section className="vh-sect">
-        <div className="vh-seclabel">
-          <span className="id">03 / 05 <span>— Territory</span></span>
-          <em>One operator per zip code. No exceptions.</em>
-        </div>
-        <Reveal>
-          <h2 className="vh-h3">
-            {territoryCounts.total} territories.<br />
-            <em>{cohort.slotsOpen} open</em> through {cohort.closesOn}.
-          </h2>
-          <div style={{ maxWidth: 760, marginTop: 28 }}>
-            <TerritoryGrid />
+          <div className="vh-proof__row">
+            <div className="vh-proof__cell">
+              <div className="n">$170K</div>
+              <div className="l">signed in his first 60 days — Mitch, remodeler, Wichita</div>
+            </div>
+            <div className="vh-proof__cell">
+              <div className="n">{metrics.keptRate}%</div>
+              <div className="l">of booked appointments are kept, network-wide</div>
+            </div>
           </div>
-          <Link href="/territory" className="vh-more">
-            Open the live map →
+          <Link href="/results" className="vh-more">
+            View the full ledger
           </Link>
         </Reveal>
       </section>
 
-      {/* ── 04 — INDUSTRIES ───────────────────────────────── */}
+      {/* ── INDUSTRIES — void index ───────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">04 / 05 <span>— Industries</span></span>
+          <span className="id" />
           <em>Three trades. One desk each.</em>
         </div>
-        <Stagger className="vh-3">
+        <Stagger className="vh-index">
           {industries.map((industry) => (
             <StaggerItem key={industry.key}>
-              <Link href={industry.href} className="vh-indcard">
+              <Link href={industry.href}>
                 <span className="t">{industry.name}</span>
-                <p>{industry.blurb}</p>
-                <span className="go">View the {industry.name.toLowerCase()} desk →</span>
+                <span className="sub">{industry.blurb}</span>
+                <span className="arr" aria-hidden="true">→</span>
               </Link>
             </StaggerItem>
           ))}
         </Stagger>
       </section>
 
-      {/* ── 05 — HOW IT WORKS ─────────────────────────────── */}
+      {/* ── HOW IT WORKS ──────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">05 / 05 <span>— How it works</span></span>
-          <em>Four steps, two weeks, then the phone rings.</em>
+          <span className="id" />
+          <em>Apply to live in fourteen days</em>
         </div>
         <Stagger className="vh-how">
           <StaggerItem className="vh-how__row">
             <div className="n">01</div>
-            <div className="ts">T+<em>0H</em><br />APPLY</div>
+            <div className="ts">Day zero</div>
             <div>
               <h4>Apply your zip</h4>
               <p>Two-minute form. We verify license, bond, and recent signed work.</p>
@@ -175,26 +197,29 @@ export default function HomePage() {
           </StaggerItem>
           <StaggerItem className="vh-how__row">
             <div className="n">02</div>
-            <div className="ts">T+<em>48H</em><br />INTERVIEW</div>
+            <div className="ts">Within 48 hours</div>
             <div>
               <h4>Operator interview</h4>
-              <p>45-minute call with Erin or a senior liaison about capacity and ticket range.</p>
+              <p>
+                A 45-minute call with Erin — a senior operator, not an SDR — about capacity and
+                ticket range. The territory analysis is yours whether we work together or not.
+              </p>
             </div>
           </StaggerItem>
           <StaggerItem className="vh-how__row">
             <div className="n">03</div>
-            <div className="ts">T+<em>10D</em><br />CALIBRATION</div>
+            <div className="ts">Ten business days</div>
             <div>
               <h4>Demand calibration</h4>
-              <p>10 business days tuning intake to your zip&#8217;s signal.</p>
+              <p>We tune intake to your zip&#8217;s signal before going live.</p>
             </div>
           </StaggerItem>
           <StaggerItem className="vh-how__row">
             <div className="n">04</div>
-            <div className="ts">T+<em>14D</em><br />LIVE</div>
+            <div className="ts">Week two</div>
             <div>
               <h4>First appointment</h4>
-              <p>Median operator hits 30 kept appointments by week 11.</p>
+              <p>The median operator hits 30 kept appointments by week 11.</p>
             </div>
           </StaggerItem>
         </Stagger>
@@ -202,12 +227,13 @@ export default function HomePage() {
 
       {/* ── CLOSING ───────────────────────────────────────── */}
       <CtaBlock
-        eyebrow="30 kept appointments in 90 days — or we work for free"
+        eyebrow={`${cohort.slotsOpen} of ${cohort.slotsTotal} ${cohort.quarter} territories remain`}
         primary={{ label: "Check my zip", href: "/apply" }}
-        secondary={{ label: "View open territories", href: "/territory" }}
+        secondary={{ label: "How the system works", href: "/system" }}
       >
-        Check your zip.<br />
-        If it&#8217;s <em>open</em>, you have 48 hours.
+        If your zip is <em>open,</em>
+        <br />
+        you have 48 hours.
       </CtaBlock>
     </div>
   );

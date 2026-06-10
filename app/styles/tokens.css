@@ -1,69 +1,71 @@
 /* ════════════════════════════════════════════════════════════════════
-   VoxHorizon · design tokens — "Horizon" system
+   VoxHorizon · design tokens — "The Claim"
    ────────────────────────────────────────────────────────────────────
-   Deep navy ground with a soft cyan horizon glow. Instrument Serif
-   carries display headlines (italic = cyan emphasis), IBM Plex Sans
-   carries everything else. Surfaces are rounded, soft, and separated
-   by space — never by rules or boxes.
+   Dark typographic monolith. Near-black ground, one grotesk pushed
+   from 12px caps to 13vw, and ONE color: the brand blue, used like
+   light in a dark room — never as decoration, always as signal.
+   References: Metalab's restraint, Phantom's dark stage, Webrunner's
+   premium-contractor register.
 
-   Load order: tokens → base → chrome → components → pages
-   (imported in app/layout.tsx).
+   Load order: tokens → base → chrome → components → pages.
    ════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ground */
-  --c-bg:           #08182A;
-  --c-bg-deep:      #060F1E;
-  --c-bg-shadow:    #040A18;
+  /* ground — near-black, not navy */
+  --c-bg:           #0C0E10;
+  --c-bg-deep:      #08090B;
+  --c-bg-shadow:    #050607;
 
-  /* soft raised surfaces (cards) */
-  --s-card:         #0C2138;
-  --s-card-2:       #0E2740;
+  /* raised surfaces — barely lighter than ground */
+  --s-card:         #13161A;
+  --s-card-2:       #181C21;
 
-  /* foreground — --c-quiet is decorative only, never text */
-  --c-bone:         #D9E5DC;
-  --c-body:         #A6B5AB;
-  --c-mute:         #6C8278;
-  --c-quiet:        #3F5950;
+  /* foreground — gray scale, no warm cast */
+  --c-ink:          #0C0E10;
+  --c-bone:         #F2F4F5;  /* strong text */
+  --c-body:         #A9B1B7;  /* body text */
+  --c-mute:         #6E777E;  /* captions */
+  --c-quiet:        #2A2F35;  /* decorative only, never text */
 
-  /* accents */
+  /* THE color — #51B8DC. Aliased across every accent slot so nothing
+     else can sneak in (old amber slots resolve to blue). */
   --c-cyan:         #51B8DC;
-  --c-amber:        #FFB23F;
+  --c-cyan-bright:  #51B8DC;
+  --c-amber:        #51B8DC;
 
-  /* rgb tuples for rgba() composition */
   --c-cyan-rgb:     81, 184, 220;
-  --c-amber-rgb:    255, 178, 63;
-  --c-bone-rgb:     217, 229, 220;
+  --c-amber-rgb:    81, 184, 220;
+  --c-bone-rgb:     242, 244, 245;
 
-  /* soft edges & glows (replaces the old hairline system) */
-  --edge:           rgba(var(--c-cyan-rgb), 0.10);
-  --glow:           0 24px 80px rgba(4, 10, 24, 0.5);
-  --glow-cyan:      0 12px 48px rgba(var(--c-cyan-rgb), 0.16);
+  /* edges & glows */
+  --edge:           rgba(255, 255, 255, 0.07);
+  --glow:           0 30px 90px rgba(0, 0, 0, 0.55);
+  --glow-cyan:      0 0 64px rgba(var(--c-cyan-rgb), 0.25);
 
-  /* legacy aliases — a few low-traffic pages still reference these */
-  --hr:             rgba(var(--c-cyan-rgb), 0.10);
-  --hr-soft:        rgba(var(--c-cyan-rgb), 0.06);
-  --hr-deep:        rgba(var(--c-cyan-rgb), 0.14);
+  /* legacy aliases */
+  --hr:             rgba(255, 255, 255, 0.07);
+  --hr-soft:        rgba(255, 255, 255, 0.045);
+  --hr-deep:        rgba(255, 255, 255, 0.1);
 
-  /* radii */
-  --r-lg:           20px;
-  --r-md:           14px;
-  --r-sm:           10px;
-  --r-pill:         999px;
+  /* radii — quiet geometry */
+  --r-lg:           10px;
+  --r-md:           8px;
+  --r-sm:           6px;
+  --r-pill:         8px;
 
-  /* type — mapped to next/font variables (see app/layout.tsx) */
-  --f-mono:         var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --f-sans:         var(--font-plex-sans), "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-  --f-serif:        var(--font-display), "Instrument Serif", "EB Garamond", Georgia, serif;
+  /* type — one grotesk + two accents (see app/layout.tsx) */
+  --f-sans:         var(--font-grotesk), "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --f-mono:         var(--font-plex-mono), "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --f-serif:        var(--font-display), "Instrument Serif", Georgia, serif;
 
-  /* fluid display scale */
-  --t-display:      clamp(48px, 8vw, 104px);
-  --t-h1:           clamp(42px, 6.5vw, 88px);
-  --t-h2:           clamp(34px, 4.8vw, 60px);
-  --t-h3:           clamp(26px, 3.2vw, 40px);
-  --t-h4:           clamp(19px, 2vw, 23px);
+  /* display scale — confident, not shouting */
+  --t-display:      clamp(40px, 6.5vw, 92px);
+  --t-h1:           clamp(36px, 5.5vw, 76px);
+  --t-h2:           clamp(30px, 4vw, 56px);
+  --t-h3:           clamp(24px, 3vw, 40px);
+  --t-h4:           clamp(19px, 2vw, 22px);
 
   /* rhythm */
-  --sect-pad:       clamp(72px, 10vw, 140px);
-  --gutter:         clamp(20px, 4vw, 48px);
+  --sect-pad:       clamp(72px, 9vw, 128px);
+  --gutter:         clamp(20px, 4.5vw, 64px);
 }

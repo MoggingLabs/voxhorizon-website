@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Instrument_Serif, IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-// Carbon Trader system — split design stylesheet (loaded after globals so its
+// "The Claim" design system — split stylesheet (loaded after globals so its
 // un-layered body rules win the cascade). Order matters: tokens → base →
 // chrome → components → pages.
 import "./styles/tokens.css";
@@ -13,10 +13,10 @@ import "./styles/pages.css";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { ProgressRail } from "@/components/motion/ProgressRail";
 import { publicEnv } from "@/lib/env";
 
-// Display — Instrument Serif (weight 400, roman + italic; italic carries emphasis).
-// Drives --f-serif in the Carbon Trader system as well.
+// Pull quotes only — Instrument Serif italic (the homeowner/operator voice).
 const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: ["normal", "italic"],
@@ -25,20 +25,21 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-display",
 });
 
-// Carbon Trader workhorse — IBM Plex Mono (body, ticker, labels). Drives --f-mono.
+// Data accents only — zip digits, timestamps.
 const ibmPlexMono = IBM_Plex_Mono({
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
   subsets: ["latin"],
   display: "swap",
   variable: "--font-plex-mono",
 });
 
-// Carbon Trader display weight — IBM Plex Sans (headlines, big numbers). Drives --f-sans.
-const ibmPlexSans = IBM_Plex_Sans({
-  weight: ["400", "500", "600", "700"],
+// THE typeface — one grotesk carried from 12px caps to 13vw display;
+// weight contrast (300 vs 700) does the hierarchy work.
+const spaceGrotesk = Space_Grotesk({
+  weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-plex-sans",
+  variable: "--font-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -89,7 +90,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable}`}
+      className={`${instrumentSerif.variable} ${ibmPlexMono.variable} ${spaceGrotesk.variable}`}
     >
       {/* Dark terminal shell. Background, body font and antialiasing are owned by
           styles/base.css `body` — no bg/font utilities here so they aren't overridden. */}
@@ -99,6 +100,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <MotionProvider>
+          <ProgressRail />
           <a href="#main" className="vh-skip">
             Skip to content
           </a>
