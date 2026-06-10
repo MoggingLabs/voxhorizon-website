@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { founder, press, finalCta, primaryCta } from "@/lib/content";
+import { founder, press } from "@/lib/content";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export const metadata: Metadata = {
   title: "About",
@@ -24,7 +25,7 @@ const fit = {
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="v2">
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
@@ -124,24 +125,25 @@ export default function AboutPage() {
               The program has been covered by the financial and trade press as it reshapes how
               established contractors source demand. <strong>A sample of the coverage.</strong>
             </p>
-            <div className="vh-feedlist">
+            <Stagger className="vh-feedlist">
               {press.map((p) => (
-                <a
-                  key={p.name}
-                  href={p.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="vh-row"
-                >
-                  <span className="vh-row__ic kept">●</span>
-                  <div>
-                    <div className="vh-row__title">{p.name}</div>
-                    <div className="vh-row__sub">Press · external coverage</div>
-                  </div>
-                  <span className="vh-row__time">read →</span>
-                </a>
+                <StaggerItem key={p.name}>
+                  <a
+                    href={p.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="vh-row"
+                  >
+                    <span className="vh-row__ic kept">●</span>
+                    <div>
+                      <div className="vh-row__title">{p.name}</div>
+                      <div className="vh-row__sub">Press · external coverage</div>
+                    </div>
+                    <span className="vh-row__time">read →</span>
+                  </a>
+                </StaggerItem>
               ))}
-            </div>
+            </Stagger>
           </div>
           <div className="vh-side">
             <div className="vh-side__stat">
@@ -177,31 +179,14 @@ export default function AboutPage() {
       </section>
 
       {/* ── CLOSING ───────────────────────────────────────── */}
-      <div className="vh-closing">
-        <div className="eye">{finalCta.heading}</div>
-        <h2>
-          See if your territory is
-          <br />
-          <em>still open.</em>
-        </h2>
-        <p className="vh-prose" style={{ marginBottom: 8 }}>
-          {finalCta.body}
-        </p>
-        <div className="vh-cta">
-          <Link href={primaryCta.href} className="p">
-            [ {primaryCta.label} ]
-          </Link>
-          <Link href="/results" className="g">
-            View results
-          </Link>
-        </div>
-        <div className="meta">
-          <span>One operator · per zip</span>
-          <span>
-            <em>Secured</em> for the year
-          </span>
-        </div>
-      </div>
-    </>
+      <CtaBlock
+        primary={{ label: "Check my zip", href: "/apply" }}
+        secondary={{ label: "View results", href: "/results" }}
+      >
+        See if your territory is
+        <br />
+        <em>still open.</em>
+      </CtaBlock>
+    </div>
   );
 }

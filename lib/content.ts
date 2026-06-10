@@ -345,7 +345,7 @@ export const faqs = [
   },
   {
     q: "Do you guarantee results?",
-    a: "We measure in signed work, not impressions. Show rate across our last cohort was 92%, on an average ticket near $11.4K. We'll walk you through the numbers for your market on the call.",
+    a: "Yes, in writing: 30 kept appointments in your first 90 days, or we work for free until you get them. Network-wide, 83% of booked appointments are kept and 61% of kept appointments sign within 90 days, on an average ticket near $32,400. We'll walk you through the numbers for your market on the call.",
   },
   {
     q: "How fast can I expect appointments?",

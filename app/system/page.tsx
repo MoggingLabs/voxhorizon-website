@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export const metadata: Metadata = {
   title: "System",
@@ -8,9 +10,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "/system" },
 };
 
+const TOC = [
+  { n: "01", label: "Taxonomy", href: "#taxonomy" },
+  { n: "02", label: "Intake", href: "#intake" },
+  { n: "03", label: "Audit", href: "#audit" },
+  { n: "04", label: "Fees", href: "#fees" },
+  { n: "05", label: "Guarantee", href: "#guarantee" },
+  { n: "06", label: "Timeline", href: "#timeline" },
+  { n: "07", label: "Questions", href: "#questions" },
+];
+
 export default function SystemPage() {
   return (
-    <>
+    <div className="v2">
       {/* ── PAGE INTRO ─────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
@@ -25,15 +37,25 @@ export default function SystemPage() {
           VoxHorizon is a hand-curated network — not a marketplace, not software. We do the
           qualifying, the calendaring, and the confirming.{" "}
           <strong>You walk in, you sign or you walk out clean.</strong> Below is exactly how the
-          system works, in the order you'd encounter it.
+          system works, in the order you&#8217;d encounter it.
         </p>
       </section>
 
+      {/* ── TOC RAIL (document signature) ─────────────────── */}
+      <nav className="vh-toc" aria-label="Handbook contents">
+        {TOC.map((item) => (
+          <a key={item.href} href={item.href}>
+            <span className="n">{item.n}</span>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
       {/* ── 01 — THE THREE EVENT TYPES ─────────────────────── */}
-      <section className="vh-sect">
+      <section className="vh-sect" id="taxonomy">
         <div className="vh-seclabel">
           <span className="id">
-            01 / 06 <span>— Event taxonomy</span>
+            01 / 07 <span>— Event taxonomy</span>
           </span>
           <em>Three events. Nothing else counts.</em>
         </div>
@@ -137,10 +159,10 @@ export default function SystemPage() {
       </section>
 
       {/* ── 02 — INTAKE FUNNEL ─────────────────────────────── */}
-      <section className="vh-sect">
+      <section className="vh-sect" id="intake">
         <div className="vh-seclabel">
           <span className="id">
-            02 / 06 <span>— Intake funnel</span>
+            02 / 07 <span>— Intake funnel</span>
           </span>
           <em>Where 71% of inquiries die.</em>
         </div>
@@ -205,10 +227,10 @@ export default function SystemPage() {
       </section>
 
       {/* ── 03 — THE AUDIT TRAIL ───────────────────────────── */}
-      <section className="vh-sect">
+      <section className="vh-sect" id="audit">
         <div className="vh-seclabel">
           <span className="id">
-            03 / 06 <span>— The audit trail</span>
+            03 / 07 <span>— The audit trail</span>
           </span>
           <em>Every event time-stamped, every claim checkable.</em>
         </div>
@@ -269,10 +291,10 @@ export default function SystemPage() {
       </section>
 
       {/* ── 04 — FEE STRUCTURE ─────────────────────────────── */}
-      <section className="vh-sect">
+      <section className="vh-sect" id="fees">
         <div className="vh-seclabel">
           <span className="id">
-            04 / 06 <span>— Fee structure</span>
+            04 / 07 <span>— Fee structure</span>
           </span>
           <em>Paid by signature. Not by impression, not by lead.</em>
         </div>
@@ -337,12 +359,12 @@ export default function SystemPage() {
       </section>
 
       {/* ── 05 — GUARANTEE MECHANICS ───────────────────────── */}
-      <section className="vh-sect">
+      <section className="vh-sect" id="guarantee">
         <div className="vh-seclabel">
           <span className="id">
-            05 / 06 <span>— Guarantee mechanics</span>
+            05 / 07 <span>— Guarantee mechanics</span>
           </span>
-          <em>If we miss, we work for free until we don't.</em>
+          <em>If we miss, we work for free until we don&#8217;t.</em>
         </div>
         <div className="vh-grnt">
           <div>
@@ -394,64 +416,64 @@ export default function SystemPage() {
         </div>
       </section>
 
-      {/* ── 06 — COMMON QUESTIONS ──────────────────────────── */}
-      <section className="vh-sect">
+      {/* ── 06 — TIMELINE ──────────────────────────────────── */}
+      <section className="vh-sect" id="timeline">
         <div className="vh-seclabel">
           <span className="id">
-            06 / 06 <span>— Common questions</span>
+            06 / 07 <span>— Timeline</span>
           </span>
-          <em>Plain answers to the same six asks.</em>
+          <em>Four steps, two weeks, then the phone rings.</em>
+        </div>
+        <Stagger className="vh-how">
+          <StaggerItem className="vh-how__row">
+            <div className="n">01</div>
+            <div className="ts">T+<em>0H</em><br />APPLY</div>
+            <div>
+              <h4>Apply your zip</h4>
+              <p>Two-minute form. We verify license, bond, and recent signed work.</p>
+            </div>
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
+            <div className="n">02</div>
+            <div className="ts">T+<em>48H</em><br />INTERVIEW</div>
+            <div>
+              <h4>Operator interview</h4>
+              <p>45-minute call with Erin or a senior liaison about capacity and ticket range.</p>
+            </div>
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
+            <div className="n">03</div>
+            <div className="ts">T+<em>10D</em><br />CALIBRATION</div>
+            <div>
+              <h4>Demand calibration</h4>
+              <p>10 business days tuning intake to your zip&#8217;s signal.</p>
+            </div>
+          </StaggerItem>
+          <StaggerItem className="vh-how__row">
+            <div className="n">04</div>
+            <div className="ts">T+<em>14D</em><br />LIVE</div>
+            <div>
+              <h4>First appointment</h4>
+              <p>Median operator hits 30 kept appointments by week 11.</p>
+            </div>
+          </StaggerItem>
+        </Stagger>
+      </section>
+
+      {/* ── 07 — OPERATIONAL QUESTIONS ─────────────────────── */}
+      <section className="vh-sect" id="questions">
+        <div className="vh-seclabel">
+          <span className="id">
+            07 / 07 <span>— Operational questions</span>
+          </span>
+          <em>
+            Mechanics only — objections live on the <Link href="/faq">FAQ</Link>.
+          </em>
         </div>
         <div className="vh-recv">
           <div className="vh-recv__row">
             <div className="vh-recv__badge">
               Q · 01<span className="n">?</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>"How is this different from Angie / Thumbtack / HomeAdvisor?"</h3>
-              <p>
-                Those are marketplaces. They sell the same lead to four contractors. We sell your
-                zip to <strong>you, and to no one else.</strong> The lead is yours alone, or it
-                doesn't exist.
-              </p>
-            </div>
-            <div className="vh-recv__sample">
-              <div className="vh-field">
-                <span>Aggregator</span>
-                <span>1 lead → 4 contractors</span>
-              </div>
-              <div className="vh-field">
-                <span>VoxHorizon</span>
-                <span>1 lead → 1 operator</span>
-              </div>
-            </div>
-          </div>
-          <div className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Q · 02<span className="n">?</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>"What if my zip is already taken?"</h3>
-              <p>
-                We tell you on the application call, before you've spent any time. We may offer
-                you an adjacent zip if one is open.{" "}
-                <strong>We don't put two operators in one zip, ever.</strong>
-              </p>
-            </div>
-            <div className="vh-recv__sample">
-              <div className="vh-field">
-                <span>Taken?</span>
-                <span>We say so · same day</span>
-              </div>
-              <div className="vh-field">
-                <span>Waitlist</span>
-                <span>Yes · we honor it</span>
-              </div>
-            </div>
-          </div>
-          <div className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Q · 03<span className="n">?</span>
             </div>
             <div className="vh-recv__mid">
               <h3>"What does the application look like?"</h3>
@@ -478,7 +500,7 @@ export default function SystemPage() {
           </div>
           <div className="vh-recv__row">
             <div className="vh-recv__badge">
-              Q · 04<span className="n">?</span>
+              Q · 02<span className="n">?</span>
             </div>
             <div className="vh-recv__mid">
               <h3>"What if a homeowner stiffs me after I show up?"</h3>
@@ -500,31 +522,21 @@ export default function SystemPage() {
             </div>
           </div>
         </div>
+        <Link href="/faq" className="vh-more">
+          More questions answered on the FAQ →
+        </Link>
       </section>
 
       {/* ── CLOSING ───────────────────────────────────────── */}
-      <div className="vh-closing">
-        <div className="eye">Read the operator agreement before you apply</div>
-        <h2>
-          The system is plain.
-          <br />
-          <em>So is the agreement.</em>
-        </h2>
-        <div className="vh-cta">
-          <Link href="/apply" className="p">
-            [ Apply my zip ]
-          </Link>
-          <Link href="/territory" className="g">
-            View open territories
-          </Link>
-        </div>
-        <div className="meta">
-          <span>63 active operators</span>
-          <span>
-            <em>12 of 24</em> Q3 slots open
-          </span>
-        </div>
-      </div>
-    </>
+      <CtaBlock
+        eyebrow="Read the operator agreement before you apply"
+        primary={{ label: "Check my zip", href: "/apply" }}
+        secondary={{ label: "Questions? Read the FAQ", href: "/faq" }}
+      >
+        The system is plain.
+        <br />
+        <em>So is the agreement.</em>
+      </CtaBlock>
+    </div>
   );
 }

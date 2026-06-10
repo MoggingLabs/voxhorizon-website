@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { faqs, finalCta, primaryCta } from "@/lib/content";
+import { faqs } from "@/lib/content";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -9,9 +11,24 @@ export const metadata: Metadata = {
   alternates: { canonical: "/faq" },
 };
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+
 export default function FaqPage() {
   return (
-    <>
+    <div className="v2">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
@@ -24,7 +41,8 @@ export default function FaqPage() {
         </h1>
         <p className="lede">
           Everything contractors ask before partnering with us — <strong>exclusivity,
-          qualification, guarantees, and how fast the phone rings.</strong>
+          qualification, guarantees, and how fast the phone rings.</strong> For the full
+          mechanics, read the <Link href="/system">operator handbook</Link>.
         </p>
       </section>
 
@@ -36,87 +54,39 @@ export default function FaqPage() {
           </span>
           <em>Tap a question to expand.</em>
         </div>
-        <div className="vh-recv">
+        <Stagger className="vh-faq">
           {faqs.map((item, i) => (
-            <details
-              key={item.q}
-              className="vh-recv__row"
-              style={{ display: "block", padding: 0 }}
-              open={i === 0}
-            >
-              <summary
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                  gap: 24,
-                  padding: "24px 32px",
-                  cursor: "pointer",
-                  listStyle: "none",
-                }}
-              >
-                <span
-                  className="vh-sans"
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 600,
-                    letterSpacing: "-0.012em",
-                    color: "var(--c-bone)",
-                  }}
-                >
-                  {item.q}
-                </span>
-                <span
-                  className="vh-accent vh-mono"
-                  style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase" }}
-                >
-                  {String(i + 1).padStart(2, "0")} / {String(faqs.length).padStart(2, "0")}
-                </span>
-              </summary>
-              <p
-                className="vh-sans"
-                style={{
-                  fontSize: 14,
-                  lineHeight: 1.6,
-                  color: "var(--c-body)",
-                  margin: 0,
-                  padding: "0 32px 24px",
-                  maxWidth: 760,
-                }}
-              >
-                {item.a}
-              </p>
-            </details>
+            <StaggerItem key={item.q}>
+              <details open={i === 0}>
+                <summary>
+                  <span className="q">{item.q}</span>
+                  <span className="ix">
+                    {String(i + 1).padStart(2, "0")} / {String(faqs.length).padStart(2, "0")}
+                    <span className="disc" aria-hidden="true">
+                      +
+                    </span>
+                  </span>
+                </summary>
+                <p className="a">{item.a}</p>
+              </details>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
+        <Link href="/system" className="vh-more">
+          Want the full mechanics? Read the handbook →
+        </Link>
       </section>
 
       {/* ── CLOSING ───────────────────────────────────────── */}
-      <div className="vh-closing">
-        <div className="eye">{finalCta.heading}</div>
-        <h2>
-          Still have a
-          <br />
-          <em>question?</em>
-        </h2>
-        <p className="vh-prose" style={{ marginBottom: 8 }}>
-          {finalCta.body}
-        </p>
-        <div className="vh-cta">
-          <Link href={primaryCta.href} className="p">
-            [ {primaryCta.label} ]
-          </Link>
-          <Link href="/results" className="g">
-            View results
-          </Link>
-        </div>
-        <div className="meta">
-          <span>Answer · on the call</span>
-          <span>
-            <em>One operator</em> per zip
-          </span>
-        </div>
-      </div>
-    </>
+      <CtaBlock
+        eyebrow="Anything else — ask Erin on the call"
+        primary={{ label: "Check my zip", href: "/apply" }}
+        secondary={{ label: "operators@voxhorizon.io", href: "mailto:operators@voxhorizon.io" }}
+      >
+        Still have a
+        <br />
+        <em>question?</em>
+      </CtaBlock>
+    </div>
   );
 }
