@@ -275,6 +275,61 @@ export const industries = [
   },
 ];
 
+/* ── Chrome (navbar / footer / ticker) ─────────────────────────────── */
+
+export type NavChild = { label: string; href: string };
+export type NavItem = { label: string; href?: string; children?: NavChild[] };
+
+/** Primary nav. Items with `children` render as a flyout (no index page). */
+export const navLinks: NavItem[] = [
+  { label: "System", href: "/system" },
+  { label: "Territory", href: "/territory" },
+  { label: "Results", href: "/results" },
+  {
+    label: "Industries",
+    children: industries.map((i) => ({ label: i.name, href: i.href })),
+  },
+  { label: "FAQ", href: "/faq" },
+];
+
+export const footerColumns: { title: string; links: NavChild[] }[] = [
+  {
+    title: "Program",
+    links: [
+      { label: "System", href: "/system" },
+      { label: "Territory", href: "/territory" },
+      { label: "Results", href: "/results" },
+      { label: "FAQ", href: "/faq" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      ...industries.map((i) => ({ label: i.name, href: i.href })),
+      { label: "Brand", href: "/brand" },
+    ],
+  },
+];
+
+export type TickerPill = {
+  k: string;
+  v: string;
+  delta?: string;
+  dir?: "up" | "dn";
+};
+
+/** Network ticker pills, derived from cohort/metrics so they can't drift. */
+export const tickerPills: TickerPill[] = [
+  { k: "ACTIVE", v: String(cohort.activeOperators), delta: "▲ +4", dir: "up" },
+  { k: "APPTS·24H", v: String(metrics.apptsPerDay), delta: "▲ +12%", dir: "up" },
+  { k: "AVG TKT", v: metrics.avgTicket, delta: "▲ +$1.8K", dir: "up" },
+  { k: "KEPT RATE", v: `${metrics.keptRate}%`, delta: `IND ${metrics.keptRateIndustry}%` },
+  { k: "SIGNED·90D", v: `${metrics.signedRate90d}%`, delta: `IND ${metrics.signedRateIndustry}%` },
+  { k: "ZIPS OPEN", v: String(territoryCounts.open), delta: `${cohort.quarter} · ${cohort.closesOn}` },
+  { k: `${cohort.quarter} SLOTS`, v: `${cohort.slotsOpen}/${cohort.slotsTotal}`, delta: "CLOSING", dir: "dn" },
+];
+
 export const faqs = [
   {
     q: "How is this different from shared-lead platforms?",
