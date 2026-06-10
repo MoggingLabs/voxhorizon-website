@@ -52,22 +52,23 @@
   --hr-deep:        rgba(18, 39, 52, 0.12);
 
   /* radii */
-  --r-lg:           20px;
-  --r-md:           14px;
-  --r-sm:           10px;
-  --r-pill:         999px;
+  /* Meridian is sharp-edged: minimal radii, editorial geometry */
+  --r-lg:           6px;
+  --r-md:           4px;
+  --r-sm:           3px;
+  --r-pill:         4px;
 
   /* type — mapped to next/font variables (see app/layout.tsx) */
   --f-mono:         var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --f-sans:         var(--font-plex-sans), "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --f-serif:        var(--font-display), "Instrument Serif", "EB Garamond", Georgia, serif;
 
-  /* fluid display scale */
-  --t-display:      clamp(48px, 8vw, 104px);
-  --t-h1:           clamp(42px, 6.5vw, 88px);
-  --t-h2:           clamp(34px, 4.8vw, 60px);
-  --t-h3:           clamp(26px, 3.2vw, 40px);
-  --t-h4:           clamp(19px, 2vw, 23px);
+  /* fluid display scale — Meridian runs bigger */
+  --t-display:      clamp(56px, 11vw, 152px);
+  --t-h1:           clamp(48px, 8vw, 112px);
+  --t-h2:           clamp(36px, 5.5vw, 72px);
+  --t-h3:           clamp(28px, 3.6vw, 46px);
+  --t-h4:           clamp(20px, 2vw, 24px);
 
   /* rhythm */
   --sect-pad:       clamp(72px, 10vw, 140px);

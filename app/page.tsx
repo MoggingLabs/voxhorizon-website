@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cohort, industries, metrics, territoryCounts } from "@/lib/content";
-import { CountUp } from "@/components/motion/CountUp";
-import { LiveFeed } from "@/components/motion/LiveFeed";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
-import { TerritoryGrid } from "@/components/motion/TerritoryGrid";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export const metadata: Metadata = {
@@ -15,199 +12,179 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+const STAGES = [
+  {
+    n: "01",
+    label: "Qualified lead",
+    title: "A verified homeowner, not a form-fill.",
+    body: "Budget verified, ownership confirmed, project specified — before anything reaches you. Most inquiries don't make it.",
+  },
+  {
+    n: "02",
+    label: "Kept appointment",
+    title: "Confirmed, calendared, reminded.",
+    body: "Real appointments on your calendar — homeowner present, decision-makers in the room, scope in writing. Confirmed twice before you drive.",
+  },
+  {
+    n: "03",
+    label: "Signed contract",
+    title: "You sign, or you walk clean.",
+    body: "You bring the contract; we don't close for you. You pay a flat fee per signed contract — nothing for leads, nothing for appointments.",
+  },
+];
+
 export default function HomePage() {
   return (
     <div className="v2">
-      {/* ── HERO (never motion-wrapped — SSR-visible) ─────── */}
+      {/* ── HERO — the brand statement ────────────────────── */}
       <section className="vh-hero">
-        <div className="eye">Operator desk · live</div>
+        <span className="eye">Growth partner for home-improvement contractors</span>
         <h1 className="vh-h1">
-          Your phone rings.<br />
-          <span className="mut">You sit.</span> <em>You sign.</em>
+          The end of the
+          <br />
+          <em>shared lead.</em>
         </h1>
         <p className="lede">
-          VoxHorizon delivers <strong>pre-qualified, pre-scheduled appointments</strong> to
-          established home-improvement contractors. <strong>One operator per zip code.</strong>
+          Pre-qualified, pre-scheduled appointments for established contractors.{" "}
+          <strong>One operator per zip code — your phone rings, you sit, you sign.</strong>
         </p>
         <div className="vh-cta">
           <Link href="/apply" className="p">Check my zip</Link>
           <Link href="/system" className="g">How the system works</Link>
         </div>
-        <div className="vh-herofeed">
-          <LiveFeed limit={3} />
+        <div className="vh-factline">
+          <span>{cohort.activeOperators} operators</span>
+          <span>{territoryCounts.states} states</span>
+          <span>One operator per zip</span>
+          <span>Paid per signed contract</span>
         </div>
       </section>
 
-      {/* ── 01 — WHAT YOU RECEIVE ─────────────────────────── */}
+      {/* ── WHAT YOU RECEIVE — split with sticky kicker ───── */}
       <section className="vh-sect">
-        <div className="vh-seclabel">
-          <span className="id">01 / 05 <span>— What you receive</span></span>
-          <em>Every record is a real homeowner, in your zip.</em>
+        <div className="vh-split">
+          <div className="vh-split__kicker">What you receive</div>
+          <Stagger className="vh-recv vh-recv--calm">
+            {STAGES.map((stage) => (
+              <StaggerItem key={stage.n} className="vh-recv__row">
+                <div className="vh-recv__badge">
+                  {stage.label}
+                  <span className="n">{stage.n}</span>
+                </div>
+                <div className="vh-recv__mid">
+                  <h3>{stage.title}</h3>
+                  <p>{stage.body}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
-        <Stagger className="vh-recv vh-recv--calm">
-          <StaggerItem className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Stage 01 · Lead<span className="n">L</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>A qualified record, not a form-fill.</h3>
-              <p>
-                Budget verified, ownership confirmed, project specified — before anything
-                reaches your desk. Most inquiries don&#8217;t make it.
-              </p>
-            </div>
-          </StaggerItem>
-          <StaggerItem className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Stage 02 · Appt<span className="n">K</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>Confirmed, calendared, reminded.</h3>
-              <p>
-                Real appointments on your calendar — homeowner present, decision-makers in the
-                room, scope in writing. Confirmed twice before you drive.
-              </p>
-            </div>
-          </StaggerItem>
-          <StaggerItem className="vh-recv__row">
-            <div className="vh-recv__badge">
-              Stage 03 · Sign<span className="n">$</span>
-            </div>
-            <div className="vh-recv__mid">
-              <h3>You sign, or you walk clean.</h3>
-              <p>
-                You bring the contract; we don&#8217;t close for you. You pay a flat fee per
-                signed contract — nothing for leads, nothing for appointments.
-              </p>
-            </div>
-          </StaggerItem>
-        </Stagger>
       </section>
 
-      {/* ── 02 — PROOF ────────────────────────────────────── */}
+      {/* ── THE GUARANTEE — statement band ────────────────── */}
       <section className="vh-sect">
-        <div className="vh-seclabel">
-          <span className="id">02 / 05 <span>— Proof</span></span>
-          <em>Receipts, not impressions.</em>
-        </div>
         <Reveal>
-          <h2 className="vh-h3">
-            Booked projects,<br />not <em>promises.</em>
-          </h2>
-          <div className="vh-proof__row">
-            <div className="vh-proof__cell">
-              <div className="n">
-                <CountUp value={170} prefix="$" suffix="K" />
-              </div>
-              <div className="l">signed in his first 60 days — Mitch, remodeler</div>
-            </div>
-            <div className="vh-proof__cell">
-              <div className="n">
-                <CountUp value={metrics.keptRate} suffix="%" />
-              </div>
-              <div className="l">of booked appointments are kept, network-wide</div>
-            </div>
+          <div className="vh-band">
+            <span className="k">The guarantee</span>
+            <h2>
+              30 kept appointments in your first 90 days —{" "}
+              <em>or we work for free.</em>
+            </h2>
+            <p>
+              In writing, no asterisks. You pay a flat fee per signed contract — never for
+              leads, never for appointments.
+            </p>
           </div>
-          <blockquote className="vh-proof__quote">
-            &#8220;The phone rings, I drive, I sign. I haven&#8217;t run a Google ad in fourteen
-            months.&#8221;
-            <footer>Deckworks · Minneapolis MN</footer>
-          </blockquote>
-          <Link href="/results" className="vh-more">
-            View the full ledger →
-          </Link>
         </Reveal>
       </section>
 
-      {/* ── 03 — TERRITORY ────────────────────────────────── */}
+      {/* ── PROOF — one voice, two facts ──────────────────── */}
       <section className="vh-sect">
-        <div className="vh-seclabel">
-          <span className="id">03 / 05 <span>— Territory</span></span>
-          <em>One operator per zip code. No exceptions.</em>
+        <div className="vh-split">
+          <div className="vh-split__kicker">Proof</div>
+          <Reveal>
+            <blockquote className="vh-proof__quote">
+              &#8220;The phone rings, I drive, I sign. I haven&#8217;t run a Google ad in
+              fourteen months.&#8221;
+              <footer>Deckworks · Minneapolis</footer>
+            </blockquote>
+            <div className="vh-proof__row">
+              <div className="vh-proof__cell">
+                <div className="n">$170K</div>
+                <div className="l">signed in his first 60 days — Mitch, remodeler</div>
+              </div>
+              <div className="vh-proof__cell">
+                <div className="n">{metrics.keptRate}%</div>
+                <div className="l">of booked appointments are kept, network-wide</div>
+              </div>
+            </div>
+            <Link href="/results" className="vh-more">
+              View the full ledger
+            </Link>
+          </Reveal>
         </div>
-        <Reveal>
-          <h2 className="vh-h3">
-            {territoryCounts.total} territories.<br />
-            <em>{cohort.slotsOpen} open</em> through {cohort.closesOn}.
-          </h2>
-          <div style={{ maxWidth: 760, marginTop: 28 }}>
-            <TerritoryGrid />
-          </div>
-          <Link href="/territory" className="vh-more">
-            Open the live map →
-          </Link>
-        </Reveal>
       </section>
 
-      {/* ── 04 — INDUSTRIES ───────────────────────────────── */}
+      {/* ── INDUSTRIES — editorial index ───────────────────── */}
       <section className="vh-sect">
-        <div className="vh-seclabel">
-          <span className="id">04 / 05 <span>— Industries</span></span>
-          <em>Three trades. One desk each.</em>
+        <div className="vh-split">
+          <div className="vh-split__kicker">Industries</div>
+          <Stagger className="vh-index">
+            {industries.map((industry) => (
+              <StaggerItem key={industry.key}>
+                <Link href={industry.href}>
+                  <span className="t">{industry.name}</span>
+                  <span className="sub">{industry.blurb}</span>
+                  <span className="arr" aria-hidden="true">→</span>
+                </Link>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
-        <Stagger className="vh-3">
-          {industries.map((industry) => (
-            <StaggerItem key={industry.key}>
-              <Link href={industry.href} className="vh-indcard">
-                <span className="t">{industry.name}</span>
-                <p>{industry.blurb}</p>
-                <span className="go">View the {industry.name.toLowerCase()} desk →</span>
-              </Link>
-            </StaggerItem>
-          ))}
-        </Stagger>
       </section>
 
-      {/* ── 05 — HOW IT WORKS ─────────────────────────────── */}
+      {/* ── HOW IT WORKS — open columns ───────────────────── */}
       <section className="vh-sect">
-        <div className="vh-seclabel">
-          <span className="id">05 / 05 <span>— How it works</span></span>
-          <em>Four steps, two weeks, then the phone rings.</em>
-        </div>
-        <Stagger className="vh-how">
-          <StaggerItem className="vh-how__row">
-            <div className="n">01</div>
-            <div className="ts">T+<em>0H</em><br />APPLY</div>
-            <div>
+        <div className="vh-split">
+          <div className="vh-split__kicker">How it works</div>
+          <Stagger className="vh-how">
+            <StaggerItem className="vh-how__row">
+              <div className="n">01</div>
+              <div className="ts">Day 0</div>
               <h4>Apply your zip</h4>
               <p>Two-minute form. We verify license, bond, and recent signed work.</p>
-            </div>
-          </StaggerItem>
-          <StaggerItem className="vh-how__row">
-            <div className="n">02</div>
-            <div className="ts">T+<em>48H</em><br />INTERVIEW</div>
-            <div>
+            </StaggerItem>
+            <StaggerItem className="vh-how__row">
+              <div className="n">02</div>
+              <div className="ts">Within 48 hours</div>
               <h4>Operator interview</h4>
-              <p>45-minute call with Erin or a senior liaison about capacity and ticket range.</p>
-            </div>
-          </StaggerItem>
-          <StaggerItem className="vh-how__row">
-            <div className="n">03</div>
-            <div className="ts">T+<em>10D</em><br />CALIBRATION</div>
-            <div>
+              <p>A 45-minute call with Erin about capacity and ticket range.</p>
+            </StaggerItem>
+            <StaggerItem className="vh-how__row">
+              <div className="n">03</div>
+              <div className="ts">Ten business days</div>
               <h4>Demand calibration</h4>
-              <p>10 business days tuning intake to your zip&#8217;s signal.</p>
-            </div>
-          </StaggerItem>
-          <StaggerItem className="vh-how__row">
-            <div className="n">04</div>
-            <div className="ts">T+<em>14D</em><br />LIVE</div>
-            <div>
+              <p>We tune intake to your zip&#8217;s signal before going live.</p>
+            </StaggerItem>
+            <StaggerItem className="vh-how__row">
+              <div className="n">04</div>
+              <div className="ts">Week two</div>
               <h4>First appointment</h4>
-              <p>Median operator hits 30 kept appointments by week 11.</p>
-            </div>
-          </StaggerItem>
-        </Stagger>
+              <p>The median operator hits 30 kept appointments by week 11.</p>
+            </StaggerItem>
+          </Stagger>
+        </div>
       </section>
 
-      {/* ── CLOSING ───────────────────────────────────────── */}
+      {/* ── CLOSING — blue band ───────────────────────────── */}
       <CtaBlock
-        eyebrow="30 kept appointments in 90 days — or we work for free"
+        eyebrow="One operator per zip"
         primary={{ label: "Check my zip", href: "/apply" }}
         secondary={{ label: "View open territories", href: "/territory" }}
       >
-        Check your zip.<br />
-        If it&#8217;s <em>open</em>, you have 48 hours.
+        If your zip is <em>open,</em>
+        <br />
+        you have 48 hours.
       </CtaBlock>
     </div>
   );
