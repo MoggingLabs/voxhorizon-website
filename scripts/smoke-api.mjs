@@ -37,12 +37,10 @@ function isLocalUrl(url) {
 }
 
 function nextBin() {
-  return path.join(
-    rootDir,
-    "node_modules",
-    ".bin",
-    process.platform === "win32" ? "next.cmd" : "next",
-  );
+  // Spawn Next's JS entry with the current Node binary instead of the
+  // .bin shim: Node >= 20.12 refuses to spawn .cmd files without a shell
+  // (EINVAL), which broke this script on Windows.
+  return path.join(rootDir, "node_modules", "next", "dist", "bin", "next");
 }
 
 function hasProductionBuild() {
@@ -79,7 +77,7 @@ function startServer() {
     String(port),
   ];
 
-  server = spawn(nextBin(), args, {
+  server = spawn(process.execPath, [nextBin(), ...args], {
     cwd: rootDir,
     env: smokeEnv(),
     stdio: ["ignore", "pipe", "pipe"],
