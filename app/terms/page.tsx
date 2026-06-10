@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <>
+    <div className="v2">
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
@@ -94,6 +94,6 @@ export default function TermsPage() {
           </p>
         </div>
       </section>
-    </>
+    </div>
   );
 }

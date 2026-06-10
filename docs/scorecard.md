@@ -1,8 +1,9 @@
 # Website Scorecard
 
 A graded audit of the VoxHorizon website, scored **before** the v2 redesign
-(2026-06-10, commit on `main` at the time of the audit) and **after** it
-ships. Forty metrics across eight categories, each scored **0–5**:
+(2026-06-10, `main` at the time of the audit) and **after** it (the
+`redesign-v2` integration branch, same day). Forty metrics across eight
+categories, each scored **0–5**:
 
 - **0–1** — absent or broken
 - **2** — present but weak
@@ -16,94 +17,110 @@ manual Lighthouse runs (desktop + mobile) against the gated preview.
 
 ## 1. Conversion & CTA
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 1.1 | Primary CTA consistency | Same label/destination pattern across pages | 2 | | "Check my zip" vs "Apply my zip" vs "See if your territory is open" — three labels for one action |
-| 1.2 | CTA visible above the fold | Hero or persistent-nav CTA on every page | 2 | | Home/industries yes; system, results, faq, about have closing CTA only; nav has plain "Apply" link |
-| 1.3 | Fallback path for hesitant visitors | Non-apply next step on the apply page | 0 | | /apply is a dead end if you're not ready — no FAQ/email path |
-| 1.4 | Urgency/scarcity presence | Cohort state (slots, close date) on funnel pages | 2 | | Only home + territory carry it; system/results/faq/about have none |
-| 1.5 | Funnel depth | Clicks from any landing page to a submitted form | 3 | | Always ≤2 clicks, but zip rows on /territory link to /apply without carrying the zip |
+| 1.1 | Primary CTA consistency | Same label/destination pattern across pages | 2 | 4 | "[Check my zip]" persistent in navbar + standard on closings; home/territory keep contextual variants by intent |
+| 1.2 | CTA visible above the fold | Hero or persistent-nav CTA on every page | 2 | 4 | Navbar CTA on every page ≥640px; below that it moves into the mobile menu |
+| 1.3 | Fallback path for hesitant visitors | Non-apply next step on the apply page | 0 | 5 | FAQ / handbook / email strip under the form |
+| 1.4 | Urgency/scarcity presence | Cohort state (slots, close date) on funnel pages | 2 | 5 | CtaBlock + UrgencyMeta on every funnel page, nav crumb, footer apply block — all read `cohort` |
+| 1.5 | Funnel depth | Clicks from any landing page to a submitted form | 3 | 4 | Territory zip rows deep-link `/apply?zip=` and the zip renders as form context |
 
 ## 2. Information architecture
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 2.1 | Orphaned pages | Pages unreachable from nav | 1 | | /about, /results, /faq, /industries/* missing from navbar |
-| 2.2 | Nav completeness vs. funnel | Funnel stages represented in primary nav | 2 | | Proof stage (/results) absent; Operators present but duplicates Results' role |
-| 2.3 | Content duplication | Sections repeated verbatim across pages | 2 | | Territory grid, event taxonomy, guarantee, stats each appear on 2–3 pages |
-| 2.4 | Footer sitemap coverage | Share of public pages linked in footer | 1 | | Footer links 3 of 14 pages + email |
-| 2.5 | URL/redirect hygiene | All historical URLs resolve correctly | 5 | | All 15 URLs live; sitemap matches |
+| 2.1 | Orphaned pages | Pages unreachable from nav | 1 | 5 | Nav: System·Territory·Results·Industries·FAQ; footer sitemap covers the rest |
+| 2.2 | Nav completeness vs. funnel | Funnel stages represented in primary nav | 2 | 5 | Proof (/results) in nav; /operators merged away |
+| 2.3 | Content duplication | Sections repeated verbatim across pages | 2 | 4 | Taxonomy/guarantee canonical on /system; grid is one shared component; timeline intentionally on home (slim) + system (full) |
+| 2.4 | Footer sitemap coverage | Share of public pages linked in footer | 1 | 5 | 4-column footer links every public page |
+| 2.5 | URL/redirect hygiene | All historical URLs resolve correctly | 5 | 5 | /operators → /results 308, asserted by smoke:routes |
 
 ## 3. Copy & messaging
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 3.1 | Single content source | Copy/data instances hard-coded outside lib/content.ts | 2 | | Territory cells duplicated 2×, operators/roster/feed hard-coded in pages; stale unused exports |
-| 3.2 | Voice consistency | "Receipts not impressions" specificity throughout | 5 | | Uniformly specific numbers, zero puffery — the site's strongest asset |
-| 3.3 | Page-purpose clarity | One clear job per page | 3 | | Home does five jobs; /operators vs /results split one job in two |
-| 3.4 | Number consistency | Same stat identical everywhere it appears | 3 | | "92% show rate / $11.4K ticket" in FAQ contradicts "83% / $32.4K" elsewhere |
-| 3.5 | Metadata quality | Unique title/description/canonical per route | 5 | | Every page exports complete metadata |
+| 3.1 | Single content source | Copy/data instances hard-coded outside lib/content.ts | 2 | 4 | Cohort, metrics, territory, operators, feed, nav/footer centralized; long-form handbook prose stays in-page by design |
+| 3.2 | Voice consistency | "Receipts not impressions" specificity throughout | 5 | 5 | Preserved |
+| 3.3 | Page-purpose clarity | One clear job per page | 3 | 5 | home=funnel, system=mechanism, results=proof, territory=scarcity, faq=objections |
+| 3.4 | Number consistency | Same stat identical everywhere it appears | 3 | 4 | FAQ 92%/$11.4K contradiction fixed; urgency derives from one cohort object; "19 zips open" vs "12 slots" kept as distinct-but-coherent framings |
+| 3.5 | Metadata quality | Unique title/description/canonical per route | 5 | 5 | Preserved; /results metadata covers the merged scope |
 
 ## 4. Visual design & motion
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 4.1 | Typographic scale | Fluid, hierarchical scale across breakpoints | 2 | | Fixed px sizes with one 960px jump (104→64px); 12px mono default body hurts prose |
-| 4.2 | Page differentiation | Distinct signature element per page | 2 | | All pages share identical intro/strip/section anatomy |
-| 4.3 | Motion coverage | Entrance/scroll/value animation where it adds meaning | 1 | | Two blinking dots + one pulse; zero scroll or entrance motion; framer-motion installed but unused |
-| 4.4 | Micro-interaction polish | Hover/focus/active states on interactive elements | 2 | | 0.12s color hovers on nav/CTA; grid cells and zip rows have none |
-| 4.5 | Reduced-motion compliance | prefers-reduced-motion respected | 0 | | Not handled anywhere (fixed in this PR: CSS loops now disabled under reduced motion) |
+| 4.1 | Typographic scale | Fluid, hierarchical scale across breakpoints | 2 | 5 | `clamp()` scale via the `.v2` scope on all pages |
+| 4.2 | Page differentiation | Distinct signature element per page | 2 | 4 | Data hero / TOC handbook / interactive map / ledger / form-first apply |
+| 4.3 | Motion coverage | Entrance/scroll/value animation where it adds meaning | 1 | 5 | Reveals, staggers, count-ups, cycling live feed, marquee ticker, page-enter, step transition |
+| 4.4 | Micro-interaction polish | Hover/focus/active states on interactive elements | 2 | 5 | Card lift, grid hover + terminal readout, choice/flyout/disclosure states |
+| 4.5 | Reduced-motion compliance | prefers-reduced-motion respected | 0 | 5 | MotionConfig + useReducedMotion + CSS media wraps on every loop |
 
 ## 5. SEO & structured data
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 5.1 | JSON-LD coverage | Organization / FAQPage / Service schemas | 0 | | None anywhere |
-| 5.2 | Sitemap accuracy | sitemap.ts matches live routes + priorities | 4 | | Complete; priorities sensible |
-| 5.3 | Canonical/redirect hygiene | Canonicals on all pages, no chains | 5 | | Canonical on every route |
-| 5.4 | Title/description uniqueness | No duplicates across routes | 5 | | All unique |
-| 5.5 | Semantic landmarks & headings | One h1/page, header/nav/main/footer | 4 | | Solid; FAQ summaries styled via inline styles rather than heading semantics |
+| 5.1 | JSON-LD coverage | Organization / FAQPage / Service schemas | 0 | 4 | All three live and verified in prerendered HTML; no review/aggregate schema (needs real review data) |
+| 5.2 | Sitemap accuracy | sitemap.ts matches live routes + priorities | 4 | 5 | /operators removed with the redirect |
+| 5.3 | Canonical/redirect hygiene | Canonicals on all pages, no chains | 5 | 5 | Preserved |
+| 5.4 | Title/description uniqueness | No duplicates across routes | 5 | 5 | Preserved |
+| 5.5 | Semantic landmarks & headings | One h1/page, header/nav/main/footer | 4 | 5 | Skip link, labeled navs, FAQ accordion off inline styles |
 
 ## 6. Accessibility
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 6.1 | Contrast (worst text token) | WCAG AA on darkest text/surface pair | 2 | | --c-quiet #3F5950 on navy ≈1.7:1 used for footer/placeholders/chart labels (fixed in this PR) |
-| 6.2 | Skip link & landmarks | Skip-to-content + labeled landmarks | 2 | | Landmarks present; no skip link (added in this PR) |
-| 6.3 | Keyboard operability | Tab through nav, grid, accordions, forms | 2 | | Forms/links fine; territory grid is mouse-invisible & keyboard-invisible; no mobile menu at all |
-| 6.4 | Focus visibility | Visible focus indicator on all interactive elements | 1 | | Form inputs removed outline relying on 1px border tint (global :focus-visible ring added in this PR) |
-| 6.5 | Form error semantics | aria-invalid/aria-describedby wiring | 2 | | Inline error text exists but isn't programmatically associated |
+| 6.1 | Contrast (worst text token) | WCAG AA on darkest text/surface pair | 2 | 4 | --c-quiet retired for text; --c-mute (≈4.3:1) still used at small uppercase sizes — monitor |
+| 6.2 | Skip link & landmarks | Skip-to-content + labeled landmarks | 2 | 5 | Skip link + aria-labeled navs |
+| 6.3 | Keyboard operability | Tab through nav, grid, accordions, forms | 2 | 4 | Mobile menu (Escape, scroll lock), flyout button with aria-expanded; grid is a described image with the zip table as the actionable view |
+| 6.4 | Focus visibility | Visible focus indicator on all interactive elements | 1 | 5 | Global :focus-visible cyan ring |
+| 6.5 | Form error semantics | aria-invalid/aria-describedby wiring | 2 | 5 | role=alert errors wired to inputs |
 
 ## 7. Performance
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 7.1 | First-load JS per route | `npm run build` route table | 4 | | 103–119 kB first load; /apply heaviest at 16.4 kB route JS |
-| 7.2 | Font payload | Families × weights actually used | 2 | | 5 families loaded, 2 entirely unused (Newsreader, JetBrains Mono — removed in this PR) |
-| 7.3 | LCP (Lighthouse, mobile) | Gated preview, throttled | 3 | | Text-only hero renders fast; large font payload delays it; measure precisely post-redesign |
-| 7.4 | CLS | Lighthouse | 4 | | Static layout, no images yet — near-zero shift |
-| 7.5 | Image pipeline readiness | next/image usage + placeholder system | 1 | | No next/image anywhere; photosReady flag exists but no component honors it |
+| 7.1 | First-load JS per route | `npm run build` route table | 4 | 4 | Shared 102 kB unchanged; /apply 119→149 kB (framer on the interactive route) — within the ≤40 kB budget |
+| 7.2 | Font payload | Families × weights actually used | 2 | 4 | 5 families → 3 (all used); weight trimming possible later |
+| 7.3 | LCP (Lighthouse, mobile) | Gated preview, throttled | 3 | 4* | Text hero, fewer fonts; *confirm with Lighthouse on the deployed preview |
+| 7.4 | CLS | Lighthouse | 4 | 4* | All motion is transform/opacity (no layout shift); *confirm on preview |
+| 7.5 | Image pipeline readiness | next/image usage + placeholder system | 1 | 4 | Photo component honors photosReady (live on /about); real photos still pending |
 
 ## 8. Trust & proof
 
-| # | Metric | How measured | Before | After | Notes (before) |
+| # | Metric | How measured | Before | After | Notes |
 |---|--------|-------------|:------:|:-----:|-------|
-| 8.1 | Stat specificity & attribution | Numbers tied to named sources | 4 | | Mitch/Jonathan/Deckworks attributed; cohort stats precise |
-| 8.2 | Operator proof depth | Profiles, quotes, audited rosters | 4 | | 9 profiles + 18-row roster; split across two pages dilutes it |
-| 8.3 | Press/credibility placement | Press visible beyond /about | 2 | | "400+ outlets" + 5 links live only on /about, which isn't in the nav |
-| 8.4 | Guarantee prominence | Guarantee visible at decision points | 3 | | Strong on home/system; absent on apply where the decision happens |
-| 8.5 | Cross-page number coherence | No contradicting claims | 3 | | FAQ's 92%/$11.4K vs 83%/$32.4K elsewhere; "19 open" vs "12 of 24 slots" needs one framing |
+| 8.1 | Stat specificity & attribution | Numbers tied to named sources | 4 | 4 | Preserved |
+| 8.2 | Operator proof depth | Profiles, quotes, audited rosters | 4 | 5 | One canonical ledger page: stats + cases + 9 profiles + roster + liaison |
+| 8.3 | Press/credibility placement | Press visible beyond /about | 2 | 4 | Footer brand column carries the 400+ line site-wide; /about reachable from footer |
+| 8.4 | Guarantee prominence | Guarantee visible at decision points | 3 | 5 | Home closing eyebrow, apply section label, system mechanics |
+| 8.5 | Cross-page number coherence | No contradicting claims | 3 | 4 | FAQ fixed; cohort numbers single-sourced |
 
 ## Totals
 
 | Category | Before | After |
 |----------|:------:|:-----:|
-| 1. Conversion & CTA | 9/25 | |
-| 2. Information architecture | 11/25 | |
-| 3. Copy & messaging | 18/25 | |
-| 4. Visual design & motion | 7/25 | |
-| 5. SEO & structured data | 18/25 | |
-| 6. Accessibility | 9/25 | |
-| 7. Performance | 14/25 | |
-| 8. Trust & proof | 16/25 | |
-| **Total** | **102/200** | |
+| 1. Conversion & CTA | 9/25 | 22/25 |
+| 2. Information architecture | 11/25 | 24/25 |
+| 3. Copy & messaging | 18/25 | 23/25 |
+| 4. Visual design & motion | 7/25 | 24/25 |
+| 5. SEO & structured data | 18/25 | 23/25 |
+| 6. Accessibility | 9/25 | 23/25 |
+| 7. Performance | 14/25 | 20/25 |
+| 8. Trust & proof | 16/25 | 22/25 |
+| **Total** | **102/200** | **181/200** |
+
+\* Performance LCP/CLS after-scores are code-audit estimates; confirm with
+Lighthouse (desktop + mobile) against the gated preview after deploy and
+update this table.
+
+## Bundle table (after, `npm run build`)
+
+| Route | First-load JS |
+|---|---|
+| Shared chunks | 102 kB |
+| / (and content routes) | ~106 kB |
+| /apply | 149 kB |
+
+Remaining known gaps (tracked outside this redesign): real photography
+(`photosReady` flip + assets), legal counsel review of /privacy and /terms,
+live booking/Resend/GHL credentials, Lighthouse confirmation on preview.

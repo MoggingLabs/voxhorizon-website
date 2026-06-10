@@ -23,7 +23,7 @@ export default function BrandPage() {
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
-          Brand · identity system<em>— v1.0 · Q3 MMXXVI</em>
+          Brand · identity system<em>— v2.0 · Q3 MMXXVI</em>
         </div>
         <h1>
           A console,<br /><em>not a marketplace.</em>
@@ -39,7 +39,7 @@ export default function BrandPage() {
       {/* ── 01 — LOGO ──────────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">01 / 06 <span>— Logo</span></span>
+          <span className="id">01 / 07 <span>— Logo</span></span>
           <em>Mark, wordmark, and lockup.</em>
         </div>
 
@@ -239,7 +239,7 @@ export default function BrandPage() {
       {/* ── 02 — COLOR ─────────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">02 / 06 <span>— Color</span></span>
+          <span className="id">02 / 07 <span>— Color</span></span>
           <em>Three surface depths, two accents, four foreground weights.</em>
         </div>
 
@@ -349,7 +349,7 @@ export default function BrandPage() {
       {/* ── 03 — TYPE ──────────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">03 / 06 <span>— Type</span></span>
+          <span className="id">03 / 07 <span>— Type</span></span>
           <em>Three families. Each has a job.</em>
         </div>
 
@@ -420,7 +420,7 @@ export default function BrandPage() {
       {/* ── 04 — COMPONENTS ────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">04 / 06 <span>— Components</span></span>
+          <span className="id">04 / 07 <span>— Components</span></span>
           <em>Composable. Always bordered, never floating.</em>
         </div>
 
@@ -506,7 +506,7 @@ export default function BrandPage() {
       {/* ── 05 — VOICE & TONE ──────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">05 / 06 <span>— Voice &amp; tone</span></span>
+          <span className="id">05 / 07 <span>— Voice &amp; tone</span></span>
           <em>Plain. Audited. No marketing-speak.</em>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "18px" }}>
@@ -564,7 +564,7 @@ export default function BrandPage() {
       {/* ── 06 — DOWNLOADS ─────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
-          <span className="id">06 / 06 <span>— Downloads</span></span>
+          <span className="id">06 / 07 <span>— Downloads</span></span>
           <em>Working files.</em>
         </div>
         <div className="vh-zip">
@@ -595,9 +595,63 @@ export default function BrandPage() {
         </div>
       </section>
 
+      {/* ── 07 — MOTION ────────────────────────────────────── */}
+      <section className="vh-sect">
+        <div className="vh-seclabel">
+          <span className="id">07 / 07 <span>— Motion</span></span>
+          <em>Motion is information, not decoration.</em>
+        </div>
+        <div className="vh-how">
+          <div className="vh-how__row">
+            <div className="n">A.</div>
+            <div className="ts">Entrance<br /><em>reveal</em></div>
+            <div>
+              <h4>Below-the-fold content reveals once, on scroll.</h4>
+              <p>
+                Fade-up, 14px, ~0.5s, ease-out. Lists stagger at 70ms. Heroes never animate —
+                the SSR HTML stays visible for crawlers and no-JS readers.
+              </p>
+            </div>
+          </div>
+          <div className="vh-how__row">
+            <div className="n">B.</div>
+            <div className="ts">Data<br /><em>count-up</em></div>
+            <div>
+              <h4>Numbers count up when they enter the viewport.</h4>
+              <p>
+                The final value is in the HTML; the animation is presentation only. Ticker
+                values scroll as a marquee that pauses on hover.
+              </p>
+            </div>
+          </div>
+          <div className="vh-how__row">
+            <div className="n">C.</div>
+            <div className="ts">Surface<br /><em>response</em></div>
+            <div>
+              <h4>Interactive surfaces answer in ≤180ms.</h4>
+              <p>
+                Cards lift 3px with a cyan edge; grid cells scale and write to a terminal
+                readout; buttons transition background in 120ms. Transform and opacity only.
+              </p>
+            </div>
+          </div>
+          <div className="vh-how__row">
+            <div className="n">D.</div>
+            <div className="ts">Reduced<br /><em>motion</em></div>
+            <div>
+              <h4>prefers-reduced-motion disables every loop and reveal.</h4>
+              <p>
+                Blinking dots, pulsing cells, the marquee, count-ups, and reveals all render
+                their final state immediately. Non-negotiable.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── CLOSING ───────────────────────────────────────── */}
       <div className="vh-closing">
-        <div className="eye">Brand book v1.0 · maintained by the desk</div>
+        <div className="eye">Brand book v2.0 · maintained by the desk</div>
         <h2>
           The brand is<br />a <em>working desk.</em>
         </h2>
@@ -609,7 +663,7 @@ export default function BrandPage() {
           <Link href="/" className="g">Back to home</Link>
         </div>
         <div className="meta">
-          <span>v1.0 · MMXXVI</span>
+          <span>v2.0 · MMXXVI</span>
           <span>Maintained by <em>Erin K.</em></span>
         </div>
       </div>
