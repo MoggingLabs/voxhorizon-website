@@ -1,0 +1,55 @@
+/* ── BASE: reset, body shell, global a11y ─────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--c-bg);
+  color: var(--c-bone);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  position: relative;
+}
+/* scanline overlay — single fixed pseudo-element, zero animation cost */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(var(--c-cyan-rgb), 0.025) 1px, transparent 1px);
+  background-size: 100% 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+body > * { position: relative; z-index: 1; }
+a { color: inherit; text-decoration: none; cursor: pointer; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; background: none; border: 0; }
+hr { border: 0; height: 1px; background: var(--hr); }
+em { font-style: normal; }
+
+/* keyboard focus — one consistent ring, everywhere */
+:focus-visible {
+  outline: 2px solid var(--c-cyan);
+  outline-offset: 2px;
+}
+
+/* skip link — visually hidden until keyboard-focused */
+.vh-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--c-cyan);
+  color: var(--c-bg-deep);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 12px 20px;
+}
+.vh-skip:focus {
+  left: 0;
+}

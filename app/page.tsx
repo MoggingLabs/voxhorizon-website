@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { territoryCells, openZips, feedEvents, type FeedEvent } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Operator Desk",
@@ -8,20 +9,20 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const CELLS = [
-  "claimed", "open", "claimed", "claimed", "claimed", "claimed", "open", "claimed",
-  "claimed", "open-hot", "open", "claimed", "open-hot", "open", "claimed", "claimed",
-  "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "claimed", "open", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "open", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "open",
-  "open", "claimed", "open", "open", "claimed", "claimed", "open", "claimed",
-  "claimed", "claimed", "claimed", "open", "open", "claimed", "open-hot", "open",
-  "open", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "claimed", "claimed", "claimed", "open", "claimed", "open", "open-hot", "claimed",
-  "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "open", "claimed", "open", "claimed", "claimed", "claimed", "claimed", "claimed",
-] as const;
+function FeedRow({ event }: { event: FeedEvent }) {
+  const icClass =
+    event.kind === "K" ? "vh-row__ic kept" : event.kind === "$" ? "vh-row__ic sign" : "vh-row__ic";
+  return (
+    <div className="vh-row">
+      <span className={icClass}>{event.kind}</span>
+      <div>
+        <div className="vh-row__title">{event.title}</div>
+        <div className="vh-row__sub">{event.sub}</div>
+      </div>
+      <span className="vh-row__time">{event.time}</span>
+    </div>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -71,41 +72,9 @@ export default function HomePage() {
             <em>● streaming</em>
           </div>
 
-          <div className="vh-row">
-            <span className="vh-row__ic">L</span>
-            <div>
-              <div className="vh-row__title">QUAL LEAD · re-roof 24sq</div>
-              <div className="vh-row__sub">MITCH · 67501 WICHITA KS · $18–22K</div>
-            </div>
-            <span className="vh-row__time">+00:02</span>
-          </div>
-
-          <div className="vh-row">
-            <span className="vh-row__ic kept">K</span>
-            <div>
-              <div className="vh-row__title">APPT CONF · kitchen remodel</div>
-              <div className="vh-row__sub">JONATHAN · 78704 AUSTIN TX · THU 10:00</div>
-            </div>
-            <span className="vh-row__time">+00:09</span>
-          </div>
-
-          <div className="vh-row">
-            <span className="vh-row__ic sign">$</span>
-            <div>
-              <div className="vh-row__title">SIGNED · $34,600 deck</div>
-              <div className="vh-row__sub">DECKWORKS · 55410 MINNEAPOLIS MN</div>
-            </div>
-            <span className="vh-row__time">+00:36</span>
-          </div>
-
-          <div className="vh-row">
-            <span className="vh-row__ic">L</span>
-            <div>
-              <div className="vh-row__title">QUAL LEAD · loft conversion</div>
-              <div className="vh-row__sub">NADIA · 03110 NH BUILD SVCS</div>
-            </div>
-            <span className="vh-row__time">+00:52</span>
-          </div>
+          {feedEvents.slice(0, 4).map((event) => (
+            <FeedRow key={event.time} event={event} />
+          ))}
         </div>
 
         <div className="vh-panels__pane">
@@ -148,70 +117,9 @@ export default function HomePage() {
               <strong>$</strong> signed contract.
             </p>
             <div className="vh-feedlist">
-              <div className="vh-row">
-                <span className="vh-row__ic">L</span>
-                <div>
-                  <div className="vh-row__title">QUAL LEAD · re-roof 24sq</div>
-                  <div className="vh-row__sub">MITCH · 67501 WICHITA KS · $18–22K</div>
-                </div>
-                <span className="vh-row__time">+00:02</span>
-              </div>
-              <div className="vh-row">
-                <span className="vh-row__ic kept">K</span>
-                <div>
-                  <div className="vh-row__title">APPT CONF · kitchen remodel</div>
-                  <div className="vh-row__sub">JONATHAN · 78704 AUSTIN TX · THU 10:00</div>
-                </div>
-                <span className="vh-row__time">+00:09</span>
-              </div>
-              <div className="vh-row">
-                <span className="vh-row__ic sign">$</span>
-                <div>
-                  <div className="vh-row__title">SIGNED · $34,600 composite deck</div>
-                  <div className="vh-row__sub">DECKWORKS · 55410 MINNEAPOLIS MN</div>
-                </div>
-                <span className="vh-row__time">+00:36</span>
-              </div>
-              <div className="vh-row">
-                <span className="vh-row__ic">L</span>
-                <div>
-                  <div className="vh-row__title">QUAL LEAD · loft conversion</div>
-                  <div className="vh-row__sub">NADIA · 03110 NH BUILD SVCS</div>
-                </div>
-                <span className="vh-row__time">+00:52</span>
-              </div>
-              <div className="vh-row">
-                <span className="vh-row__ic kept">K</span>
-                <div>
-                  <div className="vh-row__title">APPT CONF · 14 windows</div>
-                  <div className="vh-row__sub">STERLING · 49503 GRAND RAPIDS MI</div>
-                </div>
-                <span className="vh-row__time">+01:14</span>
-              </div>
-              <div className="vh-row">
-                <span className="vh-row__ic sign">$</span>
-                <div>
-                  <div className="vh-row__title">SIGNED · $21,200 master bath</div>
-                  <div className="vh-row__sub">HALLORAN · 83702 BOISE ID</div>
-                </div>
-                <span className="vh-row__time">+02:03</span>
-              </div>
-              <div className="vh-row">
-                <span className="vh-row__ic">L</span>
-                <div>
-                  <div className="vh-row__title">QUAL LEAD · whole-house siding</div>
-                  <div className="vh-row__sub">WILL · 74105 TULSA OK · $42–58K</div>
-                </div>
-                <span className="vh-row__time">+03:27</span>
-              </div>
-              <div className="vh-row">
-                <span className="vh-row__ic sign">$</span>
-                <div>
-                  <div className="vh-row__title">SIGNED · $62,000 kitchen</div>
-                  <div className="vh-row__sub">GREENWAY · 28207 CHARLOTTE NC</div>
-                </div>
-                <span className="vh-row__time">+07:09</span>
-              </div>
+              {feedEvents.map((event) => (
+                <FeedRow key={event.time} event={event} />
+              ))}
             </div>
           </div>
           <div className="vh-side">
@@ -310,7 +218,7 @@ export default function HomePage() {
               96 territories.<br /><em>12 open</em> through Sept 30.
             </h2>
             <div className="vh-grid">
-              {CELLS.map((state, i) => (
+              {territoryCells.map((state, i) => (
                 <div key={i} className={`cell ${state}`} />
               ))}
             </div>
@@ -334,31 +242,17 @@ export default function HomePage() {
               <span>Open · closing Q3</span>
               <em>— applicants</em>
             </div>
-            <Link href="/territory" className="vh-zip__row">
-              <span className="z">67501</span>
-              <span className="city">Wichita KS</span>
-              <span className="ct"><em>2</em> appl</span>
-            </Link>
-            <Link href="/territory" className="vh-zip__row">
-              <span className="z">28207</span>
-              <span className="city">Charlotte NC</span>
-              <span className="ct"><em>3</em> appl</span>
-            </Link>
-            <Link href="/territory" className="vh-zip__row">
-              <span className="z">89509</span>
-              <span className="city">Reno NV</span>
-              <span className="ct"><em>1</em> appl</span>
-            </Link>
-            <Link href="/territory" className="vh-zip__row">
-              <span className="z">83702</span>
-              <span className="city">Boise ID</span>
-              <span className="ct"><em>4</em> appl</span>
-            </Link>
-            <Link href="/territory" className="vh-zip__row">
-              <span className="z">78704</span>
-              <span className="city">Austin TX</span>
-              <span className="ct"><em>6</em> appl</span>
-            </Link>
+            {openZips
+              .filter((z) => z.featured)
+              .map((z) => (
+                <Link key={z.zip} href="/territory" className="vh-zip__row">
+                  <span className="z">{z.zip}</span>
+                  <span className="city">{`${z.city} ${z.abbr}`}</span>
+                  <span className="ct">
+                    <em>{z.applicants}</em> appl
+                  </span>
+                </Link>
+              ))}
           </div>
         </div>
       </section>

@@ -1,171 +1,6 @@
-/* ════════════════════════════════════════════════════════════════════
-   VoxHorizon · global stylesheet
-   ────────────────────────────────────────────────────────────────────
-   Visual system distilled from the Carbon Trader direction —
-   Bloomberg-terminal feel, navy ground, cyan accent, amber alerts.
-   IBM Plex Mono is the workhorse, IBM Plex Sans for display weight,
-   Instrument Serif for italic accents only.
+/* ── COMPONENTS: section framing, headlines, heroes, data blocks ──── */
 
-   Ported verbatim from the Claude Design handoff (project/styles/voxhorizon.css).
-   The only change from source is the --f-* font stacks, which now point at
-   the next/font CSS variables wired up in app/layout.tsx.
-   ════════════════════════════════════════════════════════════════════ */
-
-/* ── 0. TOKENS ────────────────────────────────────────────────────── */
-:root {
-  /* surfaces — three depths */
-  --c-bg:           #08182A;
-  --c-bg-deep:      #060F1E;
-  --c-bg-shadow:    #040A18;
-
-  /* foreground — three weights */
-  --c-bone:         #D9E5DC;
-  --c-body:         #A6B5AB;
-  --c-mute:         #6C8278;
-  --c-quiet:        #3F5950;
-
-  /* accents */
-  --c-cyan:         #51B8DC;
-  --c-amber:        #FFB23F;
-
-  /* rgb tuples for rgba() composition */
-  --c-cyan-rgb:     81, 184, 220;
-  --c-amber-rgb:    255, 178, 63;
-  --c-bone-rgb:     217, 229, 220;
-
-  /* hairlines */
-  --hr:             rgba(var(--c-cyan-rgb), 0.18);
-  --hr-soft:        rgba(var(--c-cyan-rgb), 0.10);
-  --hr-deep:        rgba(var(--c-cyan-rgb), 0.22);
-
-  /* type — mapped to next/font variables (see app/layout.tsx) */
-  --f-mono:         var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --f-sans:         var(--font-plex-sans), "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-  --f-serif:        var(--font-display), "Instrument Serif", "EB Garamond", Georgia, serif;
-}
-
-/* ── 1. RESET ─────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  background: var(--c-bg);
-  color: var(--c-bone);
-  font-family: var(--f-mono);
-  font-size: 12px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  min-height: 100vh;
-  position: relative;
-}
-body::before {
-  content: "";
-  position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(var(--c-cyan-rgb), 0.025) 1px, transparent 1px);
-  background-size: 100% 24px;
-  pointer-events: none;
-  z-index: 0;
-}
-body > * { position: relative; z-index: 1; }
-a { color: inherit; text-decoration: none; cursor: pointer; }
-button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-input, select, textarea { font: inherit; color: inherit; background: none; border: 0; }
-hr { border: 0; height: 1px; background: var(--hr); }
-em { font-style: normal; }
-
-/* ── 2. TICKER BAR ────────────────────────────────────────────────── */
-.vh-tick {
-  display: flex; align-items: center;
-  padding: 0 24px;
-  height: 32px;
-  background: var(--c-bg-deep);
-  border-bottom: 1px solid var(--hr);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  overflow: hidden;
-}
-.vh-tick__pill {
-  padding: 0 22px;
-  height: 100%;
-  display: inline-flex; align-items: center; gap: 10px;
-  border-right: 1px solid var(--hr-soft);
-  color: var(--c-mute);
-  white-space: nowrap;
-}
-.vh-tick__pill:first-child { padding-left: 0; }
-.vh-tick__pill .k { color: var(--c-cyan); }
-.vh-tick__pill .v { color: var(--c-bone); }
-.vh-tick__pill .up { color: var(--c-cyan); }
-.vh-tick__pill .dn { color: var(--c-amber); }
-.vh-tick__live {
-  margin-left: auto;
-  color: var(--c-amber);
-  padding-left: 16px;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.vh-tick__live::before {
-  content: "";
-  width: 7px; height: 7px;
-  background: var(--c-amber);
-  border-radius: 50%;
-  animation: vhBlink 1.4s infinite;
-}
-@keyframes vhBlink { 0%, 60%, 100% { opacity: 1; } 80% { opacity: 0.25; } }
-
-/* ── 3. TOPBAR ────────────────────────────────────────────────────── */
-.vh-topbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--hr);
-  gap: 24px;
-}
-.vh-brand {
-  display: flex; align-items: center; gap: 12px;
-  color: var(--c-cyan);
-  font-family: var(--f-sans);
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: -0.005em;
-}
-.vh-brand svg { display: block; }
-.vh-brand .mark-wrap {
-  width: 22px; height: 22px;
-  display: inline-flex; align-items: center; justify-content: center;
-}
-.vh-brand .wordmark {
-  display: inline-flex; align-items: baseline; gap: 0;
-  letter-spacing: 0.005em;
-}
-.vh-brand .wordmark .vox { color: var(--c-bone); }
-.vh-brand .wordmark .dot { color: var(--c-cyan); padding: 0 3px; font-weight: 700; }
-.vh-brand .wordmark .horizon { color: var(--c-cyan); }
-
-.vh-nav { display: flex; justify-content: center; }
-.vh-nav a {
-  padding: 6px 16px;
-  color: var(--c-mute);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  border-right: 1px solid var(--hr-soft);
-  transition: color 0.12s;
-}
-.vh-nav a:last-child { border-right: 0; }
-.vh-nav a:hover { color: var(--c-bone); }
-.vh-nav a.is-active { color: var(--c-cyan); }
-
-.vh-crumbs {
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--c-mute);
-  text-align: right;
-}
-.vh-crumbs em { color: var(--c-amber); }
-
-/* ── 4. SECTION FRAMING ───────────────────────────────────────────── */
+/* ── SECTION FRAMING ─────────────────────────────────────────────── */
 .vh-sect {
   padding: 56px 32px;
   border-bottom: 1px solid var(--hr);
@@ -183,7 +18,7 @@ em { font-style: normal; }
 .vh-seclabel .id span { color: var(--c-mute); }
 .vh-seclabel em { font-style: italic; color: var(--c-amber); font-family: var(--f-serif); font-size: 13px; letter-spacing: 0; text-transform: none; }
 
-/* ── 5. HEADLINES ─────────────────────────────────────────────────── */
+/* ── HEADLINES ───────────────────────────────────────────────────── */
 .vh-h1, .vh-h2, .vh-h3, .vh-h4 {
   font-family: var(--f-sans);
   font-weight: 600;
@@ -202,7 +37,7 @@ em { font-style: normal; }
 }
 .vh-h1 .mut, .vh-h2 .mut, .vh-h3 .mut { color: var(--c-mute); }
 
-/* ── 6. HERO ──────────────────────────────────────────────────────── */
+/* ── HERO ────────────────────────────────────────────────────────── */
 .vh-hero { padding: 64px 32px 56px; border-bottom: 1px solid var(--hr); }
 .vh-hero .eye {
   color: var(--c-amber);
@@ -228,7 +63,7 @@ em { font-style: normal; }
 }
 .vh-hero .lede strong { color: var(--c-bone); font-weight: 500; }
 
-/* ── 7. CTA GROUP (bordered, segmented) ───────────────────────────── */
+/* ── CTA GROUP (bordered, segmented) ─────────────────────────────── */
 .vh-cta {
   display: inline-flex;
   border: 1px solid var(--hr-deep);
@@ -248,7 +83,7 @@ em { font-style: normal; }
 .vh-cta a.g { color: var(--c-bone); }
 .vh-cta a.g:hover { background: rgba(var(--c-cyan-rgb), 0.08); }
 
-/* ── 8. METRICS STRIP ─────────────────────────────────────────────── */
+/* ── METRICS STRIP ───────────────────────────────────────────────── */
 .vh-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -282,7 +117,7 @@ em { font-style: normal; }
 .vh-strip__cell .delta.neg { color: var(--c-amber); }
 .vh-strip__cell .delta.neg::before { content: "▼ "; }
 
-/* ── 9. PANELS (split into columns) ───────────────────────────────── */
+/* ── PANELS (split into columns) ─────────────────────────────────── */
 .vh-panels {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -305,7 +140,7 @@ em { font-style: normal; }
 }
 .vh-pane-head em { color: var(--c-cyan); }
 
-/* ── 10. LIVE-ROW (feed event) ────────────────────────────────────── */
+/* ── LIVE-ROW (feed event) ───────────────────────────────────────── */
 .vh-row {
   display: grid;
   grid-template-columns: 22px 1fr auto;
@@ -328,7 +163,7 @@ em { font-style: normal; }
 .vh-row__sub { font-size: 10px; color: var(--c-mute); margin-top: 2px; letter-spacing: 0.06em; }
 .vh-row__time { font-size: 10px; color: var(--c-mute); }
 
-/* ── 11. CHART (cyan line) ────────────────────────────────────────── */
+/* ── CHART (cyan line) ───────────────────────────────────────────── */
 .vh-chart-head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 12px; }
 .vh-chart-head .k { font-size: 10px; color: var(--c-mute); letter-spacing: 0.18em; text-transform: uppercase; }
 .vh-chart-head .v { font-family: var(--f-sans); font-weight: 600; font-size: 30px; color: var(--c-bone); letter-spacing: -0.022em; }
@@ -337,9 +172,9 @@ em { font-style: normal; }
 .vh-chart svg .area { fill: var(--c-cyan); opacity: 0.10; }
 .vh-chart svg .line { fill: none; stroke: var(--c-cyan); stroke-width: 1.5; }
 .vh-chart svg .dot  { fill: var(--c-cyan); }
-.vh-chart-foot { display: flex; justify-content: space-between; font-size: 10px; color: var(--c-quiet); margin-top: 8px; }
+.vh-chart-foot { display: flex; justify-content: space-between; font-size: 10px; color: var(--c-mute); margin-top: 8px; }
 
-/* ── 12. FEED layout (large list + side stats) ────────────────────── */
+/* ── FEED layout (large list + side stats) ───────────────────────── */
 .vh-feed { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; align-items: start; }
 .vh-feed__intro h2 { margin-bottom: 14px; }
 .vh-feed__sub {
@@ -374,7 +209,7 @@ em { font-style: normal; }
   letter-spacing: 0.10em; text-transform: uppercase;
 }
 
-/* ── 13. RECEIVE (3-stage row layout) ─────────────────────────────── */
+/* ── RECEIVE (3-stage row layout) ────────────────────────────────── */
 .vh-recv { border: 1px solid var(--hr); }
 .vh-recv__row {
   display: grid;
@@ -414,7 +249,7 @@ em { font-style: normal; }
 .vh-field span:last-child  { color: var(--c-bone); }
 .vh-field span:first-child { color: var(--c-mute); letter-spacing: 0.10em; text-transform: uppercase; font-size: 9px; }
 
-/* ── 14. TERRITORY GRID + ZIP LIST ────────────────────────────────── */
+/* ── TERRITORY GRID + ZIP LIST ───────────────────────────────────── */
 .vh-terr { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: start; }
 .vh-terr h2 { margin-bottom: 24px; }
 
@@ -474,7 +309,7 @@ em { font-style: normal; }
 .vh-zip__row .ct   { color: var(--c-body); font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase; text-align: right; }
 .vh-zip__row .ct em { color: var(--c-cyan); }
 
-/* ── 15. GUARANTEE + TERMINAL ─────────────────────────────────────── */
+/* ── GUARANTEE + TERMINAL ────────────────────────────────────────── */
 .vh-grnt { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
 .vh-grnt__title { font-family: var(--f-sans); font-weight: 600; font-size: 56px; letter-spacing: -0.026em; line-height: 1.0; color: var(--c-bone); }
 .vh-grnt__title em { font-family: var(--f-serif); font-style: italic; font-weight: 400; color: var(--c-cyan); }
@@ -496,7 +331,7 @@ em { font-style: normal; }
 .vh-term .c { color: var(--c-mute); }
 .vh-term .cursor::after { content: "▍"; color: var(--c-amber); animation: vhBlink 1s infinite; }
 
-/* ── 16. HOW IT WORKS ─────────────────────────────────────────────── */
+/* ── HOW IT WORKS ────────────────────────────────────────────────── */
 .vh-how { border: 1px solid var(--hr); }
 .vh-how__row {
   display: grid;
@@ -512,7 +347,7 @@ em { font-style: normal; }
 .vh-how__row h4 { font-family: var(--f-sans); font-weight: 600; font-size: 20px; color: var(--c-bone); margin: 0 0 6px; letter-spacing: -0.012em; }
 .vh-how__row p { font-family: var(--f-sans); font-size: 14px; color: var(--c-body); line-height: 1.55; margin: 0; }
 
-/* ── 17. CLOSING BLOCK ────────────────────────────────────────────── */
+/* ── CLOSING BLOCK ───────────────────────────────────────────────── */
 .vh-closing { padding: 96px 32px 72px; }
 .vh-closing .eye {
   color: var(--c-amber);
@@ -546,20 +381,7 @@ em { font-style: normal; }
 }
 .vh-closing .meta em { color: var(--c-cyan); }
 
-/* ── 18. FOOTER ───────────────────────────────────────────────────── */
-.vh-footer {
-  padding: 16px 32px;
-  border-top: 1px solid var(--hr);
-  display: flex; justify-content: space-between;
-  font-size: 10px;
-  color: var(--c-quiet);
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  background: var(--c-bg-deep);
-}
-.vh-footer a:hover { color: var(--c-cyan); }
-
-/* ── 19. PAGE INTRO (used on subpages) ────────────────────────────── */
+/* ── PAGE INTRO (used on subpages) ───────────────────────────────── */
 .vh-pintro { padding: 56px 32px 48px; border-bottom: 1px solid var(--hr); }
 .vh-pintro .crumb {
   font-size: 10px;
@@ -586,7 +408,7 @@ em { font-style: normal; }
 }
 .vh-pintro .lede strong { color: var(--c-bone); font-weight: 500; }
 
-/* ── 20. PROSE blocks (for text-heavy pages) ──────────────────────── */
+/* ── PROSE blocks (for text-heavy pages) ─────────────────────────── */
 .vh-prose {
   font-family: var(--f-sans);
   font-size: 16px; line-height: 1.6;
@@ -607,7 +429,7 @@ em { font-style: normal; }
   padding-top: 6px;
 }
 
-/* ── 21. FORMS (Apply page) ───────────────────────────────────────── */
+/* ── FORMS (Apply page) ──────────────────────────────────────────── */
 .vh-form { border: 1px solid var(--hr); }
 .vh-form fieldset { border: 0; padding: 28px 32px; margin: 0; border-bottom: 1px solid var(--hr); }
 .vh-form fieldset:last-of-type { border-bottom: 0; }
@@ -651,10 +473,10 @@ em { font-style: normal; }
   letter-spacing: 0.02em;
 }
 .vh-form input::placeholder,
-.vh-form textarea::placeholder { color: var(--c-quiet); }
+.vh-form textarea::placeholder { color: var(--c-mute); }
 .vh-form input:focus,
 .vh-form select:focus,
-.vh-form textarea:focus { outline: none; border-color: var(--c-cyan); }
+.vh-form textarea:focus { border-color: var(--c-cyan); }
 .vh-form textarea { min-height: 96px; resize: vertical; }
 .vh-form__actions {
   padding: 24px 32px;
@@ -665,7 +487,7 @@ em { font-style: normal; }
 .vh-form__actions .meta { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--c-mute); }
 .vh-form__actions .meta em { color: var(--c-cyan); }
 
-/* ── 22. OPERATOR CARDS ───────────────────────────────────────────── */
+/* ── OPERATOR CARDS ──────────────────────────────────────────────── */
 .vh-ops-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -707,7 +529,7 @@ em { font-style: normal; }
 .vh-op__stats .v { font-family: var(--f-sans); font-weight: 600; font-size: 22px; color: var(--c-bone); letter-spacing: -0.014em; margin-top: 4px; }
 .vh-op__stats .v em { color: var(--c-cyan); }
 
-/* ── 23. BRAND SHEET (brand.html) ─────────────────────────────────── */
+/* ── BRAND SHEET ─────────────────────────────────────────────────── */
 .vh-swatch {
   border: 1px solid var(--hr);
   display: flex; flex-direction: column;
@@ -724,7 +546,7 @@ em { font-style: normal; }
 .vh-type-spec .label em { color: var(--c-mute); font-style: italic; font-family: var(--f-serif); text-transform: none; letter-spacing: 0; padding-left: 6px; font-size: 12px; }
 .vh-type-spec .sample { color: var(--c-bone); line-height: 1; }
 
-/* ── 24. UTILITIES ────────────────────────────────────────────────── */
+/* ── UTILITIES ───────────────────────────────────────────────────── */
 .vh-block { border: 1px solid var(--hr); padding: 24px; }
 .vh-quiet { color: var(--c-mute); }
 .vh-accent { color: var(--c-cyan); }
@@ -749,10 +571,20 @@ em { font-style: normal; }
   .vh-strip__cell:last-child { border-bottom: 0; }
   .vh-panels__pane { border-right: 0; border-bottom: 1px solid var(--hr); }
   .vh-panels__pane:last-child { border-bottom: 0; }
-  .vh-nav a { padding: 6px 10px; font-size: 9px; }
   .vh-recv__row { grid-template-columns: 1fr; gap: 14px; }
   .vh-recv__sample { border-left: 0; border-top: 1px dashed var(--hr); padding-left: 0; padding-top: 14px; }
   .vh-form .vh-form__row { grid-template-columns: 1fr; }
   .vh-how__row { grid-template-columns: 60px 1fr; }
   .vh-how__row .ts { grid-column: 1 / -1; }
+}
+
+/* reduced motion — kill every decorative loop (the blinking live dot,
+   terminal cursor, and pulsing hot cells). Kept at the end of this file
+   so it wins the cascade over the animation declarations above. */
+@media (prefers-reduced-motion: reduce) {
+  .vh-tick__live::before,
+  .vh-term .cursor::after,
+  .vh-grid .cell.open-hot {
+    animation: none;
+  }
 }

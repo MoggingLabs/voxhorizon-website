@@ -1,0 +1,57 @@
+/* ════════════════════════════════════════════════════════════════════
+   VoxHorizon · design tokens
+   ────────────────────────────────────────────────────────────────────
+   Carbon Trader visual system — navy ground, cyan accent, amber alerts.
+   IBM Plex Mono is the data workhorse, IBM Plex Sans carries display and
+   prose, Instrument Serif italic carries emphasis.
+
+   Load order: tokens → base → chrome → components → pages
+   (imported in app/layout.tsx).
+   ════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* surfaces — three depths */
+  --c-bg:           #08182A;
+  --c-bg-deep:      #060F1E;
+  --c-bg-shadow:    #040A18;
+
+  /* foreground — three weights.
+     NOTE: --c-quiet fails WCAG AA against the navy surfaces; it is reserved
+     for decorative use (borders, separators) and must NOT be used as a text
+     color. Use --c-mute as the dimmest text weight. */
+  --c-bone:         #D9E5DC;
+  --c-body:         #A6B5AB;
+  --c-mute:         #6C8278;
+  --c-quiet:        #3F5950;
+
+  /* accents */
+  --c-cyan:         #51B8DC;
+  --c-amber:        #FFB23F;
+
+  /* rgb tuples for rgba() composition */
+  --c-cyan-rgb:     81, 184, 220;
+  --c-amber-rgb:    255, 178, 63;
+  --c-bone-rgb:     217, 229, 220;
+
+  /* hairlines */
+  --hr:             rgba(var(--c-cyan-rgb), 0.18);
+  --hr-soft:        rgba(var(--c-cyan-rgb), 0.10);
+  --hr-deep:        rgba(var(--c-cyan-rgb), 0.22);
+
+  /* type — mapped to next/font variables (see app/layout.tsx) */
+  --f-mono:         var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --f-sans:         var(--font-plex-sans), "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --f-serif:        var(--font-display), "Instrument Serif", "EB Garamond", Georgia, serif;
+
+  /* v2 fluid type scale — consumed by redesigned (v2) components as pages
+     migrate; legacy .vh-h* keep their fixed sizes until each page moves. */
+  --t-display:      clamp(44px, 7.5vw, 96px);
+  --t-h1:           clamp(40px, 6.5vw, 88px);
+  --t-h2:           clamp(32px, 4.5vw, 56px);
+  --t-h3:           clamp(24px, 3vw, 40px);
+  --t-h4:           clamp(18px, 2vw, 22px);
+
+  /* v2 rhythm */
+  --sect-pad:       clamp(64px, 9vw, 120px);
+  --gutter:         clamp(20px, 4vw, 48px);
+}

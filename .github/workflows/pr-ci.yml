@@ -2,7 +2,9 @@ name: pr-ci
 
 on:
   pull_request:
-    branches: [main]
+    # redesign-v2* covers the stacked redesign PRs targeting the
+    # redesign-v2 integration branch.
+    branches: [main, "redesign-v2*"]
   workflow_dispatch:
 
 concurrency:
@@ -42,3 +44,6 @@ jobs:
 
       - name: API smoke tests
         run: npm run smoke:api
+
+      - name: Route smoke tests
+        run: npm run smoke:routes

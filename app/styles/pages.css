@@ -1,0 +1,4 @@
+/* ── PAGES: page-specific styles for the v2 redesign ──────────────────
+   New page-level styles land here as each page migrates to the v2 design
+   language (fluid type, signature heroes). Loaded last so v2 rules win
+   the cascade over the legacy component styles. */
