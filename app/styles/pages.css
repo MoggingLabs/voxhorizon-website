@@ -1,0 +1,324 @@
+/* ── PAGES — page-specific components, Horizon system ─────────────── */
+
+/* contained column — space does the separating, no side rules */
+.v2 {
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+/* handbook TOC — pill chips (/system) */
+.vh-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 8px var(--gutter) 24px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: linear-gradient(var(--c-bg) 75%, transparent);
+}
+.vh-toc a {
+  padding: 9px 18px;
+  font-size: 13px;
+  color: var(--c-body);
+  background: var(--s-card);
+  border-radius: var(--r-pill);
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.vh-toc a:hover { color: var(--c-bone); background: var(--s-card-2); }
+.vh-toc a .n { color: var(--c-cyan); padding-right: 7px; font-family: var(--f-mono); font-size: 11px; }
+.v2 section[id] { scroll-margin-top: 76px; }
+
+/* FAQ accordion — separate soft cards */
+.vh-faq { display: grid; gap: 14px; }
+.vh-faq details {
+  background: var(--s-card);
+  border-radius: var(--r-lg);
+}
+.vh-faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  padding: 26px 32px;
+  cursor: pointer;
+  list-style: none;
+}
+.vh-faq summary::-webkit-details-marker { display: none; }
+.vh-faq summary .q {
+  font-family: var(--f-sans);
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 600;
+  color: var(--c-bone);
+  transition: color 0.15s;
+}
+.vh-faq summary:hover .q { color: var(--c-cyan); }
+.vh-faq summary .ix {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  flex: none;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--c-mute);
+}
+.vh-faq summary .disc {
+  color: var(--c-cyan);
+  font-size: 18px;
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.18s ease;
+}
+.vh-faq details[open] summary .disc { transform: rotate(45deg); }
+.vh-faq .a {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--c-body);
+  margin: 0;
+  padding: 0 32px 28px;
+  max-width: 760px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vh-faq summary .disc { transition: none; }
+}
+
+/* "more" link — quiet inline arrow link under teasers */
+.vh-more {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--c-cyan);
+  transition: color 0.15s;
+}
+.vh-more:hover { color: var(--c-bone); }
+
+/* hero feed — one quiet live element under the hero CTA */
+.vh-herofeed {
+  width: 100%;
+  max-width: 620px;
+  margin-top: 56px;
+  background: var(--s-card);
+  border-radius: var(--r-lg);
+  padding: 12px 28px;
+  box-shadow: var(--glow);
+}
+
+/* proof moment — two big numbers + a quote */
+.vh-proof__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 36px 0;
+  max-width: 780px;
+}
+.vh-proof__cell {
+  padding: 34px 36px;
+  background: var(--s-card);
+  border-radius: var(--r-lg);
+}
+.vh-proof__cell .n {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: clamp(44px, 5.5vw, 68px);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--c-cyan);
+}
+.vh-proof__cell .l {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--c-body);
+}
+.vh-proof__quote {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: clamp(20px, 2.4vw, 27px);
+  line-height: 1.5;
+  color: var(--c-bone);
+  max-width: 680px;
+  margin: 0;
+}
+.vh-proof__quote footer {
+  margin-top: 14px;
+  font-family: var(--f-sans);
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-mute);
+}
+@media (max-width: 640px) {
+  .vh-proof__row { grid-template-columns: 1fr; }
+}
+
+/* calm receive rows — badge + statement only */
+.vh-recv--calm .vh-recv__row { grid-template-columns: 150px 1fr; }
+@media (max-width: 960px) {
+  .vh-recv--calm .vh-recv__row { grid-template-columns: 1fr; }
+}
+
+/* live territory grid — hover scale + readout line */
+.vh-grid--live .cell { cursor: crosshair; }
+.vh-grid--live .cell:hover { position: relative; z-index: 2; }
+.vh-grid__readout {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--c-mute);
+  min-height: 22px;
+}
+.vh-grid__readout .p { color: var(--c-cyan); font-weight: 500; }
+.vh-grid__readout .s.claimed { color: var(--c-cyan); }
+.vh-grid__readout .s.open { color: var(--c-bone); }
+.vh-grid__readout .s.open-hot { color: var(--c-amber); }
+.vh-grid__readout .cursor::after { content: ""; }
+
+/* apply funnel — choices, errors, zip context, fallback strip */
+.vh-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+.vh-choices.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.vh-choice {
+  padding: 13px 18px;
+  font-size: 14px;
+  border-radius: var(--r-md);
+  background: var(--c-bg-deep);
+  color: var(--c-body);
+  text-align: left;
+  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+.vh-choice:hover { color: var(--c-bone); box-shadow: inset 0 0 0 1.5px rgba(var(--c-cyan-rgb), 0.4); }
+.vh-choice.is-active {
+  background: rgba(var(--c-cyan-rgb), 0.14);
+  color: var(--c-bone);
+  box-shadow: inset 0 0 0 1.5px var(--c-cyan);
+}
+.vh-choice.low { opacity: 0.65; }
+.vh-choice .sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--c-mute);
+}
+.vh-err {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--c-amber);
+}
+.vh-hp { position: absolute; left: -9999px; }
+.vh-submit {
+  padding: 16px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--r-pill);
+  background: var(--c-cyan);
+  color: var(--c-bg-deep);
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.vh-submit:hover:not(:disabled) { background: var(--c-bone); transform: translateY(-1px); box-shadow: var(--glow-cyan); }
+.vh-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.vh-zipctx {
+  font-size: 14px;
+  color: var(--c-body);
+  background: var(--s-card);
+  border-radius: var(--r-md);
+  padding: 14px 20px;
+  margin-bottom: 22px;
+}
+.vh-zipctx .p { color: var(--c-cyan); font-weight: 500; }
+.vh-zipctx em { color: var(--c-amber); font-family: var(--f-mono); }
+.vh-applyfall {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 24px;
+  margin-top: 32px;
+  font-size: 14px;
+}
+.vh-applyfall .t { color: var(--c-mute); }
+.vh-applyfall a { color: var(--c-cyan); transition: color 0.15s; }
+.vh-applyfall a:hover { color: var(--c-bone); }
+
+/* ledger — audited outcome cards (/results) */
+.vh-ledger {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 8px;
+}
+.vh-ledger--wide { grid-template-columns: repeat(4, 1fr); }
+.vh-ledger__cell {
+  padding: 26px 28px;
+  background: var(--s-card);
+  border-radius: var(--r-lg);
+}
+.vh-ledger__cell .n {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: clamp(26px, 3vw, 38px);
+  letter-spacing: -0.02em;
+  color: var(--c-cyan);
+  line-height: 1;
+}
+.vh-ledger__cell .l {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--c-mute);
+  line-height: 1.55;
+}
+.vh-ledger__cell .l em {
+  color: var(--c-amber);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 14px;
+}
+@media (max-width: 960px) {
+  .vh-ledger--wide { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .vh-ledger, .vh-ledger--wide { grid-template-columns: 1fr; }
+}
+
+/* industry cards — soft lift */
+.vh-indcard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  background: var(--s-card);
+  border-radius: var(--r-lg);
+  padding: 32px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.vh-indcard:hover {
+  transform: translateY(-4px);
+  background: var(--s-card-2);
+  box-shadow: var(--glow);
+}
+.vh-indcard .t {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: 23px;
+  color: var(--c-bone);
+}
+.vh-indcard p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-body);
+  margin: 0;
+  flex: 1;
+}
+.vh-indcard .go {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-cyan);
+}
+@media (prefers-reduced-motion: reduce) {
+  .vh-indcard { transition: none; }
+  .vh-indcard:hover { transform: none; }
+}

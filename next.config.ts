@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // Apex -> www is handled at the Caddy/domain layer; add app-level redirects here if needed.
+      // /operators merged into /results in the v2 redesign.
+      { source: "/operators", destination: "/results", permanent: true },
     ];
   },
 };

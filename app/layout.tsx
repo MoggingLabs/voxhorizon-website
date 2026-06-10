@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import {
-  Instrument_Serif,
-  Newsreader,
-  JetBrains_Mono,
-  IBM_Plex_Mono,
-  IBM_Plex_Sans,
-} from "next/font/google";
+import { Instrument_Serif, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-// Carbon Trader system — ported design stylesheet (loaded after globals so its
-// un-layered body rules win the cascade). See app/voxhorizon.css.
-import "./voxhorizon.css";
+// Carbon Trader system — split design stylesheet (loaded after globals so its
+// un-layered body rules win the cascade). Order matters: tokens → base →
+// chrome → components → pages.
+import "./styles/tokens.css";
+import "./styles/base.css";
+import "./styles/chrome.css";
+import "./styles/components.css";
+import "./styles/pages.css";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import { publicEnv } from "@/lib/env";
 
 // Display — Instrument Serif (weight 400, roman + italic; italic carries emphasis).
@@ -23,21 +23,6 @@ const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
-});
-
-// Body — Newsreader (variable serif, optical size). Legacy editorial pages.
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-// Mono — JetBrains Mono (labels, eyebrows, metadata). Legacy editorial pages.
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-mono",
 });
 
 // Carbon Trader workhorse — IBM Plex Mono (body, ticker, labels). Drives --f-mono.
@@ -85,6 +70,18 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "VoxHorizon",
+  url: publicEnv.NEXT_PUBLIC_SITE_URL,
+  logo: `${publicEnv.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")}/logo.png`,
+  email: "operators@voxhorizon.io",
+  description:
+    "Growth partner for established home-improvement contractors: exclusive territory, pre-qualified and pre-scheduled appointments, paid per signed contract.",
+  founder: { "@type": "Person", name: "Diogo Silva" },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -92,14 +89,23 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable}`}
+      className={`${instrumentSerif.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable}`}
     >
       {/* Dark terminal shell. Background, body font and antialiasing are owned by
-          voxhorizon.css `body` — no bg/font utilities here so they aren't overridden. */}
+          styles/base.css `body` — no bg/font utilities here so they aren't overridden. */}
       <body className="min-h-screen antialiased">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <MotionProvider>
+          <a href="#main" className="vh-skip">
+            Skip to content
+          </a>
+          <Navbar />
+          <main id="main">{children}</main>
+          <Footer />
+        </MotionProvider>
         {plausibleDomain && (
           <Script
             defer

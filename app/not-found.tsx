@@ -2,7 +2,8 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <section className="vh-pintro">
+    <div className="v2">
+      <section className="vh-pintro">
       <div className="crumb">
         Error · 404<em>— off the grid</em>
       </div>
@@ -21,6 +22,7 @@ export default function NotFound() {
           View the map
         </Link>
       </div>
-    </section>
+      </section>
+    </div>
   );
 }

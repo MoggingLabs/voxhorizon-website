@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <>
+    <div className="v2">
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
@@ -95,6 +95,6 @@ export default function PrivacyPage() {
           </p>
         </div>
       </section>
-    </>
+    </div>
   );
 }

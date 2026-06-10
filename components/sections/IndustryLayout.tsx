@@ -1,52 +1,56 @@
 import Link from "next/link";
+import { industries } from "@/lib/content";
+import { publicEnv } from "@/lib/env";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { Reveal } from "@/components/motion/Reveal";
+import { CtaBlock } from "@/components/sections/CtaBlock";
 
 export type IndustryStat = { value: string; label: string };
-
-// The full industry roster — used to render cross-links to the other two trades.
-const INDUSTRIES: { slug: string; name: string; blurb: string }[] = [
-  {
-    slug: "kitchen-bath",
-    name: "Kitchen & Bath",
-    blurb:
-      "High-ticket remodel projects, pre-qualified on scope and budget, matched to your crew’s capacity.",
-  },
-  {
-    slug: "roofing",
-    name: "Roofing",
-    blurb:
-      "Re-roof and repair appointments at volume, cleared on budget and timeline before they reach you.",
-  },
-  {
-    slug: "decking",
-    name: "Decking",
-    blurb:
-      "Outdoor-living projects from homeowners ready to build, inside your exact service area.",
-  },
-];
 
 export function IndustryLayout({
   slug,
   industry,
   headline,
   subhead,
-  stats,
   bullets,
 }: {
   slug: string;
   industry: string;
   headline: string;
   subhead: string;
-  stats: IndustryStat[];
+  // `stats` and `image` are still accepted for prop compatibility but no longer
+  // rendered — the calm pass dropped the metrics strip; the terminal panel
+  // replaced the old photo placeholder.
+  stats?: IndustryStat[];
   bullets: string[];
-  // `image` is still accepted for prop compatibility but is no longer rendered —
-  // the framed terminal panel below replaces the old photo placeholder.
   image?: string;
 }) {
-  const others = INDUSTRIES.filter((i) => i.slug !== slug);
+  const others = industries.filter((i) => i.key !== slug);
   const trade = industry.toLowerCase();
+  const site = publicEnv.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${industry} appointments — VoxHorizon`,
+    serviceType: `Exclusive ${trade} appointment generation for contractors`,
+    description: subhead,
+    url: `${site}/industries/${slug}`,
+    areaServed: "United States",
+    provider: {
+      "@type": "Organization",
+      name: "VoxHorizon",
+      url: site,
+    },
+  };
 
   return (
-    <>
+    <div className="v2">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
@@ -57,18 +61,6 @@ export function IndustryLayout({
         <p className="lede">{subhead}</p>
       </section>
 
-      {/* ── METRICS STRIP ─────────────────────────────────── */}
-      <div className="vh-strip">
-        {stats.map((s) => (
-          <div className="vh-strip__cell" key={s.label}>
-            <div className="k">{s.label}</div>
-            <div className="v">
-              <em>{s.value}</em>
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* ── 01 — WHY OPERATORS CHOOSE US ──────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
@@ -77,9 +69,9 @@ export function IndustryLayout({
           </span>
           <em>What an exclusive {trade} pipeline gets you.</em>
         </div>
-        <div className="vh-how">
+        <Stagger className="vh-how">
           {bullets.map((b, i) => (
-            <div className="vh-how__row" key={b}>
+            <StaggerItem className="vh-how__row" key={b}>
               <div className="n">{String(i + 1).padStart(2, "0")}</div>
               <div className="ts">
                 {industry}
@@ -89,9 +81,9 @@ export function IndustryLayout({
               <div>
                 <p>{b}</p>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       {/* ── 02 — THE DESK ─────────────────────────────────── */}
@@ -102,38 +94,27 @@ export function IndustryLayout({
           </span>
           <em>Every record is a real homeowner, in your zip.</em>
         </div>
-        <div className="vh-grnt">
-          <div>
-            <div className="vh-grnt__title">
-              Not leads.
-              <br />
-              <em>{industry} appointments.</em>
-            </div>
-            <p className="vh-grnt__body">
-              {subhead} You show up, sit, and sign — no chasing, no shared pool,
-              no race to the bottom on price.
-            </p>
-          </div>
-          <div className="vh-term">
+        <Reveal>
+          <div className="vh-grnt">
             <div>
-              <span className="p">vh@operator</span>:~$ <span className="e">desk --trade {slug}</span>
+              <div className="vh-grnt__title">
+                Not leads.
+                <br />
+                <em>{industry} appointments.</em>
+              </div>
+              <p className="vh-grnt__body">
+                {subhead} You show up, sit, and sign — no chasing, no shared pool,
+                no race to the bottom on price.
+              </p>
             </div>
-            <div className="c">{"// next on the calendar"}</div>
-            <div>
-              &nbsp;&nbsp;trade.......... <span className="e">{industry}</span>
-            </div>
-            <div>
-              &nbsp;&nbsp;territory...... <span className="e">exclusive · 1 per market</span>
-            </div>
-            <div>
-              &nbsp;&nbsp;status......... <span className="o">pre-qualified</span>
-            </div>
-            <div>
-              &nbsp;&nbsp;state.......... <span className="e">booked · ready to sign</span>
-              <span className="cursor" />
+            <div className="vh-block">
+              <p className="vh-proof__quote" style={{ fontSize: "clamp(19px, 2.2vw, 25px)" }}>
+                30 kept appointments in your first 90 days — <em className="vh-accent">or we
+                work for free</em> until you get them. In writing.
+              </p>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── 03 — OTHER TRADES ─────────────────────────────── */}
@@ -144,39 +125,27 @@ export function IndustryLayout({
           </span>
           <em>Same desk. Different work.</em>
         </div>
-        <div className="vh-2">
+        <Stagger className="vh-2">
           {others.map((o) => (
-            <Link key={o.slug} href={`/industries/${o.slug}`} className="vh-block">
-              <div className="vh-caps vh-accent">{o.name} →</div>
-              <p className="vh-prose" style={{ marginTop: 14 }}>
-                {o.blurb}
-              </p>
-            </Link>
+            <StaggerItem key={o.key}>
+              <Link href={o.href} className="vh-indcard">
+                <span className="t">{o.name}</span>
+                <p>{o.blurb}</p>
+                <span className="go">View the {o.name.toLowerCase()} desk →</span>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       {/* ── CLOSING ───────────────────────────────────────── */}
-      <div className="vh-closing">
-        <div className="eye">One operator per zip · check yours before it fills</div>
-        <h2>
-          See if your {trade} <em>territory</em> is open.
-        </h2>
-        <div className="vh-cta">
-          <Link href="/apply" className="p">
-            [ Check my zip ]
-          </Link>
-          <Link href="/territory" className="g">
-            See open zips
-          </Link>
-        </div>
-        <div className="meta">
-          <span>Response · 48h</span>
-          <span>
-            <em>One operator</em> per market
-          </span>
-        </div>
-      </div>
-    </>
+      <CtaBlock
+        eyebrow={`One operator per zip · check yours before it fills`}
+        primary={{ label: "Check my zip", href: "/apply" }}
+        secondary={{ label: `See ${trade} results`, href: "/results" }}
+      >
+        See if your {trade} <em>territory</em> is open.
+      </CtaBlock>
+    </div>
   );
 }
