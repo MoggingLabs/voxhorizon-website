@@ -5,31 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, m } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { cohort, navLinks, tickerPills } from "@/lib/content";
+import { cohort, navLinks } from "@/lib/content";
 import { MobileMenu } from "./MobileMenu";
 
 function isActive(pathname: string, href?: string) {
   if (!href) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
-}
-
-function TickerGroup({ hidden }: { hidden?: boolean }) {
-  return (
-    <div className="vh-tick__group" aria-hidden={hidden || undefined}>
-      {tickerPills.map((pill) => (
-        <span key={pill.k} className="vh-tick__pill">
-          <span className="k">{pill.k}</span>
-          <span className="v">{pill.v}</span>
-          {pill.delta && (
-            <span className={pill.dir === "up" ? "up" : pill.dir === "dn" ? "dn" : "d"}>
-              {pill.delta}
-            </span>
-          )}
-        </span>
-      ))}
-    </div>
-  );
 }
 
 export function Navbar() {
@@ -45,15 +27,6 @@ export function Navbar() {
 
   return (
     <>
-      {/* ── TICKER (marquee; pauses on hover, static under reduced motion) ── */}
-      <div className="vh-tick" aria-label="Network ticker">
-        <div className="vh-tick__track">
-          <TickerGroup />
-          <TickerGroup hidden />
-        </div>
-        <span className="vh-tick__live">● LIVE · STREAMING</span>
-      </div>
-
       {/* ── TOPBAR ────────────────────────────────────────── */}
       <header className="vh-topbar">
         <Link href="/" className="vh-brand" aria-label="VoxHorizon home">

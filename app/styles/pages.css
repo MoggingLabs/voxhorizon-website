@@ -4,6 +4,38 @@
    fluid scale from tokens.css, and section rhythm opens up. Loaded last
    so v2 rules win the cascade over the legacy component styles. */
 
+/* ── v2 CONTAINMENT ───────────────────────────────────────────────────
+   The site reads as a centered document sheet, not an edge-to-edge
+   terminal: content is capped at 1180px with hairline side rules on
+   wide screens. Chrome (topbar/footer) stays full-bleed; their inner
+   content is contained separately in chrome.css. */
+.v2 {
+  max-width: 1180px;
+  margin-inline: auto;
+  font-size: 13px; /* mono base up from 12px — small caps stop squinting */
+}
+@media (min-width: 1260px) {
+  .v2 { border-inline: 1px solid var(--hr); }
+}
+
+/* type lift — body voices up a size across the board */
+.v2 .vh-hero .lede,
+.v2 .vh-pintro .lede { font-size: clamp(17px, 1.9vw, 20px); max-width: 680px; }
+.v2 .vh-seclabel { font-size: 11px; }
+.v2 .vh-recv__mid h3 { font-size: clamp(20px, 2.2vw, 26px); }
+.v2 .vh-recv__mid p,
+.v2 .vh-feed__sub,
+.v2 .vh-grnt__body,
+.v2 .vh-how__row p,
+.v2 .vh-indcard p,
+.v2 .vh-prose { font-size: 15px; }
+.v2 .vh-how__row h4 { font-size: 22px; }
+.v2 .vh-row__title { font-size: 15px; }
+.v2 .vh-row__sub,
+.v2 .vh-row__time { font-size: 11px; }
+.v2 .vh-zip__row .city { font-size: 15px; }
+.v2 .vh-op__quote { font-size: 19px; }
+
 /* fluid type + rhythm inside the v2 scope */
 .v2 .vh-h1 { font-size: var(--t-display); }
 .v2 .vh-h2 { font-size: var(--t-h2); }
@@ -171,6 +203,72 @@
 @media (prefers-reduced-motion: reduce) {
   .vh-grid__readout .cursor::after { animation: none; }
 }
+
+/* calm hero feed — single quiet live element under the hero CTA */
+.vh-herofeed {
+  max-width: 640px;
+  margin-top: 40px;
+  border: 1px solid var(--hr);
+  padding: 6px 18px;
+}
+
+/* proof moment — two big numbers + a quote, nothing else */
+.vh-proof__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--hr);
+  margin: 28px 0;
+  max-width: 760px;
+}
+.vh-proof__cell {
+  padding: 28px 30px;
+  border-right: 1px solid var(--hr-soft);
+}
+.vh-proof__cell:last-child { border-right: 0; }
+.vh-proof__cell .n {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: clamp(40px, 5vw, 64px);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--c-cyan);
+}
+.vh-proof__cell .l {
+  margin-top: 12px;
+  font-family: var(--f-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-body);
+}
+.vh-proof__quote {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: clamp(19px, 2.2vw, 24px);
+  line-height: 1.5;
+  color: var(--c-bone);
+  border-left: 2px solid var(--c-cyan);
+  padding-left: 20px;
+  max-width: 680px;
+  margin: 0;
+}
+.vh-proof__quote footer {
+  margin-top: 10px;
+  font-family: var(--f-mono);
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-mute);
+}
+@media (max-width: 640px) {
+  .vh-proof__row { grid-template-columns: 1fr; }
+  .vh-proof__cell { border-right: 0; border-bottom: 1px solid var(--hr-soft); }
+  .vh-proof__cell:last-child { border-bottom: 0; }
+}
+
+/* calm receive rows — badge + statement, no sample tables */
+.vh-recv--calm .vh-recv__row { grid-template-columns: 130px 1fr; }
 
 /* apply funnel v2 — choice buttons, errors, zip context, fallback strip */
 .vh-choices { display: flex; flex-wrap: wrap; gap: 10px; }

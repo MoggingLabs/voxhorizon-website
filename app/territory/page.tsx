@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cohort, openZips, territoryCounts, type OpenZip } from "@/lib/content";
-import { CountUp } from "@/components/motion/CountUp";
-import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { TerritoryGrid } from "@/components/motion/TerritoryGrid";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -43,35 +41,6 @@ export default function TerritoryPage() {
         </p>
       </section>
 
-      {/* ── METRICS STRIP ─────────────────────────────────── */}
-      <div className="vh-strip">
-        <div className="vh-strip__cell">
-          <div className="k">Claimed</div>
-          <div className="v">
-            <em>
-              <CountUp value={territoryCounts.claimed} />
-            </em>
-          </div>
-          <div className="delta">+9 YTD</div>
-        </div>
-        <div className="vh-strip__cell">
-          <div className="k">Open · {cohort.quarter}</div>
-          <div className="v">
-            <CountUp value={territoryCounts.open} />
-          </div>
-          <div className="delta">closing {cohort.closesOn}</div>
-        </div>
-        <div className="vh-strip__cell">
-          <div className="k">Hot · 48-hour</div>
-          <div className="v">
-            <em>
-              <CountUp value={territoryCounts.hot} />
-            </em>
-          </div>
-          <div className="delta">multiple applicants</div>
-        </div>
-      </div>
-
       {/* ── 01 — THE MAP ───────────────────────────────────── */}
       <section className="vh-sect">
         <div className="vh-seclabel">
@@ -80,56 +49,21 @@ export default function TerritoryPage() {
           </span>
           <em>Each cell is one zip. Hover to read it.</em>
         </div>
-        <div className="vh-terr">
-          <div>
-            <TerritoryGrid />
-            <div className="vh-legend">
-              <span>
-                <span className="sw" style={{ background: "rgba(81,184,220,0.14)" }} />
-                Claimed · {territoryCounts.claimed}
-              </span>
-              <span>
-                <span className="sw" style={{ background: "rgba(217,229,220,0.20)" }} />
-                Open · {territoryCounts.open}
-              </span>
-              <span>
-                <span className="sw" style={{ background: "#FFB23F" }} />
-                Closing 48h · {territoryCounts.hot}
-              </span>
-            </div>
-          </div>
-          <div className="vh-side">
-            <div className="vh-side__stat">
-              <div className="k">Network footprint</div>
-              <div className="v">
-                <em>
-                  <CountUp value={territoryCounts.total} />
-                </em>{" "}
-                zips
-              </div>
-              <div className="row">
-                <span>states</span>
-                <span>{territoryCounts.states}</span>
-              </div>
-            </div>
-            <div className="vh-side__stat">
-              <div className="k">Median operator radius</div>
-              <div className="v">38mi</div>
-              <div className="row">
-                <span>from desk</span>
-                <span>—</span>
-              </div>
-            </div>
-            <div className="vh-side__stat">
-              <div className="k">New zips · 2026</div>
-              <div className="v">
-                <em>+12</em>
-              </div>
-              <div className="row">
-                <span>per quarter</span>
-                <span>—</span>
-              </div>
-            </div>
+        <div style={{ maxWidth: 860 }}>
+          <TerritoryGrid />
+          <div className="vh-legend">
+            <span>
+              <span className="sw" style={{ background: "rgba(81,184,220,0.14)" }} />
+              Claimed · {territoryCounts.claimed}
+            </span>
+            <span>
+              <span className="sw" style={{ background: "rgba(217,229,220,0.20)" }} />
+              Open · {territoryCounts.open}
+            </span>
+            <span>
+              <span className="sw" style={{ background: "#FFB23F" }} />
+              Closing 48h · {territoryCounts.hot}
+            </span>
           </div>
         </div>
       </section>
