@@ -17,6 +17,85 @@
 .v2 .vh-hero .lede,
 .v2 .vh-pintro .lede { font-size: clamp(15px, 1.6vw, 17px); }
 
+/* handbook TOC rail — sticky in-page index (/system signature) */
+.vh-toc {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--hr);
+  background: var(--c-bg-deep);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.vh-toc a {
+  padding: 13px 18px 13px 0;
+  margin-right: 14px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-mute);
+  transition: color 0.12s;
+  white-space: nowrap;
+}
+.vh-toc a:hover { color: var(--c-bone); }
+.vh-toc a .n { color: var(--c-cyan); padding-right: 6px; }
+.v2 section[id] { scroll-margin-top: 56px; }
+
+/* FAQ accordion — visible disclosure state, full-row hit area */
+.vh-faq { border: 1px solid var(--hr); }
+.vh-faq details { border-bottom: 1px solid var(--hr); }
+.vh-faq > div:last-child details { border-bottom: 0; }
+.vh-faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  padding: 24px 32px;
+  cursor: pointer;
+  list-style: none;
+}
+.vh-faq summary::-webkit-details-marker { display: none; }
+.vh-faq summary .q {
+  font-family: var(--f-sans);
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--c-bone);
+  transition: color 0.12s;
+}
+.vh-faq summary:hover .q { color: var(--c-cyan); }
+.vh-faq summary .ix {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  flex: none;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-cyan);
+}
+.vh-faq summary .disc {
+  color: var(--c-amber);
+  font-size: 16px;
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.18s ease;
+}
+.vh-faq details[open] summary .disc { transform: rotate(45deg); }
+.vh-faq .a {
+  font-family: var(--f-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--c-body);
+  margin: 0;
+  padding: 0 32px 24px;
+  max-width: 760px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vh-faq summary .disc { transition: none; }
+}
+
 /* "more" link — quiet inline arrow link under teasers */
 .vh-more {
   display: inline-block;

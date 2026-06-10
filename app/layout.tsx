@@ -70,6 +70,18 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "VoxHorizon",
+  url: publicEnv.NEXT_PUBLIC_SITE_URL,
+  logo: `${publicEnv.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")}/logo.png`,
+  email: "operators@voxhorizon.io",
+  description:
+    "Growth partner for established home-improvement contractors: exclusive territory, pre-qualified and pre-scheduled appointments, paid per signed contract.",
+  founder: { "@type": "Person", name: "Diogo Silva" },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -82,6 +94,10 @@ export default function RootLayout({
       {/* Dark terminal shell. Background, body font and antialiasing are owned by
           styles/base.css `body` — no bg/font utilities here so they aren't overridden. */}
       <body className="min-h-screen antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <MotionProvider>
           <a href="#main" className="vh-skip">
             Skip to content
