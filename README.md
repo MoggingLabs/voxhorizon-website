@@ -48,18 +48,20 @@ do not require Supabase, Resend, GoHighLevel, or production secrets.
 Two workstreams build in parallel against frozen contracts. Directories are disjoint, so merge conflicts are rare.
 
 ```
-app/                     # routes, layout, SEO  (pages compose sections + wire data)
+app/                     # routes, layout, SEO  (pages compose .vh-* markup + wire data)
   api/lead/route.ts      # ← backend: validate → spam → insert → email + GHL
   api/booking-webhook/   # ← backend: provider booking events
+  api/gate/route.ts      # ← temporary preview gate (pairs with middleware.ts)
+  voxhorizon.css         # Carbon Trader design system — all .vh-* classes
 components/
-  ui/                    # Frontend primitives (Button, Container, …)
-  sections/              # Presentational page sections
+  sections/              # global chrome: Navbar (ticker + topbar), Footer, IndustryLayout
   forms/                 # ⚑ shared seam: QualifyingForm (UI) + ApplyFlow (orchestrator)
   booking/               # ⚑ shared seam: BookingEmbed
-lib/                     # ☆ backend only: tokens, types, supabase, email, ghl, env, utils
+lib/                     # ☆ backend only: content, types, supabase, email, ghl, env, utils
+  content.ts             #   central page copy + photosReady switch
   types/lead.ts          #   THE data contract (zod + LeadInput/LeadResult/QualifyingFormProps)
-  design-tokens.ts       #   token source of truth (mirrors tailwind.config.ts)
-public/                  # logo.png, mark.png, og-default.png
+middleware.ts            # temporary preview gate (delete with app/api/gate to go public)
+public/                  # logo.png, mark.png, og-default.png; real photos land in public/images/
 docs/frontend-design-prompts.md  # frontend prompt pack and visual direction archive
 docs/launch-assets.md          # launch content/photo inventory
 ```
@@ -68,12 +70,12 @@ docs/launch-assets.md          # launch content/photo inventory
 
 1. **Frozen contracts** (do not change without updating both sides):
    - `lib/types/lead.ts` — `LeadInput`, `LeadResult`, enums, and `QualifyingFormProps`.
-   - Tailwind token names — `font-display`, `bg-surface`, `bg-surface-elevated`, `border-surface-border`, `text-content-{primary,secondary,muted}`, `text-brand-{cyan,blue,indigo}`, `.text-gradient-brand`, `bg-gradient-brand`, `shadow-glow`.
-2. **Frontend:** generate/refine `components/ui/**` and `components/sections/**` against those tokens. Build the form/booking flow against `LEAD_API_MODE=mock`. See `docs/frontend-design-prompts.md`.
+   - The Carbon Trader design system — `.vh-*` classes in `app/voxhorizon.css` (imported in `app/layout.tsx` **after** `globals.css`; keep that order so its body rules win the cascade).
+2. **Frontend:** pages and `components/sections/**` are pure `.vh-*` markup. Build the form/booking flow against `LEAD_API_MODE=mock`. See `docs/frontend-design-prompts.md`.
 3. **Backend:** owns `lib/**`, `app/api/**`, and page data-wiring.
 4. **Integration:** `app/apply/page.tsx` → `ApplyFlow` wires the real `QualifyingForm` to `/api/lead` → `BookingEmbed`. Flip `LEAD_API_MODE=live`.
 
-Presentational rule: components in `ui/` and `sections/` take props in and return JSX — no `fetch`, no `process.env`, no Supabase imports.
+Presentational rule: components in `sections/` take props in and return JSX — no `fetch`, no `process.env`, no Supabase imports.
 
 ---
 
@@ -103,15 +105,47 @@ The active production path is `.github/workflows/deploy-stack.yml`.
 Use `workflow_dispatch` only for an explicitly approved bootstrap or hotfix
 deploy. Vercel is not the active deployment target for this repository.
 
-Pre-launch operations:
+### Rollback
+
+Every deploy pushes two tags to GHCR: `latest` and the commit SHA. To roll
+back, pin the stack to the last known-good SHA on the VPS:
+
+```bash
+ssh <user>@<vps>
+cd /opt/voxhorizon-website
+# point the web service image at ghcr.io/mogginglabs/voxhorizon-website:<good-sha>
+# (edit docker-compose.yml, or the tag variable in .env if parameterized)
+docker compose pull web
+docker compose up -d web
+docker compose ps        # wait for (healthy)
+```
+
+Re-deploying forward later restores `latest`. Notes:
+
+- The health check is `curl http://localhost:3000/` inside the container; the
+  preview gate intentionally answers HTTP 200 there, so the gate never turns
+  the stack unhealthy.
+- The deploy job's SSH step occasionally fails with a transient
+  `dial tcp :22: i/o timeout`; `gh run rerun <run-id> --failed` recovers it —
+  nothing on the VPS needs fixing.
+
+### Pre-launch operations
 
 - Set `LEAD_API_MODE=live` only in the VPS runtime env.
 - Set `NEXT_PUBLIC_SITE_URL=https://www.voxhorizon.com` at build/deploy time.
 - Verify the Resend sender domain (`voxhorizon.com`) with SPF/DKIM.
 - Confirm the GoHighLevel booking URL and webhook before sending live traffic.
+- Lift the preview gate: delete `middleware.ts` and `app/api/gate/route.ts`,
+  then redeploy.
 
 ---
 
-## Brand
+## Brand — "Carbon Trader"
 
-Dark premium. Sky-cyan `#38B0E3` → blue `#1E63C8` → deep indigo `#2E2A8C` on near-black navy `#0A0E1A`. Headings: Space Grotesk. Body: Inter. Logo: a sunrise/horizon disc + "VOX / HORIZON" wordmark.
+Dark trading-terminal aesthetic. Deep navy surfaces (`#08182A` / `#060F1E`),
+bone/sage foreground text, signal cyan `#51B8DC` for accents and amber
+`#FFB23F` for alerts. Workhorse type: IBM Plex Mono; display: IBM Plex Sans;
+Instrument Serif (italic) for editorial emphasis. Chrome includes a live
+ticker, scanline overlay, and audit-log styling. The full system lives in
+`app/voxhorizon.css` (`.vh-*` classes) and is documented on the `/brand` page.
+Logo: a sunrise/horizon disc + "VOX / HORIZON" wordmark.
