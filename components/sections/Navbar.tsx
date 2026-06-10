@@ -117,7 +117,7 @@ export function Navbar() {
             </em>
           </span>
           <Link href="/apply" className="vh-navcta">
-            [ Check my zip ]
+            Check my zip
           </Link>
           <button
             type="button"

@@ -30,7 +30,7 @@ export default function HomePage() {
           established home-improvement contractors. <strong>One operator per zip code.</strong>
         </p>
         <div className="vh-cta">
-          <Link href="/apply" className="p">[ Check my zip ]</Link>
+          <Link href="/apply" className="p">Check my zip</Link>
           <Link href="/system" className="g">How the system works</Link>
         </div>
         <div className="vh-herofeed">

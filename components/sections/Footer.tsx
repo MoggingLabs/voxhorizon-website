@@ -40,7 +40,7 @@ export function Footer() {
             {cohort.slotsTotal} {cohort.quarter} slots remain.
           </p>
           <Link href="/apply" className="vh-navcta">
-            [ Check my zip ]
+            Check my zip
           </Link>
         </div>
       </div>

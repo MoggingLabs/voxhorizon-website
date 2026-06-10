@@ -246,7 +246,7 @@ export function QualifyingForm({
         </div>
         <div className="vh-cta" style={{ marginTop: 0 }}>
           <button type="submit" className="vh-submit" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting…" : "[ See if your territory is open ]"}
+            {isSubmitting ? "Submitting…" : "See if your territory is open"}
           </button>
         </div>
       </div>

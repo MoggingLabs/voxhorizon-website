@@ -252,8 +252,7 @@ export default function SystemPage() {
           </div>
           <div className="vh-term">
             <div>
-              <span className="p">vh@operator</span>:~${" "}
-              <span className="e">audit --pull --zip=74105 --period=Q3</span>
+              <span className="p">Sample audit · zip 74105</span>
             </div>
             <div>&nbsp;</div>
             <div>
@@ -384,11 +383,7 @@ export default function SystemPage() {
           </div>
           <div className="vh-term">
             <div>
-              <span className="c">{"// guarantee.session · cohort audit"}</span>
-            </div>
-            <div>
-              <span className="p">vh@network</span>:~${" "}
-              <span className="e">guarantee --report --year=2026</span>
+              <span className="p">2026 guarantee report · all cohorts</span>
             </div>
             <div>&nbsp;</div>
             <div>

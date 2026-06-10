@@ -1,24 +1,26 @@
 /* ════════════════════════════════════════════════════════════════════
-   VoxHorizon · design tokens
+   VoxHorizon · design tokens — "Horizon" system
    ────────────────────────────────────────────────────────────────────
-   Carbon Trader visual system — navy ground, cyan accent, amber alerts.
-   IBM Plex Mono is the data workhorse, IBM Plex Sans carries display and
-   prose, Instrument Serif italic carries emphasis.
+   Deep navy ground with a soft cyan horizon glow. Instrument Serif
+   carries display headlines (italic = cyan emphasis), IBM Plex Sans
+   carries everything else. Surfaces are rounded, soft, and separated
+   by space — never by rules or boxes.
 
    Load order: tokens → base → chrome → components → pages
    (imported in app/layout.tsx).
    ════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* surfaces — three depths */
+  /* ground */
   --c-bg:           #08182A;
   --c-bg-deep:      #060F1E;
   --c-bg-shadow:    #040A18;
 
-  /* foreground — three weights.
-     NOTE: --c-quiet fails WCAG AA against the navy surfaces; it is reserved
-     for decorative use (borders, separators) and must NOT be used as a text
-     color. Use --c-mute as the dimmest text weight. */
+  /* soft raised surfaces (cards) */
+  --s-card:         #0C2138;
+  --s-card-2:       #0E2740;
+
+  /* foreground — --c-quiet is decorative only, never text */
   --c-bone:         #D9E5DC;
   --c-body:         #A6B5AB;
   --c-mute:         #6C8278;
@@ -33,25 +35,35 @@
   --c-amber-rgb:    255, 178, 63;
   --c-bone-rgb:     217, 229, 220;
 
-  /* hairlines */
-  --hr:             rgba(var(--c-cyan-rgb), 0.18);
-  --hr-soft:        rgba(var(--c-cyan-rgb), 0.10);
-  --hr-deep:        rgba(var(--c-cyan-rgb), 0.22);
+  /* soft edges & glows (replaces the old hairline system) */
+  --edge:           rgba(var(--c-cyan-rgb), 0.10);
+  --glow:           0 24px 80px rgba(4, 10, 24, 0.5);
+  --glow-cyan:      0 12px 48px rgba(var(--c-cyan-rgb), 0.16);
+
+  /* legacy aliases — a few low-traffic pages still reference these */
+  --hr:             rgba(var(--c-cyan-rgb), 0.10);
+  --hr-soft:        rgba(var(--c-cyan-rgb), 0.06);
+  --hr-deep:        rgba(var(--c-cyan-rgb), 0.14);
+
+  /* radii */
+  --r-lg:           20px;
+  --r-md:           14px;
+  --r-sm:           10px;
+  --r-pill:         999px;
 
   /* type — mapped to next/font variables (see app/layout.tsx) */
   --f-mono:         var(--font-plex-mono), "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --f-sans:         var(--font-plex-sans), "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --f-serif:        var(--font-display), "Instrument Serif", "EB Garamond", Georgia, serif;
 
-  /* v2 fluid type scale — consumed by redesigned (v2) components as pages
-     migrate; legacy .vh-h* keep their fixed sizes until each page moves. */
-  --t-display:      clamp(44px, 7.5vw, 96px);
-  --t-h1:           clamp(40px, 6.5vw, 88px);
-  --t-h2:           clamp(32px, 4.5vw, 56px);
-  --t-h3:           clamp(24px, 3vw, 40px);
-  --t-h4:           clamp(18px, 2vw, 22px);
+  /* fluid display scale */
+  --t-display:      clamp(48px, 8vw, 104px);
+  --t-h1:           clamp(42px, 6.5vw, 88px);
+  --t-h2:           clamp(34px, 4.8vw, 60px);
+  --t-h3:           clamp(26px, 3.2vw, 40px);
+  --t-h4:           clamp(19px, 2vw, 23px);
 
-  /* v2 rhythm */
-  --sect-pad:       clamp(64px, 9vw, 120px);
+  /* rhythm */
+  --sect-pad:       clamp(72px, 10vw, 140px);
   --gutter:         clamp(20px, 4vw, 48px);
 }

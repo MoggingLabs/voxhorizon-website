@@ -19,7 +19,7 @@ export function UrgencyMeta() {
 }
 
 function CtaLink({ cta, kind }: { cta: Cta; kind: "p" | "g" }) {
-  const label = kind === "p" ? `[ ${cta.label} ]` : cta.label;
+  const label = cta.label;
   if (cta.href.startsWith("mailto:")) {
     return (
       <a href={cta.href} className={kind}>

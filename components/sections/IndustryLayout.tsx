@@ -107,24 +107,11 @@ export function IndustryLayout({
                 no race to the bottom on price.
               </p>
             </div>
-            <div className="vh-term">
-              <div>
-                <span className="p">vh@operator</span>:~$ <span className="e">desk --trade {slug}</span>
-              </div>
-              <div className="c">{"// next on the calendar"}</div>
-              <div>
-                &nbsp;&nbsp;trade.......... <span className="e">{industry}</span>
-              </div>
-              <div>
-                &nbsp;&nbsp;territory...... <span className="e">exclusive · 1 per market</span>
-              </div>
-              <div>
-                &nbsp;&nbsp;status......... <span className="o">pre-qualified</span>
-              </div>
-              <div>
-                &nbsp;&nbsp;state.......... <span className="e">booked · ready to sign</span>
-                <span className="cursor" />
-              </div>
+            <div className="vh-block">
+              <p className="vh-proof__quote" style={{ fontSize: "clamp(19px, 2.2vw, 25px)" }}>
+                30 kept appointments in your first 90 days — <em className="vh-accent">or we
+                work for free</em> until you get them. In writing.
+              </p>
             </div>
           </div>
         </Reveal>
