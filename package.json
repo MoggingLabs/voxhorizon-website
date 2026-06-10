@@ -9,8 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "smoke": "npm run smoke:api",
+    "smoke": "npm run smoke:api && npm run smoke:routes",
     "smoke:api": "node scripts/smoke-api.mjs",
+    "smoke:routes": "node scripts/smoke-routes.mjs",
     "email": "email dev --dir lib/email/templates --port 3030"
   },
   "dependencies": {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { territoryCells, openZips, type OpenZip } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Territory",
@@ -8,45 +9,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/territory" },
 };
 
-// The live grid — 16 wide × 6 tall = 96 cells. Sequence ported verbatim from
-// the design handoff (project/territory.html): 73 claimed, 19 open, 4 closing.
-const CELLS = [
-  "claimed", "open", "claimed", "claimed", "claimed", "claimed", "open", "claimed",
-  "claimed", "open-hot", "open", "claimed", "open-hot", "open", "claimed", "claimed",
-  "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "claimed", "open", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "open", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "open",
-  "open", "claimed", "open", "open", "claimed", "claimed", "open", "claimed",
-  "claimed", "claimed", "claimed", "open", "open", "claimed", "open-hot", "open",
-  "open", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "claimed", "claimed", "claimed", "open", "claimed", "open", "open-hot", "claimed",
-  "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed", "claimed",
-  "open", "claimed", "open", "claimed", "claimed", "claimed", "claimed", "claimed",
-] as const;
-
-// Open territory · Q3. zip / city / applicant count (count em = highlighted number).
-const OPEN_ZIPS: { z: string; city: string; ct: React.ReactNode }[] = [
-  { z: "67501", city: "Wichita, Kansas", ct: <><em>2</em> appl · hot</> },
-  { z: "28207", city: "Charlotte, North Carolina", ct: <><em>3</em> appl · hot</> },
-  { z: "89509", city: "Reno, Nevada", ct: <><em>1</em> appl</> },
-  { z: "05401", city: "Burlington, Vermont", ct: <>quiet</> },
-  { z: "83702", city: "Boise, Idaho", ct: <><em>4</em> appl · hot</> },
-  { z: "53703", city: "Madison, Wisconsin", ct: <><em>2</em> appl</> },
-  { z: "97402", city: "Eugene, Oregon", ct: <>quiet</> },
-  { z: "78704", city: "Austin, Texas", ct: <><em>6</em> appl · hot</> },
-  { z: "87505", city: "Santa Fe, New Mexico", ct: <><em>1</em> appl</> },
-  { z: "14618", city: "Rochester, New York", ct: <><em>2</em> appl</> },
-  { z: "68114", city: "Omaha, Nebraska", ct: <><em>1</em> appl</> },
-  { z: "37205", city: "Nashville, Tennessee", ct: <><em>3</em> appl</> },
-  { z: "29401", city: "Charleston, South Carolina", ct: <><em>2</em> appl</> },
-  { z: "99205", city: "Spokane, Washington", ct: <>quiet</> },
-  { z: "03801", city: "Portsmouth, New Hampshire", ct: <><em>1</em> appl</> },
-  { z: "04401", city: "Bangor, Maine", ct: <>quiet</> },
-  { z: "59715", city: "Bozeman, Montana", ct: <><em>2</em> appl</> },
-  { z: "82001", city: "Cheyenne, Wyoming", ct: <>quiet</> },
-  { z: "57104", city: "Sioux Falls, South Dakota", ct: <><em>1</em> appl</> },
-];
+function zipStatus(z: OpenZip): React.ReactNode {
+  if (z.applicants === 0) return <>quiet</>;
+  return (
+    <>
+      <em>{z.applicants}</em> appl{z.hot ? " · hot" : ""}
+    </>
+  );
+}
 
 export default function TerritoryPage() {
   return (
@@ -102,7 +72,7 @@ export default function TerritoryPage() {
         <div className="vh-terr">
           <div>
             <div className="vh-grid">
-              {CELLS.map((state, i) => (
+              {territoryCells.map((state, i) => (
                 <div key={i} className={`cell ${state}`} />
               ))}
             </div>
@@ -167,11 +137,11 @@ export default function TerritoryPage() {
             <span>Open territory · 19 zips · closing Sept 30</span>
             <em>— applicants in queue</em>
           </div>
-          {OPEN_ZIPS.map((row) => (
-            <Link key={row.z} href="/apply" className="vh-zip__row">
-              <span className="z">{row.z}</span>
-              <span className="city">{row.city}</span>
-              <span className="ct">{row.ct}</span>
+          {openZips.map((row) => (
+            <Link key={row.zip} href="/apply" className="vh-zip__row">
+              <span className="z">{row.zip}</span>
+              <span className="city">{`${row.city}, ${row.state}`}</span>
+              <span className="ct">{zipStatus(row)}</span>
             </Link>
           ))}
         </div>

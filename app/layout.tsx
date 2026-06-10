@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import {
-  Instrument_Serif,
-  Newsreader,
-  JetBrains_Mono,
-  IBM_Plex_Mono,
-  IBM_Plex_Sans,
-} from "next/font/google";
+import { Instrument_Serif, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-// Carbon Trader system — ported design stylesheet (loaded after globals so its
-// un-layered body rules win the cascade). See app/voxhorizon.css.
-import "./voxhorizon.css";
+// Carbon Trader system — split design stylesheet (loaded after globals so its
+// un-layered body rules win the cascade). Order matters: tokens → base →
+// chrome → components → pages.
+import "./styles/tokens.css";
+import "./styles/base.css";
+import "./styles/chrome.css";
+import "./styles/components.css";
+import "./styles/pages.css";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { publicEnv } from "@/lib/env";
@@ -23,21 +22,6 @@ const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
-});
-
-// Body — Newsreader (variable serif, optical size). Legacy editorial pages.
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-// Mono — JetBrains Mono (labels, eyebrows, metadata). Legacy editorial pages.
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-mono",
 });
 
 // Carbon Trader workhorse — IBM Plex Mono (body, ticker, labels). Drives --f-mono.
@@ -92,13 +76,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable}`}
+      className={`${instrumentSerif.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable}`}
     >
       {/* Dark terminal shell. Background, body font and antialiasing are owned by
-          voxhorizon.css `body` — no bg/font utilities here so they aren't overridden. */}
+          styles/base.css `body` — no bg/font utilities here so they aren't overridden. */}
       <body className="min-h-screen antialiased">
+        <a href="#main" className="vh-skip">
+          Skip to content
+        </a>
         <Navbar />
-        <main>{children}</main>
+        <main id="main">{children}</main>
         <Footer />
         {plausibleDomain && (
           <Script
