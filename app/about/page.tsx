@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { founder, press } from "@/lib/content";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { Photo } from "@/components/ui/Photo";
 
 export const metadata: Metadata = {
   title: "About",
@@ -52,10 +53,15 @@ export default function AboutPage() {
           <em>Why this desk exists.</em>
         </div>
         <div className="vh-prose-split">
-          <div className="lab">
-            {founder.name}
-            <br />
-            {founder.role}
+          <div>
+            <div className="lab">
+              {founder.name}
+              <br />
+              {founder.role}
+            </div>
+            <div style={{ marginTop: 18, maxWidth: 280 }}>
+              <Photo src={founder.image} alt={`${founder.name}, ${founder.role}`} width={800} height={800} />
+            </div>
           </div>
           <div className="vh-prose">
             <p>“{founder.bio}”</p>
