@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 import {
   MARKET_SEGMENTS,
   REVENUE_TIERS,
@@ -12,40 +14,14 @@ import {
   type QualifyingFormProps,
 } from "@/lib/types/lead";
 
-function ErrorText({ msg }: { msg?: string }) {
+function ErrorText({ id, msg }: { id: string; msg?: string }) {
   if (!msg) return null;
   return (
-    <p
-      style={{
-        marginTop: 8,
-        fontSize: 11,
-        letterSpacing: "0.04em",
-        color: "var(--c-amber)",
-      }}
-    >
+    <p id={id} role="alert" className="vh-err">
       {msg}
     </p>
   );
 }
-
-// Inline styles for the choice-button groups (markets + revenue) — markets and
-// revenue tier are multi/single toggle groups, not native inputs, so they get
-// vh-token styling here rather than the .vh-form input rules.
-const choiceBase: React.CSSProperties = {
-  padding: "11px 16px",
-  fontSize: 12,
-  letterSpacing: "0.02em",
-  border: "1px solid var(--hr-deep)",
-  background: "var(--c-bg-shadow)",
-  color: "var(--c-body)",
-  transition: "color 0.12s, border-color 0.12s, background 0.12s",
-  textAlign: "left",
-};
-const choiceActive: React.CSSProperties = {
-  borderColor: "var(--c-cyan)",
-  background: "rgba(81, 184, 220, 0.08)",
-  color: "var(--c-bone)",
-};
 
 export function QualifyingForm({
   defaultValues,
@@ -65,10 +41,19 @@ export function QualifyingForm({
   const [phone, setPhone] = useState(defaultValues?.phone ?? "");
   const [honeypot, setHoneypot] = useState("");
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
+  const started = useRef(false);
 
   const errors = { ...localErrors, ...fieldErrors };
 
+  /** One-shot funnel event on the first real interaction with the form. */
+  function markStarted() {
+    if (started.current) return;
+    started.current = true;
+    track("form_start");
+  }
+
   function toggleMarket(m: MarketSegment) {
+    markStarted();
     setMarkets((prev) =>
       prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m],
     );
@@ -101,7 +86,7 @@ export function QualifyingForm({
   }
 
   return (
-    <form className="vh-form" onSubmit={handleSubmit} noValidate>
+    <form className="vh-form" onSubmit={handleSubmit} onFocusCapture={markStarted} noValidate>
       {/* A · Markets */}
       <fieldset>
         <legend>
@@ -112,7 +97,7 @@ export function QualifyingForm({
             Markets served <span className="req">*</span>
           </label>
           <div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            <div className="vh-choices" role="group" aria-label="Markets served">
               {MARKET_SEGMENTS.map((m) => {
                 const active = markets.includes(m);
                 return (
@@ -121,14 +106,14 @@ export function QualifyingForm({
                     type="button"
                     onClick={() => toggleMarket(m)}
                     aria-pressed={active}
-                    style={{ ...choiceBase, ...(active ? choiceActive : null) }}
+                    className={cn("vh-choice", active && "is-active")}
                   >
                     {MARKET_LABELS[m]}
                   </button>
                 );
               })}
             </div>
-            <ErrorText msg={errors.markets} />
+            <ErrorText id="err-markets" msg={errors.markets} />
           </div>
         </div>
         <div className="vh-form__row" style={{ alignItems: "start" }}>
@@ -136,13 +121,7 @@ export function QualifyingForm({
             Monthly revenue <span className="req">*</span>
           </label>
           <div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                gap: 10,
-              }}
-            >
+            <div className="vh-choices grid" role="group" aria-label="Monthly revenue">
               {REVENUE_TIERS.map((t) => {
                 const active = revenueTier === t;
                 const isLowFit = t === "under_50k";
@@ -150,33 +129,20 @@ export function QualifyingForm({
                   <button
                     key={t}
                     type="button"
-                    onClick={() => setRevenueTier(t)}
-                    aria-pressed={active}
-                    style={{
-                      ...choiceBase,
-                      ...(active ? choiceActive : null),
-                      ...(isLowFit && !active ? { opacity: 0.7 } : null),
+                    onClick={() => {
+                      markStarted();
+                      setRevenueTier(t);
                     }}
+                    aria-pressed={active}
+                    className={cn("vh-choice", active && "is-active", isLowFit && !active && "low")}
                   >
                     {REVENUE_TIER_LABELS[t]}
-                    {isLowFit && (
-                      <span
-                        style={{
-                          display: "block",
-                          marginTop: 4,
-                          fontSize: 10,
-                          letterSpacing: "0.06em",
-                          color: "var(--c-mute)",
-                        }}
-                      >
-                        Below our typical fit
-                      </span>
-                    )}
+                    {isLowFit && <span className="sub">Below our typical fit</span>}
                   </button>
                 );
               })}
             </div>
-            <ErrorText msg={errors.revenueTier} />
+            <ErrorText id="err-revenue" msg={errors.revenueTier} />
           </div>
         </div>
       </fieldset>
@@ -198,8 +164,10 @@ export function QualifyingForm({
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Jane Contractor"
               autoComplete="name"
+              aria-invalid={errors.fullName ? true : undefined}
+              aria-describedby={errors.fullName ? "err-fullName" : undefined}
             />
-            <ErrorText msg={errors.fullName} />
+            <ErrorText id="err-fullName" msg={errors.fullName} />
           </div>
         </div>
         <div className="vh-form__row">
@@ -225,8 +193,10 @@ export function QualifyingForm({
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
               autoComplete="email"
+              aria-invalid={errors.email ? true : undefined}
+              aria-describedby={errors.email ? "err-email" : undefined}
             />
-            <ErrorText msg={errors.email} />
+            <ErrorText id="err-email" msg={errors.email} />
           </div>
         </div>
         <div className="vh-form__row">
@@ -241,14 +211,16 @@ export function QualifyingForm({
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(555) 123-4567"
               autoComplete="tel"
+              aria-invalid={errors.phone ? true : undefined}
+              aria-describedby={errors.phone ? "err-phone" : undefined}
             />
-            <ErrorText msg={errors.phone} />
+            <ErrorText id="err-phone" msg={errors.phone} />
           </div>
         </div>
       </fieldset>
 
       {/* Honeypot — visually hidden, must stay empty */}
-      <div style={{ position: "absolute", left: -9999 }} aria-hidden>
+      <div className="vh-hp" aria-hidden>
         <label>
           Leave this field empty
           <input
@@ -263,7 +235,9 @@ export function QualifyingForm({
       <div className="vh-form__actions">
         <div className="meta">
           {errors.form ? (
-            <span style={{ color: "var(--c-amber)" }}>{errors.form}</span>
+            <span role="alert" className="vh-err" style={{ marginTop: 0 }}>
+              {errors.form}
+            </span>
           ) : (
             <>
               One operator per zip · <em>No spam, ever.</em>
@@ -271,22 +245,7 @@ export function QualifyingForm({
           )}
         </div>
         <div className="vh-cta" style={{ marginTop: 0 }}>
-          <button
-            type="submit"
-            className="p"
-            disabled={isSubmitting}
-            style={{
-              padding: "16px 28px",
-              fontSize: 11,
-              letterSpacing: "0.20em",
-              textTransform: "uppercase",
-              background: "var(--c-cyan)",
-              color: "var(--c-bg-deep)",
-              fontWeight: 600,
-              opacity: isSubmitting ? 0.6 : 1,
-              cursor: isSubmitting ? "not-allowed" : "pointer",
-            }}
-          >
+          <button type="submit" className="vh-submit" disabled={isSubmitting}>
             {isSubmitting ? "Submitting…" : "[ See if your territory is open ]"}
           </button>
         </div>

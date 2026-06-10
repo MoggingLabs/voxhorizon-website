@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { track } from "@/lib/analytics";
+
 export function BookingEmbed({
   bookingUrl,
   name,
@@ -7,6 +10,40 @@ export function BookingEmbed({
   bookingUrl: string;
   name?: string;
 }) {
+  // Fire booking_scheduled when the embedded calendar reports a confirmed
+  // booking via postMessage. Calendly posts { event: "calendly.event_scheduled" };
+  // GHL widgets post appointment/booking-tagged messages. Matched conservatively,
+  // origin-guarded against the booking URL, and fail-silent: if the provider
+  // never posts, booking still works — we just miss the analytics event.
+  useEffect(() => {
+    if (!bookingUrl) return;
+    let bookingOrigin: string;
+    try {
+      bookingOrigin = new URL(bookingUrl).origin;
+    } catch {
+      return;
+    }
+    let fired = false;
+    function onMessage(event: MessageEvent) {
+      if (fired || event.origin !== bookingOrigin) return;
+      const data: unknown = event.data;
+      const tag =
+        typeof data === "string"
+          ? data
+          : typeof (data as { event?: unknown })?.event === "string"
+            ? ((data as { event: string }).event)
+            : typeof (data as { type?: unknown })?.type === "string"
+              ? ((data as { type: string }).type)
+              : "";
+      if (/event_scheduled|appointment[_-]?(booked|scheduled)|booking[_-]?(complete|confirmed)/i.test(tag)) {
+        fired = true;
+        track("booking_scheduled");
+      }
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [bookingUrl]);
+
   return (
     <div className="vh-block" style={{ borderColor: "var(--c-cyan)" }}>
       <div

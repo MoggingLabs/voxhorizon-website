@@ -172,6 +172,88 @@
   .vh-grid__readout .cursor::after { animation: none; }
 }
 
+/* apply funnel v2 — choice buttons, errors, zip context, fallback strip */
+.vh-choices { display: flex; flex-wrap: wrap; gap: 10px; }
+.vh-choices.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.vh-choice {
+  padding: 11px 16px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--hr-deep);
+  background: var(--c-bg-shadow);
+  color: var(--c-body);
+  text-align: left;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.vh-choice:hover { border-color: var(--c-cyan); }
+.vh-choice.is-active {
+  border-color: var(--c-cyan);
+  background: rgba(var(--c-cyan-rgb), 0.08);
+  color: var(--c-bone);
+}
+.vh-choice.low { opacity: 0.7; }
+.vh-choice .sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--c-mute);
+}
+.vh-err {
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--c-amber);
+}
+.vh-hp { position: absolute; left: -9999px; }
+.vh-submit {
+  padding: 16px 28px;
+  font-size: 11px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  background: var(--c-cyan);
+  color: var(--c-bg-deep);
+  font-weight: 600;
+  transition: background 0.12s;
+}
+.vh-submit:hover:not(:disabled) { background: var(--c-bone); }
+.vh-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.vh-zipctx {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--c-mute);
+  border: 1px solid var(--hr);
+  background: var(--c-bg-shadow);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+.vh-zipctx .p { color: var(--c-cyan); }
+.vh-zipctx em { color: var(--c-amber); }
+.vh-applyfall {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 22px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--hr-soft);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+.vh-applyfall .t {
+  color: var(--c-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 10px;
+}
+.vh-applyfall a { color: var(--c-cyan); transition: color 0.12s; }
+.vh-applyfall a:hover { color: var(--c-bone); }
+
 /* wide ledger variant — four-across on desktop (/results) */
 .vh-ledger--wide { grid-template-columns: repeat(4, 1fr); }
 .vh-ledger--wide .vh-ledger__cell { border-bottom: 0; border-right: 1px solid var(--hr-soft); }
