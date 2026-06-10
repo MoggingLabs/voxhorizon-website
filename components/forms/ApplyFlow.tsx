@@ -1,8 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { AnimatePresence, m } from "framer-motion";
 import { QualifyingForm } from "@/components/forms/QualifyingForm";
 import { BookingEmbed } from "@/components/booking/BookingEmbed";
+import { openZips } from "@/lib/content";
 import { getAttribution } from "@/lib/utm";
 import { track } from "@/lib/analytics";
 import type { LeadInput, LeadResult } from "@/lib/types/lead";
@@ -10,6 +13,10 @@ import type { LeadInput, LeadResult } from "@/lib/types/lead";
 type Step = "form" | "booking";
 
 export function ApplyFlow() {
+  const searchParams = useSearchParams();
+  const zipParam = (searchParams.get("zip") ?? "").trim().slice(0, 10);
+  const zipInfo = openZips.find((z) => z.zip === zipParam);
+
   const [step, setStep] = useState<Step>("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>();
@@ -66,6 +73,15 @@ export function ApplyFlow() {
 
   return (
     <div>
+      {/* Zip context — carried in from the territory page's open-zip rows */}
+      {zipParam && (
+        <div className="vh-zipctx">
+          <span className="p">vh@desk</span>:~$ applying for zip <em>{zipParam}</em>
+          {zipInfo ? ` · ${zipInfo.city}, ${zipInfo.abbr}` : ""} ·{" "}
+          {zipInfo ? (zipInfo.hot ? "closing 48h" : "open") : "status checked on the call"}
+        </div>
+      )}
+
       {/* Progress */}
       <div
         className="vh-pane-head"
@@ -78,15 +94,33 @@ export function ApplyFlow() {
         <span>{step === "booking" ? "Book your call" : "Qualify"}</span>
       </div>
 
-      {step === "form" ? (
-        <QualifyingForm
-          onSubmit={onSubmit}
-          isSubmitting={isSubmitting}
-          fieldErrors={fieldErrors}
-        />
-      ) : (
-        <BookingEmbed bookingUrl={bookingUrl} name={name} />
-      )}
+      <AnimatePresence mode="wait" initial={false}>
+        {step === "form" ? (
+          <m.div
+            key="form"
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 12 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <QualifyingForm
+              onSubmit={onSubmit}
+              isSubmitting={isSubmitting}
+              fieldErrors={fieldErrors}
+            />
+          </m.div>
+        ) : (
+          <m.div
+            key="booking"
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <BookingEmbed bookingUrl={bookingUrl} name={name} />
+          </m.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Suspense } from "react";
 import { ApplyFlow } from "@/components/forms/ApplyFlow";
 
 export const metadata: Metadata = {
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ApplyPage() {
   return (
-    <>
+    <div className="v2">
       {/* ── INTRO ─────────────────────────────────────────── */}
       <section className="vh-pintro">
         <div className="crumb">
@@ -22,7 +24,7 @@ export default function ApplyPage() {
           is <em>open.</em>
         </h1>
         <p className="lede">
-          Answer a few quick questions. If we’re a fit, you’ll book a strategy call on the next
+          Answer a few quick questions. If we&#8217;re a fit, you&#8217;ll book a strategy call on the next
           step. One operator per zip — <strong>if your zip is claimed, we tell you straight.</strong>
         </p>
       </section>
@@ -33,10 +35,21 @@ export default function ApplyPage() {
           <span className="id">
             01 / 01 <span>— Application form</span>
           </span>
-          <em>Plain fields, no warm-up dance.</em>
+          <em>30 kept appointments in 90 days — or we work for free.</em>
         </div>
-        <ApplyFlow />
+        {/* useSearchParams (zip deep-link) requires a Suspense boundary on a static page */}
+        <Suspense fallback={null}>
+          <ApplyFlow />
+        </Suspense>
+
+        {/* Fallback path for visitors not ready to apply */}
+        <div className="vh-applyfall">
+          <span className="t">Not ready to apply?</span>
+          <Link href="/faq">Read the FAQ →</Link>
+          <Link href="/system">How the system works →</Link>
+          <a href="mailto:operators@voxhorizon.io">operators@voxhorizon.io</a>
+        </div>
       </section>
-    </>
+    </div>
   );
 }
