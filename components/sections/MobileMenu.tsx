@@ -83,7 +83,7 @@ export function MobileMenu({ open, pathname, onClose }: MobileMenuProps) {
           </nav>
           <div className="vh-mmenu__cta">
             <Link href="/apply" className="vh-navcta" onClick={onClose}>
-              [ Check my zip ]
+              Check my zip
             </Link>
             <span className="vh-mmenu__meta">
               {cohort.quarter} closes {cohort.closesOn} · {cohort.slotsOpen} of {cohort.slotsTotal}{" "}

@@ -4,21 +4,21 @@
 html, body { margin: 0; padding: 0; }
 body {
   background: var(--c-bg);
-  color: var(--c-bone);
-  font-family: var(--f-mono);
-  font-size: 12px;
-  line-height: 1.5;
+  color: var(--c-body);
+  font-family: var(--f-sans);
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   min-height: 100vh;
   position: relative;
 }
-/* scanline overlay — single fixed pseudo-element, zero animation cost */
+/* the horizon — one soft cyan glow rising from the top of the page */
 body::before {
   content: "";
   position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(var(--c-cyan-rgb), 0.025) 1px, transparent 1px);
-  background-size: 100% 24px;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% -12%, rgba(var(--c-cyan-rgb), 0.10), transparent 65%);
   pointer-events: none;
   z-index: 0;
 }
@@ -26,7 +26,7 @@ body > * { position: relative; z-index: 1; }
 a { color: inherit; text-decoration: none; cursor: pointer; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 input, select, textarea { font: inherit; color: inherit; background: none; border: 0; }
-hr { border: 0; height: 1px; background: var(--hr); }
+hr { border: 0; height: 1px; background: var(--edge); }
 em { font-style: normal; }
 
 /* keyboard focus — one consistent ring, everywhere */
@@ -41,7 +41,7 @@ em { font-style: normal; }
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
 }
-.vh-page-enter { animation: vhPageEnter 0.28s ease-out; }
+.vh-page-enter { animation: vhPageEnter 0.3s ease-out; }
 @media (prefers-reduced-motion: reduce) {
   .vh-page-enter { animation: none; }
 }
@@ -54,12 +54,11 @@ em { font-style: normal; }
   z-index: 100;
   background: var(--c-cyan);
   color: var(--c-bg-deep);
-  font-family: var(--f-mono);
-  font-size: 11px;
+  font-family: var(--f-sans);
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding: 12px 20px;
+  padding: 12px 22px;
+  border-radius: 0 0 var(--r-sm) 0;
 }
 .vh-skip:focus {
   left: 0;

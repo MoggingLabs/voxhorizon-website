@@ -49,7 +49,7 @@ export function TerritoryGrid() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.1 }}
             >
-              <span className="p">vh@desk</span>:~$ hover a cell<span className="cursor" />
+              Hover a cell — each one is a zip code.
             </m.span>
           ) : (
             <m.span
@@ -59,9 +59,9 @@ export function TerritoryGrid() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.1 }}
             >
-              <span className="p">vh@desk</span>:~$ cell {String(hovered + 1).padStart(2, "0")} ·{" "}
+              <span className="p">Zip {String(hovered + 1).padStart(2, "0")}</span> ·{" "}
               <span className={`s ${territoryCells[hovered]}`}>
-                {LABEL[territoryCells[hovered]].toUpperCase()}
+                {LABEL[territoryCells[hovered]]}
               </span>
             </m.span>
           )}

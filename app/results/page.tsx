@@ -277,7 +277,7 @@ export default function ResultsPage() {
             </div>
             <div className="vh-term">
               <div>
-                <span className="c">{"// erin · operator liaison"}</span>
+                <span className="p">Erin Kassidy · operator liaison</span>
               </div>
               <div>&nbsp;</div>
               <div>
