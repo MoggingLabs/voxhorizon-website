@@ -32,7 +32,6 @@ const ROUTES = [
   "/",
   "/system",
   "/territory",
-  "/operators",
   "/apply",
   "/about",
   "/results",
@@ -47,7 +46,7 @@ const ROUTES = [
 
 /** Permanent redirects that must hold (source → destination). */
 const REDIRECTS = {
-  // "/operators": "/results",  ← lands with the proof-merge PR
+  "/operators": "/results",
 };
 
 let server;
